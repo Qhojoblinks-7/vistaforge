@@ -82,16 +82,7 @@ const HomePage = () => {
             <p className="mt-4 text-lg text-gray-700 max-w-lg">
               From logo design to complete brand systems, we ensure your brand not only looks great but also resonates with your target audience and supports your business goals.
             </p>
-            <div className="mt-8 flex flex-col sm:flex-row justify-center md:justify-start gap-12 sm:gap-16">
-              <div className="text-center">
-                <h3 className="text-4xl font-bold text-brand-orange">150+</h3>
-                <p className="text-sm font-semibold text-gray-600 uppercase tracking-wide mt-1">Projects Completed</p>
-              </div>
-              <div className="text-center">
-                <h3 className="text-4xl font-bold text-brand-orange">98%</h3>
-                <p className="text-sm font-semibold text-gray-600 uppercase tracking-wide mt-1">Client Satisfaction</p>
-              </div>
-            </div>
+            
           </div>
         </div>
       </section>
