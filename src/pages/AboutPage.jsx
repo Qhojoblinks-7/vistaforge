@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useSpring, animated } from 'react-spring';
 import { useInView } from 'react-intersection-observer';
 import { Link } from 'react-router-dom';
@@ -96,6 +97,59 @@ const AboutUsPage = () => {
 
   return (
     <main className="bg-white text-gray-800 font-poppins" id="main-content">
+      <Helmet>
+        <title>About VistaForge - Professional Brand Design & Creative Agency</title>
+        <meta name="description" content="Learn about VistaForge, Ghana's leading brand design agency. Meet our team of creative strategists and discover our mission to empower African businesses with innovative branding solutions." />
+        <meta name="keywords" content="about VistaForge, brand design agency Ghana, creative team, brand strategy, digital agency Accra, African branding" />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://vistaforge.com/about" />
+        <meta property="og:title" content="About VistaForge - Professional Brand Design & Creative Agency" />
+        <meta property="og:description" content="Meet the team behind VistaForge and discover our mission to empower African businesses with innovative branding and digital solutions." />
+        <meta property="og:image" content="https://vistaforge.com/about-og-image.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:site_name" content="VistaForge" />
+        <meta property="og:locale" content="en_US" />
+
+        {/* Twitter */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://vistaforge.com/about" />
+        <meta property="twitter:title" content="About VistaForge - Professional Brand Design & Creative Agency" />
+        <meta property="twitter:description" content="Meet the team behind VistaForge and discover our mission to empower African businesses with innovative branding and digital solutions." />
+        <meta property="twitter:image" content="https://vistaforge.com/about-twitter-image.jpg" />
+
+        {/* Additional SEO meta tags */}
+        <meta name="robots" content="index, follow" />
+        <meta name="author" content="VistaForge" />
+        <meta name="language" content="English" />
+
+        {/* Canonical URL */}
+        <link rel="canonical" href="https://vistaforge.com/about" />
+
+        {/* Breadcrumbs structured data */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://vistaforge.com"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "About",
+                "item": "https://vistaforge.com/about"
+              }
+            ]
+          })}
+        </script>
+      </Helmet>
       {/* 1. Hero Section - This section will be the same for both versions */}
       <section className="relative bg-[#0015AA] text-white py-24 px-4 sm:px-6 lg:px-8 text-center overflow-hidden">
         {/* Subtle Background Shapes */}

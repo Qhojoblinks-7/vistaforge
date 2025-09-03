@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useSpring, animated } from 'react-spring';
 import { BsArrowRight, BsEnvelope, BsPhone, BsPinMap } from 'react-icons/bs';
 
@@ -60,6 +61,83 @@ const ContactPage = () => {
 
   return (
     <main className="bg-white text-[#0015AA] font-poppins" id="main-content">
+      <Helmet>
+        <title>Contact VistaForge - Get In Touch With Our Brand Design Team</title>
+        <meta name="description" content="Ready to transform your brand? Contact VistaForge for professional brand design, logo design, and web development services. Let's discuss your project today." />
+        <meta name="keywords" content="contact VistaForge, brand design agency contact, logo design Ghana, web design contact, creative agency Accra, brand consultation" />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://vistaforge.com/contact" />
+        <meta property="og:title" content="Contact VistaForge - Get In Touch With Our Brand Design Team" />
+        <meta property="og:description" content="Ready to transform your brand? Contact VistaForge for professional brand design and web development services. Let's discuss your project." />
+        <meta property="og:image" content="https://vistaforge.com/contact-og-image.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:site_name" content="VistaForge" />
+        <meta property="og:locale" content="en_US" />
+
+        {/* Twitter */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://vistaforge.com/contact" />
+        <meta property="twitter:title" content="Contact VistaForge - Get In Touch With Our Brand Design Team" />
+        <meta property="twitter:description" content="Ready to transform your brand? Contact VistaForge for professional brand design and web development services. Let's discuss your project." />
+        <meta property="twitter:image" content="https://vistaforge.com/contact-twitter-image.jpg" />
+
+        {/* Additional SEO meta tags */}
+        <meta name="robots" content="index, follow" />
+        <meta name="author" content="VistaForge" />
+        <meta name="language" content="English" />
+
+        {/* Canonical URL */}
+        <link rel="canonical" href="https://vistaforge.com/contact" />
+
+        {/* Breadcrumbs structured data */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://vistaforge.com"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Contact",
+                "item": "https://vistaforge.com/contact"
+              }
+            ]
+          })}
+        </script>
+
+        {/* Contact structured data */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ContactPage",
+            "mainEntity": {
+              "@type": "Organization",
+              "name": "VistaForge",
+              "url": "https://vistaforge.com",
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "telephone": "+233-59-255-8160",
+                "contactType": "customer service",
+                "email": "hello@vistaforge.com"
+              },
+              "address": {
+                "@type": "PostalAddress",
+                "addressCountry": "Ghana",
+                "addressLocality": "Accra"
+              }
+            }
+          })}
+        </script>
+      </Helmet>
       {/* Header Section with Subtle Shapes */}
       <section className="relative bg-[#0015AA] text-white py-24 px-4 sm:px-6 lg:px-8 text-center font-montserrat overflow-hidden">
         {/* Subtle Background Shapes */}

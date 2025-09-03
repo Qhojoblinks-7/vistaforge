@@ -1,6 +1,7 @@
 import React from 'react';
-import { useSpring,animated} from 'react-spring';
-import { BsPen, BsStack, BsLaptop, BsBarChart, BsPhone, BsTools, BsCashStack, BsBriefcase, BsRocket } from 'react-icons/bs';
+import { Helmet } from 'react-helmet-async';
+import { useSpring, animated } from 'react-spring';
+import { BsPen, BsStack, BsLaptop, BsBarChart, BsPhone, BsTools, BsCashStack,BsBriefcase,BsRocket } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import aboutImage from '../assets/hero3.jpeg';
 import '../styles/ServicesPage.css';
@@ -15,6 +16,76 @@ const ServicesPage = () => {
 
   return (
     <main className="bg-white" id="main-content">
+      <Helmet>
+        <title>Services - VistaForge Brand Design & Web Development</title>
+        <meta name="description" content="Explore VistaForge's comprehensive brand design and web development services. From logo design to full brand identity and stunning websites, we help businesses stand out." />
+        <meta name="keywords" content="brand design services, logo design, web development, brand identity, graphic design, creative services, Ghana design agency" />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://vistaforge.com/services" />
+        <meta property="og:title" content="Services - VistaForge Brand Design & Web Development" />
+        <meta property="og:description" content="Explore our comprehensive brand design and web development services. From logo design to full brand identity, we help businesses stand out." />
+        <meta property="og:image" content="https://vistaforge.com/services-og-image.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:site_name" content="VistaForge" />
+        <meta property="og:locale" content="en_US" />
+
+        {/* Twitter */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://vistaforge.com/services" />
+        <meta property="twitter:title" content="Services - VistaForge Brand Design & Web Development" />
+        <meta property="twitter:description" content="Explore our comprehensive brand design and web development services. From logo design to full brand identity, we help businesses stand out." />
+        <meta property="twitter:image" content="https://vistaforge.com/services-twitter-image.jpg" />
+
+        {/* Additional SEO meta tags */}
+        <meta name="robots" content="index, follow" />
+        <meta name="author" content="VistaForge" />
+        <meta name="language" content="English" />
+
+        {/* Canonical URL */}
+        <link rel="canonical" href="https://vistaforge.com/services" />
+
+        {/* Breadcrumbs structured data */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://vistaforge.com"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Services",
+                "item": "https://vistaforge.com/services"
+              }
+            ]
+          })}
+        </script>
+
+        {/* Service structured data */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Service",
+            "name": "Brand Design & Web Development Services",
+            "description": "Professional brand design, logo design, and web development services for businesses in Ghana and beyond.",
+            "provider": {
+              "@type": "Organization",
+              "name": "VistaForge",
+              "url": "https://vistaforge.com"
+            },
+            "serviceType": "Creative Design Services",
+            "areaServed": "Ghana"
+          })}
+        </script>
+      </Helmet>
       {/* Hero Section with Subtle Shapes */}
       <section className="relative bg-[#0015AA] text-white py-24 px-4 sm:px-6 lg:px-8 text-center overflow-hidden">
         {/* Subtle Background Shapes */}

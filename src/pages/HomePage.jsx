@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import { BsPen, BsStack, BsLaptop, BsPrinter, BsBarChart, BsPhone } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import '../styles/HeroAnimation.css'
@@ -6,8 +7,71 @@ import heroImage from '../assets/hero2.png';
 import hero3 from '../assets/hero3.jpeg';
 
 const HomePage = () => {
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "VistaForge",
+    "url": "https://vistaforge.com",
+    "logo": "https://vistaforge.com/logo.svg",
+    "description": "We Build Brands That Stand The Test of Time. From strategic vision to stunning visuals, we craft brands that connect, resonate, and grow.",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "Ghana",
+      "addressLocality": "Accra"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+233-59-255-8160",
+      "contactType": "customer service",
+      "email": "hello@vistaforge.com"
+    },
+    "sameAs": [
+      "https://facebook.com/vistaforge",
+      "https://twitter.com/vistaforge",
+      "https://instagram.com/vistaforge",
+      "https://linkedin.com/company/vistaforge"
+    ]
+  };
+
   return (
     <main id="main-content">
+      <Helmet>
+        <title>VistaForge - We Build Brands That Stand The Test of Time</title>
+        <meta name="description" content="Professional brand identity and web design agency. We craft memorable brands that drive business growth. Logo design, brand strategy, and stunning websites." />
+        <meta name="keywords" content="brand design, logo design, web design, brand identity, graphic design, branding agency, creative agency, Ghana" />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://vistaforge.com/" />
+        <meta property="og:title" content="VistaForge - Professional Brand Design & Web Development" />
+        <meta property="og:description" content="We craft memorable brands that drive business growth. From strategic vision to stunning visuals, we create brands that connect and resonate." />
+        <meta property="og:image" content="https://vistaforge.com/og-image.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:site_name" content="VistaForge" />
+        <meta property="og:locale" content="en_US" />
+
+        {/* Twitter */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://vistaforge.com/" />
+        <meta property="twitter:title" content="VistaForge - Professional Brand Design & Web Development" />
+        <meta property="twitter:description" content="We craft memorable brands that drive business growth. From strategic vision to stunning visuals, we create brands that connect and resonate." />
+        <meta property="twitter:image" content="https://vistaforge.com/twitter-image.jpg" />
+
+        {/* Additional SEO meta tags */}
+        <meta name="robots" content="index, follow" />
+        <meta name="author" content="VistaForge" />
+        <meta name="language" content="English" />
+        <meta name="revisit-after" content="7 days" />
+
+        {/* Canonical URL */}
+        <link rel="canonical" href="https://vistaforge.com/" />
+
+        {/* Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify(organizationSchema)}
+        </script>
+      </Helmet>
       {/* Hero Section */}
       <section className="relative bg-[#0015AA] text-white py-16 px-4 sm:py-20 sm:px-6 lg:py-24 lg:px-8 overflow-hidden">
   {/* Subtle Background Shapes */}
