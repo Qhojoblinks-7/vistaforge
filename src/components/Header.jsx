@@ -24,7 +24,7 @@ const Header = () => {
         {/* Logo */}
         <div className="text-xl sm:text-2xl font-bold text-[#0015AA]">
           <img src={logo} alt="Vista Forge Logo" className="h-6 sm:h-8 inline-block mr-2" />
-          <Link to="/">Vista Forge</Link>
+          <Link to="/" aria-label="Vista Forge - Go to homepage">Vista Forge</Link>
         </div>
 
         {/* Desktop Navigation Links */}

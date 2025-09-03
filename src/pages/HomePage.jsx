@@ -34,7 +34,7 @@ const HomePage = () => {
   };
 
   return (
-    <main id="main-content">
+    <main className="bg-white" id="main-content">
       <Helmet>
         <title>VistaForge - We Build Brands That Stand The Test of Time</title>
         <meta name="description" content="Professional brand identity and web design agency. We craft memorable brands that drive business growth. Logo design, brand strategy, and stunning websites." />
@@ -268,7 +268,7 @@ const HomePage = () => {
     <div className="w-full max-w-sm relative z-10 transform -rotate-1 md:mr-48 hover:rotate-0 transition-transform duration-300 shadow-xl bg-gray-50 rounded-lg">
       <div className="process-card-spot"></div>
       <div className="bg-white p-6 rounded-lg fading-border-card relative">
-        <h3 className="absolute top-4 right-4 text-xl font-bold text-[#FBB03B]">01</h3>
+        <h3 className="absolute top-4 right-4 text-xl font-bold text-[#0015AA]">01</h3>
         <h4 className="text-2xl font-semibold text-[#0015AA] mt-2">Define</h4>
         <p className="mt-2 text-gray-600">
           We start by deeply understanding your brand, your audience, and your goals. This phase is all about research, strategy, and setting the foundation for success.
@@ -279,7 +279,7 @@ const HomePage = () => {
     <div className="w-full max-w-sm relative z-10 transform rotate-2 md:ml-48 hover:rotate-0 transition-transform duration-300 shadow-xl bg-gray-50 rounded-lg">
       <div className="process-card-spot"></div>
       <div className="bg-white p-6 rounded-lg fading-border-card">
-        <h3 className="absolute top-4 right-4 text-xl font-bold text-[#FBB03B]">02</h3>
+        <h3 className="absolute top-4 right-4 text-xl font-bold text-[#0015AA]">02</h3>
         <h4 className="text-2xl font-semibold text-[#0015AA] mt-2">Design</h4>
         <p className="mt-2 text-gray-600">
           This is where your vision takes shape. We create stunning visual identities, mockups, and prototypes that are not just beautiful but also strategic.
@@ -291,7 +291,7 @@ const HomePage = () => {
     <div className="w-full max-w-sm relative z-10 transform -rotate-1 md:mr-48 hover:rotate-0 transition-transform duration-300 shadow-xl bg-gray-50 rounded-lg">
       <div className="process-card-spot"></div>
       <div className="bg-white p-6 rounded-lg fading-border-card">
-        <h3 className="absolute top-4 right-4 text-xl font-bold text-[#FBB03B]">03</h3>
+        <h3 className="absolute top-4 right-4 text-xl font-bold text-[#0015AA]">03</h3>
         <h4 className="text-2xl font-semibold text-[#0015AA] mt-2">Build</h4>
         <p className="mt-2 text-gray-600">
           Our development team brings the design to life, building a fast, responsive, and secure digital presence that performs flawlessly across all devices.
@@ -303,7 +303,7 @@ const HomePage = () => {
     <div className="w-full max-w-sm relative z-10 transform rotate-2 md:ml-48 hover:rotate-0 transition-transform duration-300 shadow-xl bg-gray-50 rounded-lg">
       <div className="process-card-spot"></div>
       <div className="bg-white p-6 rounded-lg fading-border-card">
-        <h3 className="absolute top-4 right-4 text-xl font-bold text-[#FBB03B]">04</h3>
+        <h3 className="absolute top-4 right-4 text-xl font-bold text-[#0015AA]">04</h3>
         <h4 className="text-2xl font-semibold text-[#0015AA] mt-2">Launch</h4>
         <p className="mt-2 text-gray-600">
           The big moment! We carefully deploy your new brand and digital assets, and we continue to provide support and analytics to ensure your success.

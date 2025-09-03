@@ -151,7 +151,7 @@ const AboutUsPage = () => {
         </script>
       </Helmet>
       {/* 1. Hero Section - This section will be the same for both versions */}
-      <section className="relative bg-[#0015AA] text-white py-24 px-4 sm:px-6 lg:px-8 text-center overflow-hidden">
+      <section className="relative bg-[#0015AA] text-white py-16 px-4 sm:py-20 sm:px-6 lg:py-24 lg:px-8 overflow-hidden">
         {/* Subtle Background Shapes */}
         <div className="absolute top-0 left-0 w-full h-full">
           <div className="absolute -top-10 -right-10 w-64 h-64 bg-[#FBB03B] opacity-20 rounded-full animate-pulse-slow"></div>

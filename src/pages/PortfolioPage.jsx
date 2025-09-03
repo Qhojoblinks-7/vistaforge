@@ -269,7 +269,7 @@ const PortfolioPage = () => {
         </script>
       </Helmet>
       {/* Intro Section with Subtle Shapes */}
-      <section className="relative bg-white text-[#0015AA] py-24 px-4 sm:px-6 lg:px-8 text-center overflow-hidden">
+      <section className="relative bg-white text-[#0015AA] py-16 px-4 sm:py-20 sm:px-6 lg:py-24 lg:px-8 overflow-hidden">
         {/* Subtle Background Shapes */}
         <div className="absolute top-0 left-0 w-full h-full">
           {/* Large Blue Circle (top-left) */}
