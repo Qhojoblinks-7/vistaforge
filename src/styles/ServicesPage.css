@@ -1,0 +1,67 @@
+/* src/styles/ServicesPage.css */
+
+/* ... existing styles ... */
+
+.about-image-mask {
+  -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><defs><linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="%23fff"/><stop offset="100%" stop-color="%23fff"/></linearGradient></defs><path fill="url(%23gradient)" d="M 0 50 C 0 0, 50 0, 100 0 L 300 0 C 350 0, 400 0, 400 50 L 400 250 C 400 300, 350 300, 300 300 L 100 300 C 50 300, 0 300, 0 250 Z"/></svg>');
+  mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><defs><linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="%23fff"/><stop offset="100%" stop-color="%23fff"/></linearGradient></defs><path fill="url(%23gradient)" d="M 0 50 C 0 0, 50 0, 100 0 L 300 0 C 350 0, 400 0, 400 50 L 400 250 C 400 300, 350 300, 300 300 L 100 300 C 50 300, 0 300, 0 250 Z"/></svg>');
+  -webkit-mask-mode: alpha;
+  mask-mode: alpha;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  
+  /* We'll use a specific SVG for the mask image for the complex shape */
+  /* For simplicity, I'm using a simple rounded rectangle mask here. */
+  /* To get the exact shape you showed, you'd need to convert that shape to an SVG mask. */
+  /* Example SVG path for the desired "blob" shape would be more complex and usually created in a design tool. */
+  /* For demonstration, I'm using a placeholder SVG path that creates a rounded shape. */
+  /* You will replace this with your actual SVG mask for the exact "blob" shape. */
+  
+  /* The SVG for the mask in your image looks like a custom "blob" or organic shape. */
+  /* Creating that exact SVG path programmatically is complex. */
+  /* For now, I'll use a simpler SVG mask that creates a soft, rounded shape similar to an oval. */
+  /* You can replace the data URI below with a more complex SVG path representing your exact shape */
+  /* that you might export from a design tool like Figma or Illustrator. */
+  
+  mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg"><path fill="%23fff" d="M 100 0 C 140 0 170 10 200 50 C 200 90 180 140 140 150 C 100 160 30 140 0 100 C 0 60 60 10 100 0 Z"/></svg>');
+  -webkit-mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg"><path fill="%23fff" d="M 100 0 C 140 0 170 10 200 50 C 200 90 180 140 140 150 C 100 160 30 140 0 100 C 0 60 60 10 100 0 Z"/></svg>');
+  mask-size: cover;
+  -webkit-mask-size: cover;
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+}
+
+/* Custom CSS for the orange "blob" background around the number */
+.experience-blob-bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center the blob */
+  width: 150px; /* Adjust size as needed */
+  height: 150px; /* Adjust size as needed */
+  background: radial-gradient(circle at 30% 30%, #FBB03B 0%, #FFD700 80%, transparent 100%); /* Radial gradient for blob effect */
+  border-radius: 50%; /* Makes it a circle */
+  filter: blur(20px); /* Softens the edges of the blob */
+  opacity: 0.7; /* Make it slightly transparent */
+  z-index: -1; /* Place it behind the text */
+}
+
+.experience-circle {
+  position: absolute;
+  top: 20%; /* Adjust as per your design image */
+  left: 20%; /* Adjust as per your design image */
+  transform: translate(-50%, -50%); /* Center based on top/left percentage */
+  background-color: white;
+  border-radius: 50%;
+  width: 140px; /* Size of the circle */
+  height: 140px; /* Size of the circle */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  z-index: 20; /* Ensure it's above the image */
+  text-align: center;
+}

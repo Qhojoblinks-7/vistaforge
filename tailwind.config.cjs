@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-export default {
+module.exports = {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -9,7 +9,7 @@ export default {
       colors: {
         'brand-blue': '#0015AA',
         'brand-orange': '#FBB03B',
-        'white': '#FFFFFF',
+        'white': '#FFFFFF', // It's good practice to define core colors
       },
     },
   },
