@@ -7,7 +7,7 @@ import hero3 from '../assets/hero3.jpeg';
 
 const HomePage = () => {
   return (
-    <main>
+    <main id="main-content">
       {/* Hero Section */}
       <section className="relative bg-[#0015AA] text-white py-16 px-4 sm:py-20 sm:px-6 lg:py-24 lg:px-8 overflow-hidden">
   {/* Subtle Background Shapes */}
@@ -34,13 +34,15 @@ const HomePage = () => {
         <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center md:justify-start">
           <button
             onClick={() => window.location.href = '/contact'}
-            className="px-6 sm:px-8 py-3 bg-[#FBB03B] text-white font-semibold rounded-md hover:bg-opacity-90 transition-colors text-sm sm:text-base"
+            className="px-6 sm:px-8 py-3 bg-[#FBB03B] text-white font-semibold rounded-md hover:bg-opacity-90 transition-colors focus:outline-none focus:ring-2 focus:ring-[#FBB03B] focus:ring-offset-2 focus:ring-offset-[#0015AA] text-sm sm:text-base"
+            aria-label="Start your brand journey - Contact us for a consultation"
           >
             Start My Brand Journey
           </button>
           <button
             onClick={() => window.location.href = '/portfolio'}
-            className="px-6 sm:px-8 py-3 text-white font-semibold rounded-md border-2 border-white hover:bg-white hover:text-[#0015AA] transition-colors text-sm sm:text-base"
+            className="px-6 sm:px-8 py-3 text-white font-semibold rounded-md border-2 border-white hover:bg-white hover:text-[#0015AA] transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#0015AA] text-sm sm:text-base"
+            aria-label="View our portfolio of work"
           >
             View Our Work
           </button>

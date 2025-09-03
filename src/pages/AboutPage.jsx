@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSpring, animated } from 'react-spring';
+import { useSpring } from 'react-spring';
 import { useInView } from 'react-intersection-observer';
 import { Link } from 'react-router-dom';
 import { BsLightbulbFill, BsGem, BsGraphUp, BsAwardFill } from 'react-icons/bs';
@@ -35,12 +35,45 @@ const AboutUsPage = () => {
     delay: 200,
   });
 
-  // Timeline animations
+  // Timeline animations - moved hooks to top level
+  const [timelineRef1, timelineInView1] = useInView({ triggerOnce: true, threshold: 0.5 });
+  const [timelineRef2, timelineInView2] = useInView({ triggerOnce: true, threshold: 0.5 });
+  const [timelineRef3, timelineInView3] = useInView({ triggerOnce: true, threshold: 0.5 });
+  const [timelineRef4, timelineInView4] = useInView({ triggerOnce: true, threshold: 0.5 });
+
+  const timelineProps1 = useSpring({
+    opacity: timelineInView1 ? 1 : 0,
+    transform: timelineInView1 ? 'translateY(0px)' : 'translateY(30px)',
+    delay: 100,
+    config: { tension: 120, friction: 14 }
+  });
+
+  const timelineProps2 = useSpring({
+    opacity: timelineInView2 ? 1 : 0,
+    transform: timelineInView2 ? 'translateY(0px)' : 'translateY(30px)',
+    delay: 200,
+    config: { tension: 120, friction: 14 }
+  });
+
+  const timelineProps3 = useSpring({
+    opacity: timelineInView3 ? 1 : 0,
+    transform: timelineInView3 ? 'translateY(0px)' : 'translateY(30px)',
+    delay: 300,
+    config: { tension: 120, friction: 14 }
+  });
+
+  const timelineProps4 = useSpring({
+    opacity: timelineInView4 ? 1 : 0,
+    transform: timelineInView4 ? 'translateY(0px)' : 'translateY(30px)',
+    delay: 400,
+    config: { tension: 120, friction: 14 }
+  });
+
   const timelineSteps = [
-    { year: "2025", title: "VistaForge Founded", description: "A vision to redefine African branding and digital presence began in Accra, Ghana." },
-    { year: "2026", title: "First Major Project & Portfolio Showcase", description: "Successfully delivered impactful branding for a local startup, marking our first step onto the digital stage." },
-    { year: "2027", title: "Expanding to Global Clients", description: "Our reputation grew, attracting international clients seeking our unique blend of creativity and strategic insight." },
-    { year: "Present", title: "Innovating for the Future", description: "Continuously evolving our services, embracing new technologies, and setting new benchmarks in creative excellence." },
+    { year: "2025", title: "VistaForge Founded", description: "A vision to redefine African branding and digital presence began in Accra, Ghana.", ref: timelineRef1, props: timelineProps1 },
+    { year: "2026", title: "First Major Project & Portfolio Showcase", description: "Successfully delivered impactful branding for a local startup, marking our first step onto the digital stage.", ref: timelineRef2, props: timelineProps2 },
+    { year: "2027", title: "Expanding to Global Clients", description: "Our reputation grew, attracting international clients seeking our unique blend of creativity and strategic insight.", ref: timelineRef3, props: timelineProps3 },
+    { year: "Present", title: "Innovating for the Future", description: "Continuously evolving our services, embracing new technologies, and setting new benchmarks in creative excellence.", ref: timelineRef4, props: timelineProps4 },
   ];
 
   // Core values animations
@@ -62,7 +95,7 @@ const AboutUsPage = () => {
   });
 
   return (
-    <main className="bg-white text-gray-800 font-poppins">
+    <main className="bg-white text-gray-800 font-poppins" id="main-content">
       {/* 1. Hero Section - This section will be the same for both versions */}
       <section className="relative bg-[#0015AA] text-white py-24 px-4 sm:px-6 lg:px-8 text-center overflow-hidden">
         {/* Subtle Background Shapes */}
@@ -127,18 +160,10 @@ const AboutUsPage = () => {
               <div className="absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-[#0015AA]"></div>
 
               {timelineSteps.map((step, index) => {
-                const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.5 });
-                const timelineProps = useSpring({
-                  opacity: inView ? 1 : 0,
-                  transform: inView ? 'translateY(0px)' : 'translateY(30px)',
-                  delay: 100 * index,
-                  config: { tension: 120, friction: 14 }
-                });
-
                 const isEven = index % 2 === 0;
 
                 return (
-                  <animated.div ref={ref} style={timelineProps} key={index} className={`mb-12 flex items-center w-full ${isEven ? 'md:flex-row-reverse' : 'md:flex-row'}`}>
+                  <animated.div ref={step.ref} style={step.props} key={index} className={`mb-12 flex items-center w-full ${isEven ? 'md:flex-row-reverse' : 'md:flex-row'}`}>
                     <div className="w-full md:w-1/2 flex justify-center">
                       <div className={`timeline-dot absolute w-6 h-6 rounded-full bg-[#FBB03B] border-4 border-white ${isEven ? 'md:left-1/2 md:-ml-3' : 'md:left-1/2 md:-ml-3'} top-1/2 transform -translate-y-1/2`}></div>
                       <div className={`p-6 bg-white rounded-lg shadow-lg max-w-md w-full relative ${isEven ? 'md:mr-auto md:text-left md:pr-12' : 'md:ml-auto md:text-right md:pl-12'} text-center`}>

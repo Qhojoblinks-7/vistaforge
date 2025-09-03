@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSpring, animated } from 'react-spring';
+import { useSpring } from 'react-spring';
 import { BsArrowRight } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 
@@ -96,8 +96,124 @@ const PROJECTS = [
 ];
 
 const PortfolioPage = () => {
+  // Create separate state for each project to avoid hooks in callbacks
+  const [isHovered0, setIsHovered0] = useState(false);
+  const [isExpanded0, setIsExpanded0] = useState(false);
+  const [isHovered1, setIsHovered1] = useState(false);
+  const [isExpanded1, setIsExpanded1] = useState(false);
+  const [isHovered2, setIsHovered2] = useState(false);
+  const [isExpanded2, setIsExpanded2] = useState(false);
+  const [isHovered3, setIsHovered3] = useState(false);
+  const [isExpanded3, setIsExpanded3] = useState(false);
+  const [isHovered4, setIsHovered4] = useState(false);
+  const [isExpanded4, setIsExpanded4] = useState(false);
+
+  const setHoverStates = [setIsHovered0, setIsHovered1, setIsHovered2, setIsHovered3, setIsHovered4];
+  const expandedStates = [isExpanded0, isExpanded1, isExpanded2, isExpanded3, isExpanded4];
+  const setExpandedStates = [setIsExpanded0, setIsExpanded1, setIsExpanded2, setIsExpanded3, setIsExpanded4];
+
+  // Create separate animation configurations for each project
+  const hoverPanel0 = useSpring({
+    opacity: isHovered0 ? 1 : 0,
+    height: isHovered0 ? "auto" : 0,
+    overflow: 'hidden',
+    config: { tension: 200, friction: 20 }
+  });
+  const expandedPanel0 = useSpring({
+    opacity: isExpanded0 ? 1 : 0,
+    height: isExpanded0 ? "auto" : 0,
+    overflow: 'hidden',
+    config: { tension: 200, friction: 20 }
+  });
+  const fadeIn0 = useSpring({
+    from: { opacity: 0, transform: 'translateY(50px)' },
+    to: { opacity: 1, transform: 'translateY(0)' },
+    delay: 200,
+    config: { tension: 120, friction: 14 }
+  });
+
+  const hoverPanel1 = useSpring({
+    opacity: isHovered1 ? 1 : 0,
+    height: isHovered1 ? "auto" : 0,
+    overflow: 'hidden',
+    config: { tension: 200, friction: 20 }
+  });
+  const expandedPanel1 = useSpring({
+    opacity: isExpanded1 ? 1 : 0,
+    height: isExpanded1 ? "auto" : 0,
+    overflow: 'hidden',
+    config: { tension: 200, friction: 20 }
+  });
+  const fadeIn1 = useSpring({
+    from: { opacity: 0, transform: 'translateY(50px)' },
+    to: { opacity: 1, transform: 'translateY(0)' },
+    delay: 300,
+    config: { tension: 120, friction: 14 }
+  });
+
+  const hoverPanel2 = useSpring({
+    opacity: isHovered2 ? 1 : 0,
+    height: isHovered2 ? "auto" : 0,
+    overflow: 'hidden',
+    config: { tension: 200, friction: 20 }
+  });
+  const expandedPanel2 = useSpring({
+    opacity: isExpanded2 ? 1 : 0,
+    height: isExpanded2 ? "auto" : 0,
+    overflow: 'hidden',
+    config: { tension: 200, friction: 20 }
+  });
+  const fadeIn2 = useSpring({
+    from: { opacity: 0, transform: 'translateY(50px)' },
+    to: { opacity: 1, transform: 'translateY(0)' },
+    delay: 400,
+    config: { tension: 120, friction: 14 }
+  });
+
+  const hoverPanel3 = useSpring({
+    opacity: isHovered3 ? 1 : 0,
+    height: isHovered3 ? "auto" : 0,
+    overflow: 'hidden',
+    config: { tension: 200, friction: 20 }
+  });
+  const expandedPanel3 = useSpring({
+    opacity: isExpanded3 ? 1 : 0,
+    height: isExpanded3 ? "auto" : 0,
+    overflow: 'hidden',
+    config: { tension: 200, friction: 20 }
+  });
+  const fadeIn3 = useSpring({
+    from: { opacity: 0, transform: 'translateY(50px)' },
+    to: { opacity: 1, transform: 'translateY(0)' },
+    delay: 500,
+    config: { tension: 120, friction: 14 }
+  });
+
+  const hoverPanel4 = useSpring({
+    opacity: isHovered4 ? 1 : 0,
+    height: isHovered4 ? "auto" : 0,
+    overflow: 'hidden',
+    config: { tension: 200, friction: 20 }
+  });
+  const expandedPanel4 = useSpring({
+    opacity: isExpanded4 ? 1 : 0,
+    height: isExpanded4 ? "auto" : 0,
+    overflow: 'hidden',
+    config: { tension: 200, friction: 20 }
+  });
+  const fadeIn4 = useSpring({
+    from: { opacity: 0, transform: 'translateY(50px)' },
+    to: { opacity: 1, transform: 'translateY(0)' },
+    delay: 600,
+    config: { tension: 120, friction: 14 }
+  });
+
+  const hoverPanels = [hoverPanel0, hoverPanel1, hoverPanel2, hoverPanel3, hoverPanel4];
+  const expandedPanels = [expandedPanel0, expandedPanel1, expandedPanel2, expandedPanel3, expandedPanel4];
+  const fadeIns = [fadeIn0, fadeIn1, fadeIn2, fadeIn3, fadeIn4];
+
   return (
-    <main className="bg-white">
+    <main className="bg-white" id="main-content">
       {/* Intro Section with Subtle Shapes */}
       <section className="relative bg-white text-[#0015AA] py-24 px-4 sm:px-6 lg:px-8 text-center overflow-hidden">
         {/* Subtle Background Shapes */}
@@ -124,33 +240,16 @@ const PortfolioPage = () => {
       <section className="py-12 px-4 sm:px-6 lg:px-8">
         <div className="container mx-auto space-y-24">
           {PROJECTS.map((project, index) => {
-            const [isHovered, setIsHovered] = useState(false);
-            const [isExpanded, setIsExpanded] = useState(false);
             const isOdd = index % 2 !== 0;
 
-            // Animation for the initial hover panel (Challenge & Solution)
-            const hoverPanel = useSpring({
-              opacity: isHovered ? 1 : 0,
-              height: isHovered ? "auto" : 0,
-              overflow: 'hidden',
-              config: { tension: 200, friction: 20 }
-            });
+            // Use state arrays for hover and expanded states
+            const setIsHovered = setHoverStates[index];
+            const [isExpanded, setIsExpanded] = [expandedStates[index], setExpandedStates[index]];
 
-            // Animation for the full case study reveal
-            const expandedPanel = useSpring({
-              opacity: isExpanded ? 1 : 0,
-              height: isExpanded ? "auto" : 0,
-              overflow: 'hidden',
-              config: { tension: 200, friction: 20 }
-            });
-
-            // Initial fade-in animation for the project card
-            const fadeIn = useSpring({
-                from: { opacity: 0, transform: 'translateY(50px)' },
-                to: { opacity: 1, transform: 'translateY(0)' },
-                delay: 200 + index * 100,
-                config: { tension: 120, friction: 14 }
-            });
+            // Use pre-defined animation configurations
+            const hoverPanel = hoverPanels[index];
+            const expandedPanel = expandedPanels[index];
+            const fadeIn = fadeIns[index];
 
             return (
               <animated.div

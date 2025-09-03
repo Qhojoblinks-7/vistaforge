@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { useSpring,animated } from 'react-spring';
+import { useSpring } from 'react-spring';
 import { BsArrowRight, BsEnvelope, BsPhone, BsPinMap } from 'react-icons/bs';
 
 const ContactPage = () => {
@@ -59,7 +59,7 @@ const ContactPage = () => {
   };
 
   return (
-    <main className="bg-white text-[#0015AA] font-poppins">
+    <main className="bg-white text-[#0015AA] font-poppins" id="main-content">
       {/* Header Section with Subtle Shapes */}
       <section className="relative bg-[#0015AA] text-white py-24 px-4 sm:px-6 lg:px-8 text-center font-montserrat overflow-hidden">
         {/* Subtle Background Shapes */}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSpring, animated } from 'react-spring';
+import { useSpring} from 'react-spring';
 import { BsPen, BsStack, BsLaptop, BsBarChart, BsPhone, BsTools, BsCashStack, BsBriefcase, BsRocket } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import aboutImage from '../assets/hero3.jpeg';
@@ -14,7 +14,7 @@ const ServicesPage = () => {
   });
 
   return (
-    <main className="bg-white">
+    <main className="bg-white" id="main-content">
       {/* Hero Section with Subtle Shapes */}
       <section className="relative bg-[#0015AA] text-white py-24 px-4 sm:px-6 lg:px-8 text-center overflow-hidden">
         {/* Subtle Background Shapes */}

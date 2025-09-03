@@ -11,8 +11,16 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-white shadow-md sticky top-0 z-50">
-      <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
+    <header className="bg-white shadow-md sticky top-0 z-50" role="banner">
+      {/* Skip to main content link */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-[#0015AA] text-white px-4 py-2 rounded-md z-50"
+      >
+        Skip to main content
+      </a>
+
+      <nav className="container mx-auto px-4 py-4 flex items-center justify-between" role="navigation" aria-label="Main navigation">
         {/* Logo */}
         <div className="text-xl sm:text-2xl font-bold text-[#0015AA]">
           <img src={logo} alt="Vista Forge Logo" className="h-6 sm:h-8 inline-block mr-2" />
