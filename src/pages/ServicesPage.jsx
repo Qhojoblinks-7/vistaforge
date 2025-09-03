@@ -87,7 +87,7 @@ const ServicesPage = () => {
         </script>
       </Helmet>
       {/* Hero Section with Subtle Shapes */}
-      <section className="relative bg-[#0015AA] text-white py-16 px-4 sm:py-20 sm:px-6 lg:py-24 lg:px-8 overflow-hidden">
+      <section className="relative bg-[#0015AA] text-white py-16 px-4 sm:py-20 sm:px-6 lg:py-24 lg:px-8 text-center overflow-hidden">
         {/* Subtle Background Shapes */}
         <div className="absolute top-0 left-0 w-full h-full">
           {/* Large Yellow Circle (top-left) */}
