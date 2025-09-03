@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { useSpring } from 'react-spring';
+import { useSpring, animated } from 'react-spring';
 import { BsArrowRight, BsEnvelope, BsPhone, BsPinMap } from 'react-icons/bs';
 
 const ContactPage = () => {

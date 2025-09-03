@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSpring } from 'react-spring';
+import { useSpring, animated } from 'react-spring';
 import { useInView } from 'react-intersection-observer';
 import { Link } from 'react-router-dom';
 import { BsLightbulbFill, BsGem, BsGraphUp, BsAwardFill } from 'react-icons/bs';

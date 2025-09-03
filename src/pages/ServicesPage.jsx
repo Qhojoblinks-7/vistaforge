@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSpring} from 'react-spring';
+import { useSpring,animated} from 'react-spring';
 import { BsPen, BsStack, BsLaptop, BsBarChart, BsPhone, BsTools, BsCashStack, BsBriefcase, BsRocket } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import aboutImage from '../assets/hero3.jpeg';

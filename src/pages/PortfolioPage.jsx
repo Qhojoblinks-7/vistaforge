@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSpring } from 'react-spring';
+import { useSpring, animated } from 'react-spring';
 import { BsArrowRight } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 
