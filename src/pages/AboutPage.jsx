@@ -73,7 +73,7 @@ const AboutUsPage = () => {
   const timelineSteps = [
     { year: "2025", title: "VistaForge Founded", description: "A vision to redefine African branding and digital presence began in Accra, Ghana.", ref: timelineRef1, props: timelineProps1 },
     { year: "2026", title: "First Major Project & Portfolio Showcase", description: "Successfully delivered impactful branding for a local startup, marking our first step onto the digital stage.", ref: timelineRef2, props: timelineProps2 },
-    { year: "2027", title: "Expanding to Global Clients", description: "Our reputation grew, attracting international clients seeking our unique blend of creativity and strategic insight.", ref: timelineRef3, props: timelineProps3 },
+    { year: "2027", title: "Expanding to Global Clients", description: "Our reputation will continue to graw, attracting international clients seeking our unique blend of creativity and strategic insight.", ref: timelineRef3, props: timelineProps3 },
     { year: "Present", title: "Innovating for the Future", description: "Continuously evolving our services, embracing new technologies, and setting new benchmarks in creative excellence.", ref: timelineRef4, props: timelineProps4 },
   ];
 
@@ -188,7 +188,7 @@ const AboutUsPage = () => {
                 <BsGraphUp className="text-[#FBB03B] text-5xl mx-auto mb-4" />
                 <h3 className="text-2xl font-semibold font-montserrat text-[#0015AA]">Our Mission</h3>
                 <p className="mt-4 text-lg text-gray-700">
-                  To empower African and global businesses with innovative branding and digital solutions that inspire trust and growth.
+                  VistaForge is committed to forging brands that are more than visuals, we build stories, systems, and platforms that inspire trust, drive growth, and create lasting impressions..
                 </p>
               </div>
               {/* Vision Block */}
@@ -196,7 +196,7 @@ const AboutUsPage = () => {
                 <BsLightbulbFill className="text-[#0015AA] text-5xl mx-auto mb-4" />
                 <h3 className="text-2xl font-semibold font-montserrat text-[#0015AA]">Our Vision</h3>
                 <p className="mt-4 text-lg text-gray-700">
-                  To be Africa's most trusted creative agency, building brands that stand tall on the world stage.
+                  To redefine how businesses in Africa grow by making world-class branding and digital experiences accessible to every entrepreneur.
                 </p>
               </div>
             </div>

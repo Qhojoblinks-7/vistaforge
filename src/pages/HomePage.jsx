@@ -261,20 +261,25 @@ const HomePage = () => {
           <div className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 angled-border-card">
             <h3 className="text-2xl font-semibold text-[#0015AA] mt-2">Expertise & Experience</h3>
             <p className="mt-2 text-gray-600">
-              With a decade of experience and a portfolio of over 150 successful projects, we bring a level of expertise that guarantees results and peace of mind.
+              At VistaForge, we combine design and technology to create modern, scalable brands and websites. Our work draws on real-world tools like Illustrator, Photoshop, Figma, and React to deliver results that are both creative and functional.
             </p>
           </div>
           <div className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 angled-border-card">
             <h3 className="text-2xl font-semibold text-[#0015AA] mt-2">Strategic Vision</h3>
             <p className="mt-2 text-gray-600">
-              We're not just designers; we're problem solvers. We start with a deep dive into your business to build a brand that's not just beautiful, but also smart.
+              Every project begins with understanding your goals and audience. We don’t just design; we solve problems by crafting identities and digital experiences that are clear, consistent, and built to grow with your business.
             </p>
           </div>
           <div className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 angled-border-card">
-            <h3 className="text-2xl font-semibold text-[#0015AA] mt-2">Proven Results</h3>
-            <p className="mt-2 text-gray-600">
-              Our commitment to your success is reflected in our 98% client satisfaction rate. We don’t rest until you're thrilled with the outcome.
-            </p>
+            <h3 className="text-2xl font-semibold text-[#0015AA] mt-2">Proven Process</h3>
+            <h5 className="mt-2 font-semibold text-gray-600">We believe in transparency and collaboration. Clients receive:</h5>
+            <ul className="list-disc list-inside mt-2 text-gray-600 space-y-1">
+              <li className="text-gray-600">Clear timelines and milestones</li>
+              <li className="text-gray-600">Regular updates and feedback loops</li>
+              <li className="text-gray-600">Defined pricing packages no hidden costs</li>
+              <li className="text-gray-600">A dedicated team invested in your success</li>
+              <li className="text-gray-600">Final delivery of brand assets and websites</li>
+            </ul>
           </div>
         </div>
       </section>

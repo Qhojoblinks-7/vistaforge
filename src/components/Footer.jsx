@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
+import { FaFacebook, FaInstagram, FaLinkedin } from 'react-icons/fa';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXTwitter, faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import Logo from '../assets/footer_logo.svg';
 
 const Footer = () => {
@@ -11,7 +13,7 @@ const Footer = () => {
         {/* Column 1: Brand Info */}
         <div className="sm:col-span-2 md:col-span-1 flex flex-col items-center md:items-start">
           <div className="text-xl sm:text-2xl font-bold text-white mb-2">
-            <Link to="/" aria-label="Vista Forge - Go to homepage" className="focus:outline-none focus:ring-2 focus:ring-[#FBB03B] focus:ring-offset-2 focus:ring-offset-[#1C2331]">
+            <Link to="/" aria-label="Vista Forge - Go to homepage" className="focus:outline-none   focus:ring-offset-2 focus:ring-offset-[#1C2331]">
               <img src={Logo} alt="Vista Forge Logo" className="h-6 sm:h-8 inline-block mr-2" />
               <span className="sm:not-sr-only">Vista Forge</span>
             </Link>
@@ -21,17 +23,20 @@ const Footer = () => {
             Creating memorable brand identities that drive business growth.
           </p>
           <div className="flex space-x-4">
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-[#FBB03B] transition-colors focus:outline-none focus:ring-2 focus:ring-[#FBB03B] focus:ring-offset-2 focus:ring-offset-[#1C2331]" aria-label="Facebook">
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-[#FBB03B] transition-colors focus:outline-none   focus:ring-offset-2 focus:ring-offset-[#1C2331]" aria-label="Facebook">
               <FaFacebook size={20} />
             </a>
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-[#FBB03B] transition-colors focus:outline-none focus:ring-2 focus:ring-[#FBB03B] focus:ring-offset-2 focus:ring-offset-[#1C2331]" aria-label="Twitter">
-              <FaTwitter size={20} />
+            <a href="https://x.com/vista_forge" target="_blank" rel="noopener noreferrer" className="hover:text-[#FBB03B] transition-colors focus:outline-none   focus:ring-offset-2 focus:ring-offset-[#1C2331]" aria-label="Twitter">
+              <FontAwesomeIcon icon={faXTwitter} size="lg" />
             </a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-[#FBB03B] transition-colors focus:outline-none focus:ring-2 focus:ring-[#FBB03B] focus:ring-offset-2 focus:ring-offset-[#1C2331]" aria-label="Instagram">
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-[#FBB03B] transition-colors focus:outline-none   focus:ring-offset-2 focus:ring-offset-[#1C2331]" aria-label="Instagram">
               <FaInstagram size={20} />
             </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-[#FBB03B] transition-colors focus:outline-none focus:ring-2 focus:ring-[#FBB03B] focus:ring-offset-2 focus:ring-offset-[#1C2331]" aria-label="LinkedIn">
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-[#FBB03B] transition-colors focus:outline-none   focus:ring-offset-2 focus:ring-offset-[#1C2331]" aria-label="LinkedIn">
               <FaLinkedin size={20} />
+            </a>
+            <a href="https://wa.me/+233592558160" target="_blank" rel="noopener noreferrer" className="hover:text-[#FBB03B] transition-colors focus:outline-none   focus:ring-offset-2 focus:ring-offset-[#1C2331]" aria-label="WhatsApp">
+              <FontAwesomeIcon icon={faWhatsapp} size="lg" />
             </a>
           </div>
         </div>
@@ -40,10 +45,10 @@ const Footer = () => {
         <div>
           <h4 className="text-base sm:text-lg font-semibold text-white mb-4">Services</h4>
           <ul className="space-y-2 text-sm" role="list">
-            <li><Link to="/services" className="hover:text-[#FBB03B] transition-colors focus:outline-none focus:ring-2 focus:ring-[#FBB03B] focus:ring-offset-2 focus:ring-offset-[#1C2331]">Logo Design</Link></li>
-            <li><Link to="/services" className="hover:text-[#FBB03B] transition-colors focus:outline-none focus:ring-2 focus:ring-[#FBB03B] focus:ring-offset-2 focus:ring-offset-[#1C2331]">Brand Identity</Link></li>
-            <li><Link to="/services" className="hover:text-[#FBB03B] transition-colors focus:outline-none focus:ring-2 focus:ring-[#FBB03B] focus:ring-offset-2 focus:ring-offset-[#1C2331]">Web Design</Link></li>
-            <li><Link to="/services" className="hover:text-[#FBB03B] transition-colors focus:outline-none focus:ring-2 focus:ring-[#FBB03B] focus:ring-offset-2 focus:ring-offset-[#1C2331]">Print Design</Link></li>
+            <li><Link to="/services" className="hover:text-[#FBB03B] transition-colors focus:outline-none   focus:ring-offset-2 focus:ring-offset-[#1C2331]">Logo Design</Link></li>
+            <li><Link to="/services" className="hover:text-[#FBB03B] transition-colors focus:outline-none   focus:ring-offset-2 focus:ring-offset-[#1C2331]">Brand Identity</Link></li>
+            <li><Link to="/services" className="hover:text-[#FBB03B] transition-colors focus:outline-none   focus:ring-offset-2 focus:ring-offset-[#1C2331]">Web Design</Link></li>
+            <li><Link to="/services" className="hover:text-[#FBB03B] transition-colors focus:outline-none   focus:ring-offset-2 focus:ring-offset-[#1C2331]">Print Design</Link></li>
           </ul>
         </div>
 
@@ -51,10 +56,10 @@ const Footer = () => {
         <div>
           <h4 className="text-base sm:text-lg font-semibold text-white mb-4">Company</h4>
           <ul className="space-y-2 text-sm" role="list">
-            <li><Link to="/about" className="hover:text-[#FBB03B] transition-colors focus:outline-none focus:ring-2 focus:ring-[#FBB03B] focus:ring-offset-2 focus:ring-offset-[#1C2331]">About Us</Link></li>
-            <li><Link to="/portfolio" className="hover:text-[#FBB03B] transition-colors focus:outline-none focus:ring-2 focus:ring-[#FBB03B] focus:ring-offset-2 focus:ring-offset-[#1C2331]">Portfolio</Link></li>
-            <li><Link to="/about" className="hover:text-[#FBB03B] transition-colors focus:outline-none focus:ring-2 focus:ring-[#FBB03B] focus:ring-offset-2 focus:ring-offset-[#1C2331]">Testimonials</Link></li>
-            <li><Link to="/contact" className="hover:text-[#FBB03B] transition-colors focus:outline-none focus:ring-2 focus:ring-[#FBB03B] focus:ring-offset-2 focus:ring-offset-[#1C2331]">Contact</Link></li>
+            <li><Link to="/about" className="hover:text-[#FBB03B] transition-colors focus:outline-none   focus:ring-offset-2 focus:ring-offset-[#1C2331]">About Us</Link></li>
+            <li><Link to="/portfolio" className="hover:text-[#FBB03B] transition-colors focus:outline-none   focus:ring-offset-2 focus:ring-offset-[#1C2331]">Portfolio</Link></li>
+            <li><Link to="/about" className="hover:text-[#FBB03B] transition-colors focus:outline-none   focus:ring-offset-2 focus:ring-offset-[#1C2331]">Testimonials</Link></li>
+            <li><Link to="/contact" className="hover:text-[#FBB03B] transition-colors focus:outline-none   focus:ring-offset-2 focus:ring-offset-[#1C2331]">Contact</Link></li>
           </ul>
         </div>
 
@@ -62,7 +67,7 @@ const Footer = () => {
         <div>
           <h4 className="text-base sm:text-lg font-semibold text-white mb-4">Contact Info</h4>
           <ul className="space-y-2 text-sm" role="list">
-            <li><a href="mailto:hello@vistaforge.com" className="hover:text-[#FBB03B] transition-colors break-all focus:outline-none focus:ring-2 focus:ring-[#FBB03B] focus:ring-offset-2 focus:ring-offset-[#1C2331]">hello@vistaforge.com</a></li>
+            <li><a href="mailto:hello@vistaforge.com" className="hover:text-[#FBB03B] transition-colors break-all focus:outline-none   focus:ring-offset-2 focus:ring-offset-[#1C2331]">hello@vistaforge.com</a></li>
             <li>(555) 123-4567</li>
             <li>123 Design St, Creative City</li>
           </ul>
