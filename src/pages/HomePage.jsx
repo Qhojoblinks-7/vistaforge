@@ -8,7 +8,7 @@ import '../styles/HeroAnimation.css'
 
 // Reusable component for service cards
 const ServiceCard = ({ icon: Icon, title, description }) => (
-  <div className="bg-white p-6 sm:p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+  <div className="bg-white p-6 sm:p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:scale-105 transition-transform duration-300">
     <div className="flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-[#0015AA] text-white mx-auto">
       <Icon size={24} className="sm:w-8 sm:h-8" />
     </div>
@@ -21,7 +21,7 @@ const ServiceCard = ({ icon: Icon, title, description }) => (
 
 // Reusable component for process steps
 const ProcessStep = ({ number, title, description, className = '' }) => (
-  <div className={`w-full max-w-sm relative z-10 shadow-xl bg-gray-50 rounded-lg transform ${className} transition-transform duration-300 hover:rotate-0`}>
+  <div className={`w-full max-w-sm relative z-10 shadow-xl hover:shadow-2xl transition-shadow duration-300 bg-gray-50 rounded-lg transform ${className} transition-transform duration-300 hover:rotate-0 hover:scale-105`}>
     <div className="bg-white p-6 rounded-lg fading-border-card relative">
       <h3 className="absolute top-4 right-4 text-xl font-bold text-[#0015AA]">{`0${number}`}</h3>
       <h4 className="text-2xl font-semibold text-[#0015AA] mt-2">{title}</h4>
@@ -258,7 +258,7 @@ const HomePage = () => {
           </p>
         </div>
         <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-          <div className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 angled-border-card">
+          <div className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 angled-border-card transform hover:scale-105 transition-transform duration-300">
             <h3 className="text-2xl font-semibold text-[#0015AA] mt-2">Expertise & Experience</h3>
             <p className="mt-2 text-gray-600">
               At VistaForge, we combine design and technology to create modern, scalable brands and websites. Our work draws on real-world tools like Illustrator, Photoshop, Figma, and React to deliver results that are both creative and functional.
@@ -285,8 +285,18 @@ const HomePage = () => {
       </section>
 
       {/* Call to Action Section */}
-      <section className="bg-[#0015AA] text-white py-20 px-4 sm:px-6 lg:px-8 text-center">
-        <div className="container mx-auto">
+      <section className="relative bg-[#0015AA] text-white py-20 px-4 sm:px-6 lg:px-8 text-center overflow-hidden">
+        {/* Background Designs */}
+        <div className="absolute top-0 left-0 w-full h-full">
+          <div className="absolute -top-10 -right-10 w-48 h-48 bg-[#FBB03B] opacity-20 rounded-full animate-pulse-slow"></div>
+          <div className="absolute bottom-0 left-0 w-32 h-32 bg-blue-700 opacity-15 rotate-45 animate-spin-slow"></div>
+          <div className="absolute top-1/2 right-1/4 w-16 h-16 bg-white opacity-10 rounded-full animate-bounce-slow"></div>
+          <svg className="absolute bottom-0 right-0 w-64 h-64 opacity-5" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M100 0 C150 50, 200 100, 100 200 C0 100, 50 50, 100 0" stroke="#FBB03B" strokeWidth="1" fill="none"/>
+          </svg>
+        </div>
+
+        <div className="container mx-auto relative z-10">
           <h2 className="text-4xl font-bold">Ready to Transform Your Brand?</h2>
           <p className="mt-4 text-xl max-w-2xl mx-auto">
             Let's build something remarkable together. We’re excited to hear about your vision.

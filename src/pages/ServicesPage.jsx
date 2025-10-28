@@ -127,10 +127,23 @@ const ServicesPage = () => {
 
         {/* Service 1: Brand Strategy & Positioning */}
         <animated.div style={serviceSpring}>
-          <div className="container mx-auto flex flex-col md:flex-row items-center gap-12 py-16">
-            <div className="md:w-1/2">
-              <div className="w-full h-80 rounded-lg bg-gray-200 flex items-center justify-center">
-                <BsStack size={80} className="text-gray-400" />
+          <div className="container mx-auto flex flex-col lg:flex-row items-center gap-12 py-16">
+            <div className="w-full lg:w-1/2">
+              <div className="relative w-full h-80 rounded-xl overflow-hidden shadow-xl transform hover:scale-105 transition-transform duration-300">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#0015AA] to-[#003366] opacity-90"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                <div className="relative h-full flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="w-24 h-24 bg-[#FBB03B] rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                      <BsStack size={40} className="text-[#0015AA]" />
+                    </div>
+                    <h3 className="text-white text-xl font-bold mb-2">Strategy</h3>
+                    <p className="text-gray-200 text-sm">Building Foundations</p>
+                  </div>
+                </div>
+                <div className="absolute top-4 right-4 w-12 h-12 bg-white/10 rounded-full flex items-center justify-center">
+                  <span className="text-white font-bold text-lg">1</span>
+                </div>
               </div>
             </div>
             <div className="md:w-1/2">
@@ -138,7 +151,7 @@ const ServicesPage = () => {
               <p className="mt-4 text-lg text-gray-700">
                 Before any design begins, we dive deep into your business—market research, competitor analysis, and crafting your brand story, mission, and values. This becomes your strategic blueprint, ensuring your brand isn’t just visually appealing but also cohesive and resonant with your audience.
               </p>
-              <div className="bg-gray-100 p-6 rounded-lg mt-6 shadow-sm">
+              <div className="bg-gray-100 p-6 rounded-lg mt-6 shadow-sm hover:shadow-lg transition-shadow duration-300 transform hover:scale-105 transition-transform duration-300">
                 <h4 className="text-xl font-bold text-[#0015AA] flex items-center">
                   <BsCashStack className="mr-2 text-[#FBB03B]" /> Pricing: <span className="ml-2">₵2,000 – ₵5,000</span>
                 </h4>
@@ -153,10 +166,23 @@ const ServicesPage = () => {
 
         {/* Service 2: Logo & Visual Identity Design */}
         <animated.div style={serviceSpring}>
-          <div className="container w-full flex flex-col md:flex-row-reverse items-center gap-12 py-16 bg-gray-50 rounded-lg">
-            <div className="md:w-1/2">
-              <div className="w-full h-80 rounded-lg bg-gray-200 flex items-center justify-center">
-                <BsPen size={80} className="text-gray-400" />
+          <div className="container w-full flex flex-col lg:flex-row-reverse items-center gap-12 py-16 bg-gray-50 rounded-lg">
+            <div className="w-full lg:w-1/2">
+              <div className="relative w-full h-80 rounded-xl overflow-hidden shadow-xl transform hover:scale-105 transition-transform duration-300">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#FBB03B] to-[#E0A030] opacity-90"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                <div className="relative h-full flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="w-24 h-24 bg-[#0015AA] rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                      <BsPen size={40} className="text-[#FBB03B]" />
+                    </div>
+                    <h3 className="text-[#0015AA] text-xl font-bold mb-2">Design</h3>
+                    <p className="text-[#0015AA] text-sm">Creating Identity</p>
+                  </div>
+                </div>
+                <div className="absolute top-4 right-4 w-12 h-12 bg-[#0015AA]/20 rounded-full flex items-center justify-center">
+                  <span className="text-[#0015AA] font-bold text-lg">2</span>
+                </div>
               </div>
             </div>
             <div className="md:w-1/2">
@@ -164,7 +190,7 @@ const ServicesPage = () => {
               <p className="mt-4 ml-6 text-lg text-gray-700">
                 Custom logo design with multiple concepts, refined typography, color palette, and usage guidelines. Includes mockups for stationery and basic brand materials.
               </p>
-              <div className="bg-white ml-6 p-6 rounded-lg mt-6 shadow-sm">
+              <div className="bg-white ml-6 p-6 rounded-lg mt-6 shadow-sm hover:shadow-lg transition-shadow duration-300 transform hover:scale-105 transition-transform duration-300">
                 <h4 className="text-xl font-bold text-[#0015AA] flex items-center">
                   <BsCashStack className="mr-2 text-[#FBB03B]" /> Pricing: <span className="ml-2">₵600 – ₵2,000</span>
                 </h4>
@@ -179,10 +205,23 @@ const ServicesPage = () => {
 
         {/* Service 3: Website Design & Development */}
         <animated.div style={serviceSpring}>
-          <div className="container mx-auto flex flex-col md:flex-row items-center gap-12 py-16">
-            <div className="md:w-1/2">
-              <div className="w-full h-80 rounded-lg bg-gray-200 flex items-center justify-center">
-                <BsLaptop size={80} className="text-gray-400" />
+          <div className="container mx-auto flex flex-col lg:flex-row items-center gap-12 py-16">
+            <div className="w-full lg:w-1/2">
+              <div className="relative w-full h-80 rounded-xl overflow-hidden shadow-xl transform hover:scale-105 transition-transform duration-300">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#0015AA] to-[#003366] opacity-90"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                <div className="relative h-full flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="w-24 h-24 bg-[#FBB03B] rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                      <BsLaptop size={40} className="text-[#0015AA]" />
+                    </div>
+                    <h3 className="text-white text-xl font-bold mb-2">Develop</h3>
+                    <p className="text-gray-200 text-sm">Bringing to Life</p>
+                  </div>
+                </div>
+                <div className="absolute top-4 right-4 w-12 h-12 bg-white/10 rounded-full flex items-center justify-center">
+                  <span className="text-white font-bold text-lg">3</span>
+                </div>
               </div>
             </div>
             <div className="md:w-1/2">
@@ -190,7 +229,7 @@ const ServicesPage = () => {
               <p className="mt-4 ml-6 text-lg text-gray-700">
                 Responsive, professional website custom-built or with WordPress/CMS. Includes domain, hosting, basic SEO, and mobile compatibility.
               </p>
-              <div className="ml-6 bg-gray-100 p-6 rounded-lg mt-6 shadow-sm">
+              <div className="ml-6 bg-gray-100 p-6 rounded-lg mt-6 shadow-sm hover:shadow-lg transition-shadow duration-300 transform hover:scale-105 transition-transform duration-300">
                 <h4 className="text-xl font-bold text-[#0015AA] flex items-center">
                   <BsCashStack className="mr-2 text-[#FBB03B]" /> Pricing: <span className="ml-2">₵1,200 – ₵4,500+</span>
                 </h4>
@@ -206,10 +245,23 @@ const ServicesPage = () => {
         {/* Service 4: UI/UX Design for Apps & Digital Products */}
         {/* Service 4: UI/UX Design for Apps & Digital Products */}
         <animated.div style={serviceSpring}>
-          <div className="w-full flex flex-col md:flex-row-reverse items-center gap-12 py-16 bg-gray-50 rounded-lg">
-            <div className="md:w-1/2">
-              <div className="w-full h-80 rounded-lg bg-gray-200 flex items-center justify-center">
-                <BsPhone size={80} className="text-gray-400" />
+          <div className="w-full flex flex-col lg:flex-row-reverse items-center gap-12 py-16 bg-gray-50 rounded-lg">
+            <div className="w-full lg:w-1/2">
+              <div className="relative w-full h-80 rounded-xl overflow-hidden shadow-xl transform hover:scale-105 transition-transform duration-300">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#FBB03B] to-[#E0A030] opacity-90"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                <div className="relative h-full flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="w-24 h-24 bg-[#0015AA] rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                      <BsPhone size={40} className="text-[#FBB03B]" />
+                    </div>
+                    <h3 className="text-[#0015AA] text-xl font-bold mb-2">Digital</h3>
+                    <p className="text-[#0015AA] text-sm">Interactive Experience</p>
+                  </div>
+                </div>
+                <div className="absolute top-4 right-4 w-12 h-12 bg-[#0015AA]/20 rounded-full flex items-center justify-center">
+                  <span className="text-[#0015AA] font-bold text-lg">4</span>
+                </div>
               </div>
             </div>
             <div className="md:w-1/2">
@@ -217,7 +269,7 @@ const ServicesPage = () => {
               <p className="mt-4 ml-6 text-lg text-gray-700">
                 Wireframes, high-fidelity UI designs, and user flow prototypes using tools like Figma. Tailored to enhance usability and conversion.
               </p>
-              <div className="ml-6 bg-white p-6 rounded-lg mt-6 shadow-sm">
+              <div className="ml-6 bg-white p-6 rounded-lg mt-6 shadow-sm hover:shadow-lg transition-shadow duration-300 transform hover:scale-105 transition-transform duration-300">
                 <h4 className="text-xl font-bold text-[#0015AA] flex items-center">
                   <BsCashStack className="mr-2 text-[#FBB03B]" /> Pricing: <span className="ml-2">₵1,200 – ₵4,500</span>
                 </h4>
@@ -232,10 +284,23 @@ const ServicesPage = () => {
 
         {/* Service 5: Social Media Branding & Campaigns */}
         <animated.div style={serviceSpring}>
-          <div className="container mx-auto flex flex-col md:flex-row items-center gap-12 py-16">
-            <div className="md:w-1/2">
-              <div className="w-full h-80 rounded-lg bg-gray-200 flex items-center justify-center">
-                <BsBarChart size={80} className="text-gray-400" />
+          <div className="container mx-auto flex flex-col lg:flex-row items-center gap-12 py-16">
+            <div className="w-full lg:w-1/2">
+              <div className="relative w-full h-80 rounded-xl overflow-hidden shadow-xl transform hover:scale-105 transition-transform duration-300">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#0015AA] to-[#003366] opacity-90"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                <div className="relative h-full flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="w-24 h-24 bg-[#FBB03B] rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                      <BsBarChart size={40} className="text-[#0015AA]" />
+                    </div>
+                    <h3 className="text-white text-xl font-bold mb-2">Social</h3>
+                    <p className="text-gray-200 text-sm">Brand Engagement</p>
+                  </div>
+                </div>
+                <div className="absolute top-4 right-4 w-12 h-12 bg-white/10 rounded-full flex items-center justify-center">
+                  <span className="text-white font-bold text-lg">5</span>
+                </div>
               </div>
             </div>
             <div className="md:w-1/2">
@@ -243,7 +308,7 @@ const ServicesPage = () => {
               <p className="mt-4 ml-6 text-lg text-gray-700">
                 Branded post templates, banners, campaign graphics, and design strategy for consistent presence across platforms.
               </p>
-              <div className="ml-6 bg-gray-100 p-6 rounded-lg mt-6 shadow-sm">
+              <div className="ml-6 bg-gray-100 p-6 rounded-lg mt-6 shadow-sm hover:shadow-lg transition-shadow duration-300 transform hover:scale-105 transition-transform duration-300">
                 <h4 className="text-xl font-bold text-[#0015AA] flex items-center">
                   <BsCashStack className="mr-2 text-[#FBB03B]" /> Pricing: <span className="ml-2">₵600 – ₵2,000 per campaign</span>
                 </h4>
@@ -303,8 +368,18 @@ const ServicesPage = () => {
         </div>
       </section>
       {/* Call to Action Section */}
-      <section className="bg-[#0015AA] text-white py-20 px-4 sm:px-6 lg:px-8 text-center">
-        <div className="container mx-auto">
+      <section className="relative bg-[#0015AA] text-white py-20 px-4 sm:px-6 lg:px-8 text-center overflow-hidden">
+        {/* Background Designs */}
+        <div className="absolute top-0 left-0 w-full h-full">
+          <div className="absolute -top-10 -right-10 w-48 h-48 bg-[#FBB03B] opacity-20 rounded-full animate-pulse-slow"></div>
+          <div className="absolute bottom-0 left-0 w-32 h-32 bg-blue-700 opacity-15 rotate-45 animate-spin-slow"></div>
+          <div className="absolute top-1/2 right-1/4 w-16 h-16 bg-white opacity-10 rounded-full animate-bounce-slow"></div>
+          <svg className="absolute bottom-0 right-0 w-64 h-64 opacity-5" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M100 0 C150 50, 200 100, 100 200 C0 100, 50 50, 100 0" stroke="#FBB03B" strokeWidth="1" fill="none"/>
+          </svg>
+        </div>
+
+        <div className="container mx-auto relative z-10">
           <h2 className="text-4xl font-bold">Ready to Elevate Your Brand?</h2>
           <p className="mt-4 text-xl max-w-2xl mx-auto">
             Book a free consultation today, and let's discuss how we can bring your vision to life.

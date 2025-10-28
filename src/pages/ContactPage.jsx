@@ -167,7 +167,7 @@ const ContactPage = () => {
       <section className="bg-white py-20 px-4 sm:px-6 lg:px-8">
         <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16" ref={formRef}>
           {/* Contact Form */}
-          <animated.div style={formSpring} className="bg-white p-8 sm:p-12 rounded-lg shadow-xl">
+          <animated.div style={formSpring} className="bg-white p-8 sm:p-12 rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-300 transform hover:scale-[1.02] transition-transform duration-300">
             <h2 className="text-3xl font-bold text-[#0015AA] font-montserrat mb-8">Tell Us About Your Project</h2>
             {submissionStatus === 'success' && (
               <div className="bg-green-100 text-green-700 p-4 rounded-lg mb-6 text-sm">
@@ -281,7 +281,7 @@ const ContactPage = () => {
 
           {/* Contact Information */}
           <div className="flex flex-col space-y-8 lg:space-y-12 mt-12 lg:mt-0">
-            <div className="p-8 rounded-lg shadow-xl text-center lg:text-left">
+            <div className="p-8 rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-300 text-center lg:text-left transform hover:scale-[1.02] transition-transform duration-300">
               <h3 className="text-xl font-bold font-montserrat mb-4">Contact Details</h3>
               <div className="space-y-4">
                 <div className="flex items-center justify-center lg:justify-start space-x-4">
@@ -300,7 +300,7 @@ const ContactPage = () => {
             </div>
             
             {/* Map Section */}
-            <div className="rounded-lg shadow-xl overflow-hidden h-[300px] lg:h-[400px]">
+            <div className="rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-300 overflow-hidden h-[300px] lg:h-[400px] transform hover:scale-[1.02] transition-transform duration-300">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15582.59012301932!2d-0.1904321689369941!3d5.556209259165487!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdf9a173428d097%3A0x6b772b1d6141c2c3!2sAccra%2C%20Ghana!5e0!3m2!1sen!2sus!4v1694269984955!5m2!1sen!2sus"
                 width="100%"
@@ -316,8 +316,18 @@ const ContactPage = () => {
       </section>
 
       {/* Call-to-Action Banner */}
-      <section className="bg-[#0015AA] text-white py-20 px-4 sm:px-6 lg:px-8 text-center">
-        <div className="container mx-auto">
+      <section className="relative bg-[#0015AA] text-white py-20 px-4 sm:px-6 lg:px-8 text-center overflow-hidden">
+        {/* Background Designs */}
+        <div className="absolute top-0 left-0 w-full h-full">
+          <div className="absolute -top-10 -right-10 w-48 h-48 bg-[#FBB03B] opacity-20 rounded-full animate-pulse-slow"></div>
+          <div className="absolute bottom-0 left-0 w-32 h-32 bg-blue-700 opacity-15 rotate-45 animate-spin-slow"></div>
+          <div className="absolute top-1/2 right-1/4 w-16 h-16 bg-white opacity-10 rounded-full animate-bounce-slow"></div>
+          <svg className="absolute bottom-0 right-0 w-64 h-64 opacity-5" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M100 0 C150 50, 200 100, 100 200 C0 100, 50 50, 100 0" stroke="#FBB03B" strokeWidth="1" fill="none"/>
+          </svg>
+        </div>
+
+        <div className="container mx-auto relative z-10">
           <h2 className="text-4xl sm:text-5xl font-bold font-montserrat">
             Your brand’s transformation starts here. Let’s make it happen.
           </h2>

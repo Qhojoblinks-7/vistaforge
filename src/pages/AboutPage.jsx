@@ -73,7 +73,7 @@ const AboutUsPage = () => {
   const timelineSteps = [
     { year: "2025", title: "VistaForge Founded", description: "A vision to redefine African branding and digital presence began in Accra, Ghana.", ref: timelineRef1, props: timelineProps1 },
     { year: "2026", title: "First Major Project & Portfolio Showcase", description: "Successfully delivered impactful branding for a local startup, marking our first step onto the digital stage.", ref: timelineRef2, props: timelineProps2 },
-    { year: "2027", title: "Expanding to Global Clients", description: "Our reputation will continue to graw, attracting international clients seeking our unique blend of creativity and strategic insight.", ref: timelineRef3, props: timelineProps3 },
+    { year: "2027", title: "Expanding to Global Clients", description: "Our reputation will continue to gra te w, attracting international clients seeking our unique blend of creativity and strategic insight.", ref: timelineRef3, props: timelineProps3 },
     { year: "Present", title: "Innovating for the Future", description: "Continuously evolving our services, embracing new technologies, and setting new benchmarks in creative excellence.", ref: timelineRef4, props: timelineProps4 },
   ];
 
