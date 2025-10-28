@@ -144,9 +144,58 @@ const PortfolioPage = () => {
     return (
         <main className="bg-white" id="main-content">
             <Helmet>
-                <title>Portfolio - VistaForge Brand Design & Creative Projects</title>
-                <meta name="description" content="Explore VistaForge's portfolio of successful brand design projects. See how we've helped startups, SMEs, and organizations create powerful brand identities and digital experiences." />
-            </Helmet>
+        <title>Portfolio - VistaForge Brand Design & Creative Projects</title>
+        <meta name="description" content="Explore VistaForge's portfolio of successful brand design projects. See how we've helped startups, SMEs, and organizations create powerful brand identities and digital experiences." />
+        <meta name="keywords" content="brand design portfolio, creative projects, logo design examples, brand identity case studies, web design portfolio, Ghana design agency" />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://vistaforge.com/portfolio" />
+        <meta property="og:title" content="Portfolio - VistaForge Brand Design & Creative Projects" />
+        <meta property="og:description" content="Explore our portfolio of successful brand design projects and see how we've helped businesses create powerful brand identities." />
+        <meta property="og:image" content="https://vistaforge.com/portfolio-og-image.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:site_name" content="VistaForge" />
+        <meta property="og:locale" content="en_US" />
+
+        {/* Twitter */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://vistaforge.com/portfolio" />
+        <meta property="twitter:title" content="Portfolio - VistaForge Brand Design & Creative Projects" />
+        <meta property="twitter:description" content="Explore our portfolio of successful brand design projects and see how we've helped businesses create powerful brand identities." />
+        <meta property="twitter:image" content="https://vistaforge.com/portfolio-twitter-image.jpg" />
+
+        {/* Additional SEO meta tags */}
+        <meta name="robots" content="index, follow" />
+        <meta name="author" content="VistaForge" />
+        <meta name="language" content="English" />
+
+        {/* Canonical URL */}
+        <link rel="canonical" href="https://vistaforge.com/portfolio" />
+
+        {/* Breadcrumbs structured data */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://vistaforge.com"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Portfolio",
+                "item": "https://vistaforge.com/portfolio"
+              }
+            ]
+          })}
+        </script>
+      </Helmet>
 
             <IntroSection />
 
