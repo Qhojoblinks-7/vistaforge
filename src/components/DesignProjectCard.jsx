@@ -3,14 +3,14 @@ import { Link } from 'react-router-dom';
 import { Figma, Palette, Layers, Eye, ArrowRight } from 'lucide-react';
 
 const DesignProjectCard = ({ project, isActive, onClick }) => {
-    const tools = project.tools || [];
+    const tools = project.designTools || project.tools || []; // Support both GraphQL (designTools) and legacy (tools) formats
 
     return (
         <div
             className={`rounded-xl transition-all duration-300 cursor-pointer group ${
                 isActive
                     ? 'border-4 border-[#FBB03B] shadow-2xl z-10 bg-white'
-                    : 'bg-gray-50 opacity-70 hover:opacity-100 shadow-lg hover:shadow-xl'
+                    : 'bg-gray-50 opacity-70 hover:opacity-100 shadow-lg hover:shadow-xl transform hover:scale-[1.02]'
             }`}
             onClick={onClick}
         >

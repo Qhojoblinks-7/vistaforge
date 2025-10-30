@@ -1,0 +1,205 @@
+import React from 'react';
+import { FaPlus, FaExclamationTriangle } from 'react-icons/fa';
+import ProjectCard from './ProjectCard';
+import apiService from '../services/api';
+
+const ProjectBoardView = ({
+  projects,
+  tasks,
+  milestones,
+  onProjectSelect,
+  onProjectMove,
+  loading,
+  error
+}) => {
+  // Define fixed project phases with colors
+  const phases = [
+    {
+      id: 'discovery',
+      name: 'Discovery',
+      color: 'bg-blue-50 border-blue-300',
+      phaseColor: 'border-blue-500'
+    },
+    {
+      id: 'design',
+      name: 'Design',
+      color: 'bg-yellow-50 border-yellow-300',
+      phaseColor: 'border-yellow-500'
+    },
+    {
+      id: 'development',
+      name: 'Development',
+      color: 'bg-teal-50 border-teal-300',
+      phaseColor: 'border-teal-500'
+    },
+    {
+      id: 'review',
+      name: 'Review',
+      color: 'bg-purple-50 border-purple-300',
+      phaseColor: 'border-purple-500'
+    },
+    {
+      id: 'complete',
+      name: 'Complete',
+      color: 'bg-green-50 border-green-300',
+      phaseColor: 'border-green-500'
+    }
+  ];
+
+  // Calculate progress for each project
+  const getProjectProgress = (projectId) => {
+    const projectTasks = tasks.filter(task => task.project === projectId);
+    if (projectTasks.length === 0) return 0;
+
+    const completedTasks = projectTasks.filter(task => task.status === 'complete').length;
+    return Math.round((completedTasks / projectTasks.length) * 100);
+  };
+
+  // Assign projects to phases based on project_phase field or fallback logic
+  const getProjectPhase = (project) => {
+    // First check if project has explicit phase field
+    if (project.project_phase) {
+      return project.project_phase;
+    }
+
+    // Fallback to progress-based logic
+    const progress = getProjectProgress(project.id);
+    const projectMilestones = milestones.filter(m => m.project === project.id);
+    const completedMilestones = projectMilestones.filter(m => m.is_reached).length;
+
+    if (!project.is_active) return 'discovery';
+    if (progress === 100 && completedMilestones === projectMilestones.length) return 'complete';
+    if (progress > 75 || completedMilestones > projectMilestones.length * 0.7) return 'review';
+    if (progress > 50 || completedMilestones > projectMilestones.length * 0.5) return 'development';
+    if (progress > 25 || completedMilestones > 0) return 'design';
+    if (progress > 0) return 'discovery';
+
+    return 'discovery';
+  };
+
+  // Group projects by phase
+  const projectsByPhase = phases.reduce((acc, phase) => {
+    acc[phase.id] = projects.filter(project => getProjectPhase(project) === phase.id);
+    return acc;
+  }, {});
+
+  const handleDragStart = (e, project) => {
+    e.dataTransfer.setData('text/plain', project.id);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = async (e, phaseId) => {
+    e.preventDefault();
+    const projectId = e.dataTransfer.getData('text/plain');
+    const project = projects.find(p => p.id === parseInt(projectId));
+
+    if (project) {
+      try {
+        // Update project phase in backend
+        await apiService.updateProject(project.id, { project_phase: phaseId });
+
+        // Call parent callback to update local state
+        if (onProjectMove) {
+          onProjectMove(project, phaseId);
+        }
+      } catch (error) {
+        console.error('Failed to update project phase:', error);
+        // TODO: Show user-friendly error message
+      }
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#0015AA]"></div>
+        <span className="ml-3 text-gray-600">Loading board...</span>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-12">
+        <div className="text-red-600 mb-4">
+          <FaExclamationTriangle className="w-12 h-12 mx-auto" />
+        </div>
+        <h3 className="text-lg font-medium text-gray-900 mb-2">Error loading board</h3>
+        <p className="text-gray-500">{error}</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900">Project Board</h2>
+          <p className="text-gray-600 mt-1">Visual project management by phase</p>
+        </div>
+       
+      </div>
+
+      {/* Board */}
+      <div className="flex space-x-4 p-4 min-h-[80vh] bg-gray-50 overflow-x-auto overflow-y-hidden shadow-inner">
+        {phases.map((phase) => (
+          <div
+            key={phase.id}
+            className={`flex-shrink-0 w-80 ${phase.color} rounded-xl shadow-lg border`}
+            onDragOver={handleDragOver}
+            onDrop={(e) => handleDrop(e, phase.id)}
+          >
+            {/* Column Header */}
+            <div className="sticky top-0 p-3 font-bold text-gray-700 bg-white rounded-t-xl border-b border-gray-100">
+              <div className="flex items-center justify-between">
+                <span>{phase.name}</span>
+                <span className="text-sm text-gray-500 bg-gray-200 px-2 py-1 rounded-full">
+                  {projectsByPhase[phase.id].length}
+                </span>
+              </div>
+            </div>
+
+            {/* Card List Area */}
+            <div className="p-3 overflow-y-auto max-h-[calc(80vh-60px)]">
+              {projectsByPhase[phase.id].map((project) => {
+                // Add computed properties for ProjectCard
+                const enhancedProject = {
+                  ...project,
+                  progress: getProjectProgress(project.id),
+                  design_tools: project.design_tools || ['Figma', 'Adobe XD'] // Default tools if not provided
+                };
+
+                return (
+                  <div
+                    key={project.id}
+                    draggable
+                    onDragStart={(e) => handleDragStart(e, project)}
+                  >
+                    <ProjectCard
+                      project={enhancedProject}
+                      onCardClick={onProjectSelect}
+                      phaseColor={phase.phaseColor}
+                    />
+                  </div>
+                );
+              })}
+
+              {projectsByPhase[phase.id].length === 0 && (
+                <div className="text-center py-8 text-gray-400">
+                  <div className="text-2xl mb-2">📋</div>
+                  <p className="text-sm">No projects in {phase.name.toLowerCase()}</p>
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default ProjectBoardView;

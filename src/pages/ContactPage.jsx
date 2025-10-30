@@ -1,9 +1,14 @@
 import React, { useState, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useSpring, animated } from 'react-spring';
-import { BsArrowRight, BsEnvelope, BsPhone, BsPinMap } from 'react-icons/bs';
+import { BsArrowRight, BsEnvelope, BsPhone, BsPinMap, BsCheckCircle, BsXCircle } from 'react-icons/bs';
+import { useDispatch, useSelector } from 'react-redux';
+import { submitContactForm } from '../store/slices/contactSlice';
 
 const ContactPage = () => {
+  const dispatch = useDispatch();
+  const { loading, success, error } = useSelector((state) => state.contact);
+
   // Spring animations for the form fields
   const formSpring = useSpring({
     from: { opacity: 0, y: 50 },
@@ -13,15 +18,13 @@ const ContactPage = () => {
 
   // State to manage form data and submission status
   const [formData, setFormData] = useState({
-    fullName: '',
+    name: '',
     email: '',
-    phone: '',
     company: '',
-    service: '',
     message: '',
+    project_type: '',
+    budget_range: '',
   });
-
-  const [submissionStatus, setSubmissionStatus] = useState(null); // 'success' or 'error'
 
   const formRef = useRef(null);
 
@@ -35,23 +38,30 @@ const ContactPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmissionStatus(null); // Reset status
+
+    // Map form data to API format
+    const apiData = {
+      name: formData.name,
+      email: formData.email,
+      company: formData.company || '',
+      message: formData.message,
+      project_type: formData.project_type || '',
+      budget_range: formData.budget_range || '',
+    };
+
     try {
-      // Simulate form submission
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      console.log('Form data submitted:', formData);
-      setSubmissionStatus('success');
-      setFormData({ // Clear form fields
-        fullName: '',
+      await dispatch(submitContactForm(apiData)).unwrap();
+      // Clear form on success
+      setFormData({
+        name: '',
         email: '',
-        phone: '',
         company: '',
-        service: '',
         message: '',
+        project_type: '',
+        budget_range: '',
       });
     } catch (error) {
       console.error('Submission failed:', error);
-      setSubmissionStatus('error');
     }
   };
 
@@ -167,28 +177,32 @@ const ContactPage = () => {
       <section className="bg-white py-20 px-4 sm:px-6 lg:px-8">
         <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16" ref={formRef}>
           {/* Contact Form */}
-          <animated.div style={formSpring} className="bg-white p-8 sm:p-12 rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-300 transform hover:scale-[1.02] transition-transform duration-300">
+          <animated.div style={formSpring} className="bg-white p-8 sm:p-12 rounded-lg shadow-2xl hover:shadow-2xl transition-shadow duration-300 transform hover:scale-[1.02] transition-transform duration-300">
             <h2 className="text-3xl font-bold text-[#0015AA] font-montserrat mb-8">Tell Us About Your Project</h2>
-            {submissionStatus === 'success' && (
-              <div className="bg-green-100 text-green-700 p-4 rounded-lg mb-6 text-sm">
+
+            {success && (
+              <div className="bg-green-100 text-green-700 p-4 rounded-lg mb-6 text-sm flex items-center">
+                <BsCheckCircle className="mr-2" />
                 Your message has been sent successfully! We'll get back to you shortly.
               </div>
             )}
-            {submissionStatus === 'error' && (
-              <div className="bg-red-100 text-red-700 p-4 rounded-lg mb-6 text-sm">
+
+            {error && (
+              <div className="bg-red-100 text-red-700 p-4 rounded-lg mb-6 text-sm flex items-center">
+                <BsXCircle className="mr-2" />
                 Oops! Something went wrong. Please try again later.
               </div>
             )}
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
                   Full Name
                 </label>
                 <input
                   type="text"
-                  id="fullName"
-                  name="fullName"
-                  value={formData.fullName}
+                  id="name"
+                  name="name"
+                  value={formData.name}
                   onChange={handleChange}
                   required
                   className="mt-1 block w-full border-b-2 border-gray-300 bg-transparent py-2 focus:border-[#FBB03B] focus:outline-none transition-colors"
@@ -209,19 +223,6 @@ const ContactPage = () => {
                 />
               </div>
               <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-                  Phone Number (optional)
-                </label>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className="mt-1 block w-full border-b-2 border-gray-300 bg-transparent py-2 focus:border-[#FBB03B] focus:outline-none transition-colors"
-                />
-              </div>
-              <div>
                 <label htmlFor="company" className="block text-sm font-medium text-gray-700">
                   Company/Organization (optional)
                 </label>
@@ -235,13 +236,13 @@ const ContactPage = () => {
                 />
               </div>
               <div>
-                <label htmlFor="service" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="project_type" className="block text-sm font-medium text-gray-700">
                   Service Interest
                 </label>
                 <select
-                  id="service"
-                  name="service"
-                  value={formData.service}
+                  id="project_type"
+                  name="project_type"
+                  value={formData.project_type}
                   onChange={handleChange}
                   required
                   className="mt-1 block w-full border-b-2 border-gray-300 bg-transparent py-2 focus:border-[#FBB03B] focus:outline-none transition-colors"
@@ -252,6 +253,24 @@ const ContactPage = () => {
                   <option value="UI/UX">UI/UX</option>
                   <option value="Social Media">Social Media</option>
                   <option value="Other">Other</option>
+                </select>
+              </div>
+              <div>
+                <label htmlFor="budget_range" className="block text-sm font-medium text-gray-700">
+                  Budget Range (optional)
+                </label>
+                <select
+                  id="budget_range"
+                  name="budget_range"
+                  value={formData.budget_range}
+                  onChange={handleChange}
+                  className="mt-1 block w-full border-b-2 border-gray-300 bg-transparent py-2 focus:border-[#FBB03B] focus:outline-none transition-colors"
+                >
+                  <option value="">Select budget range...</option>
+                  <option value="$1,000 - $5,000">$1,000 - $5,000</option>
+                  <option value="$5,000 - $10,000">$5,000 - $10,000</option>
+                  <option value="$10,000 - $25,000">$10,000 - $25,000</option>
+                  <option value="$25,000+">$25,000+</option>
                 </select>
               </div>
               <div>
@@ -271,9 +290,10 @@ const ContactPage = () => {
               <div className="flex justify-center mt-8">
                 <button
                   type="submit"
-                  className="flex items-center bg-[#FBB03B] text-[#0015AA] text-lg font-bold py-4 px-12 rounded-full shadow-lg transition-transform transform hover:scale-105"
+                  disabled={loading}
+                  className="flex items-center bg-[#FBB03B] text-[#0015AA] text-lg font-bold py-4 px-12 rounded-full shadow-lg transition-transform transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Send Message <BsArrowRight className="ml-2" />
+                  {loading ? 'Sending...' : 'Send Message'} <BsArrowRight className="ml-2" />
                 </button>
               </div>
             </form>
@@ -281,7 +301,7 @@ const ContactPage = () => {
 
           {/* Contact Information */}
           <div className="flex flex-col space-y-8 lg:space-y-12 mt-12 lg:mt-0">
-            <div className="p-8 rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-300 text-center lg:text-left transform hover:scale-[1.02] transition-transform duration-300">
+            <div className="p-8 rounded-lg shadow-2xl hover:shadow-2xl transition-shadow duration-300 text-center lg:text-left transform hover:scale-[1.02] transition-transform duration-300">
               <h3 className="text-xl font-bold font-montserrat mb-4">Contact Details</h3>
               <div className="space-y-4">
                 <div className="flex items-center justify-center lg:justify-start space-x-4">
@@ -300,7 +320,7 @@ const ContactPage = () => {
             </div>
             
             {/* Map Section */}
-            <div className="rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-300 overflow-hidden h-[300px] lg:h-[400px] transform hover:scale-[1.02] transition-transform duration-300">
+            <div className="rounded-lg shadow-2xl hover:shadow-2xl transition-shadow duration-300 overflow-hidden h-[300px] lg:h-[400px] transform hover:scale-[1.02] transition-transform duration-300">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15582.59012301932!2d-0.1904321689369941!3d5.556209259165487!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdf9a173428d097%3A0x6b772b1d6141c2c3!2sAccra%2C%20Ghana!5e0!3m2!1sen!2sus!4v1694269984955!5m2!1sen!2sus"
                 width="100%"

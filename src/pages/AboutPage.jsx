@@ -184,7 +184,7 @@ const AboutUsPage = () => {
             <h2 className="text-4xl font-bold font-montserrat text-[#0015AA]">Our Mission & Vision</h2>
             <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
               {/* Mission Block */}
-              <div className="bg-gray-50 p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+              <div className="bg-gray-50 p-8 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <BsGraphUp className="text-[#FBB03B] text-5xl mx-auto mb-4" />
                 <h3 className="text-2xl font-semibold font-montserrat text-[#0015AA]">Our Mission</h3>
                 <p className="mt-4 text-lg text-gray-700">
@@ -192,7 +192,7 @@ const AboutUsPage = () => {
                 </p>
               </div>
               {/* Vision Block */}
-              <div className="bg-gray-50 p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+              <div className="bg-gray-50 p-8 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <BsLightbulbFill className="text-[#0015AA] text-5xl mx-auto mb-4" />
                 <h3 className="text-2xl font-semibold font-montserrat text-[#0015AA]">Our Vision</h3>
                 <p className="mt-4 text-lg text-gray-700">
@@ -280,7 +280,7 @@ const AboutUsPage = () => {
             </p>
             <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {TEAM_MEMBERS.map((member, index) => (
-                <div key={index} className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                <div key={index} className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
                   {/* Lazy-loaded image */}
                   <LazyLoadImage
                     src={member.image}
@@ -312,7 +312,7 @@ const AboutUsPage = () => {
         <section className="bg-gray-100 py-12 px-4 sm:px-6 text-center">
           <h2 className="text-3xl font-bold font-montserrat text-[#0015AA]">Our Values</h2>
           <div className="mt-8 grid grid-cols-1 gap-4">
-            <div className="bg-white p-6 rounded-lg shadow-md">
+            <div className="bg-white p-6 rounded-lg shadow-lg">
               <h3 className="text-xl font-semibold text-[#0015AA]">Creativity</h3>
               <p className="text-sm text-gray-600">We design solutions that are bold and original.</p>
             </div>

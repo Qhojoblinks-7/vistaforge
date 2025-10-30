@@ -12,7 +12,14 @@ export default defineConfig({
       overlay: true
     },
     // Handle client-side routing - serve index.html for all routes
-    historyApiFallback: true
+    historyApiFallback: true,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+        secure: false,
+      }
+    }
   },
   build: {
     outDir: 'dist',

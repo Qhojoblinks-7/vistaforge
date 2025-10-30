@@ -11,7 +11,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-white shadow-md sticky top-0 z-50" role="banner">
+    <header className="bg-white shadow-lg sticky top-0 z-50" role="banner">
       {/* Skip to main content link */}
       <a
         href="#main-content"
@@ -32,6 +32,7 @@ const Header = () => {
           <li><Link to="/" className="hover:text-[#FBB03B] transition-colors">Home</Link></li>
           <li><Link to="/services" className="hover:text-[#FBB03B] transition-colors">Services</Link></li>
           <li><Link to="/portfolio" className="hover:text-[#FBB03B] transition-colors">Portfolio</Link></li>
+          <li><Link to="/admin/login" className="hover:text-[#FBB03B] transition-colors">Admin</Link></li>
           <li><Link to="/contact" className="hover:text-[#FBB03B] transition-colors">Contact</Link></li>
         </ul>
 
@@ -59,6 +60,7 @@ const Header = () => {
             <li><Link to="/" onClick={toggleMenu} className="block hover:text-[#FBB03B] transition-colors">Home</Link></li>
             <li><Link to="/services" onClick={toggleMenu} className="block hover:text-[#FBB03B] transition-colors">Services</Link></li>
             <li><Link to="/portfolio" onClick={toggleMenu} className="block hover:text-[#FBB03B] transition-colors">Portfolio</Link></li>
+            <li><Link to="/admin/login" onClick={toggleMenu} className="block hover:text-[#FBB03B] transition-colors">Admin</Link></li>
             <li><Link to="/contact" onClick={toggleMenu} className="block hover:text-[#FBB03B] transition-colors">Contact</Link></li>
             <li className="pt-4">
               <Link to="/contact" onClick={toggleMenu}>

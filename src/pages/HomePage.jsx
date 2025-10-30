@@ -8,7 +8,7 @@ import '../styles/HeroAnimation.css'
 
 // Reusable component for service cards
 const ServiceCard = ({ icon: Icon, title, description }) => (
-  <div className="bg-white p-6 sm:p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:scale-105 transition-transform duration-300">
+  <div className="bg-white p-6 sm:p-8 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:scale-105 transition-transform duration-300">
     <div className="flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-[#0015AA] text-white mx-auto">
       <Icon size={24} className="sm:w-8 sm:h-8" />
     </div>
@@ -258,19 +258,19 @@ const HomePage = () => {
           </p>
         </div>
         <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-          <div className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 angled-border-card transform hover:scale-105 transition-transform duration-300">
+          <div className="bg-white p-8 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 angled-border-card transform hover:scale-105 transition-transform duration-300">
             <h3 className="text-2xl font-semibold text-[#0015AA] mt-2">Expertise & Experience</h3>
             <p className="mt-2 text-gray-600">
               At VistaForge, we combine design and technology to create modern, scalable brands and websites. Our work draws on real-world tools like Illustrator, Photoshop, Figma, and React to deliver results that are both creative and functional.
             </p>
           </div>
-          <div className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 angled-border-card">
+          <div className="bg-white p-8 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 angled-border-card">
             <h3 className="text-2xl font-semibold text-[#0015AA] mt-2">Strategic Vision</h3>
             <p className="mt-2 text-gray-600">
               Every project begins with understanding your goals and audience. We don’t just design; we solve problems by crafting identities and digital experiences that are clear, consistent, and built to grow with your business.
             </p>
           </div>
-          <div className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 angled-border-card">
+          <div className="bg-white p-8 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 angled-border-card">
             <h3 className="text-2xl font-semibold text-[#0015AA] mt-2">Proven Process</h3>
             <h5 className="mt-2 font-semibold text-gray-600">We believe in transparency and collaboration. Clients receive:</h5>
             <ul className="list-disc list-inside mt-2 text-gray-600 space-y-1">

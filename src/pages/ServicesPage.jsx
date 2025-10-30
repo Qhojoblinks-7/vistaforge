@@ -190,7 +190,7 @@ const ServicesPage = () => {
               <p className="mt-4 ml-6 text-lg text-gray-700">
                 Custom logo design with multiple concepts, refined typography, color palette, and usage guidelines. Includes mockups for stationery and basic brand materials.
               </p>
-              <div className="bg-white ml-6 p-6 rounded-lg mt-6 shadow-sm hover:shadow-lg transition-shadow duration-300 transform hover:scale-105 transition-transform duration-300">
+              <div className="bg-white ml-6 p-6 rounded-lg mt-6 shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:scale-105 transition-transform duration-300">
                 <h4 className="text-xl font-bold text-[#0015AA] flex items-center">
                   <BsCashStack className="mr-2 text-[#FBB03B]" /> Pricing: <span className="ml-2">₵600 – ₵2,000</span>
                 </h4>
@@ -269,7 +269,7 @@ const ServicesPage = () => {
               <p className="mt-4 ml-6 text-lg text-gray-700">
                 Wireframes, high-fidelity UI designs, and user flow prototypes using tools like Figma. Tailored to enhance usability and conversion.
               </p>
-              <div className="ml-6 bg-white p-6 rounded-lg mt-6 shadow-sm hover:shadow-lg transition-shadow duration-300 transform hover:scale-105 transition-transform duration-300">
+              <div className="ml-6 bg-white p-6 rounded-lg mt-6 shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:scale-105 transition-transform duration-300">
                 <h4 className="text-xl font-bold text-[#0015AA] flex items-center">
                   <BsCashStack className="mr-2 text-[#FBB03B]" /> Pricing: <span className="ml-2">₵1,200 – ₵4,500</span>
                 </h4>

@@ -7,7 +7,7 @@ import Logo from '../assets/footer_logo.svg';
 
 const Footer = () => {
   return (
-    <footer className="bg-[#1C2331] text-gray-300 py-8 px-4 sm:py-12 sm:px-6 lg:px-8" role="contentinfo">
+    <footer className="bg-[#1C2331] text-gray-300 py-8 px-4 sm:py-12 sm:px-6 lg:px-8 shadow-2xl" role="contentinfo">
       <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
 
         {/* Column 1: Brand Info */}

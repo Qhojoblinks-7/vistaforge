@@ -1,9 +1,11 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useSpring, animated } from 'react-spring';
 import { BsArrowRight } from 'react-icons/bs';
-import { Target, Lightbulb, TrendingUp, Search, Cog, CheckCircle, Shield, BarChart3, Quote } from 'lucide-react';
+import { Target, Lightbulb, TrendingUp, Search, Cog, CheckCircle, Shield, BarChart3, Quote, Loader2 } from 'lucide-react';
+import { useDispatch, useSelector } from 'react-redux';
 import DesignProjectCard from '../components/DesignProjectCard';
+import { fetchProjects } from '../store/slices/portfolioSlice';
 import { Link } from 'react-router-dom';
 
 // Detailed data for your portfolio projects, now in a Storytelling Journey format
@@ -93,15 +95,30 @@ const PROJECTS = [
 ];
 
 const PortfolioPage = () => {
+    const dispatch = useDispatch();
+    const { projects, loading, error } = useSelector((state) => state.portfolio);
+
+    // Transform GraphQL data to match component expectations
+    const transformedProjects = projects.map(project => ({
+        ...project,
+        tools: project.designTools || [], // Map designTools to tools for compatibility
+        isDesignProject: project.isDesignProject || (project.designTools && project.designTools.length > 0)
+    }));
+
     // State to control which project is currently displayed in the large, featured slot
     const [activeProjectIndex, setActiveProjectIndex] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const gridRef = useRef(null);
 
+    // Fetch projects on component mount
+    useEffect(() => {
+        dispatch(fetchProjects());
+    }, [dispatch]);
+
     const handleProjectClick = (index) => {
         // Set the new active project
         setActiveProjectIndex(index);
-        
+
         // Scroll to the top of the grid to show the newly featured project immediately
         if (gridRef.current) {
             gridRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -221,15 +238,15 @@ const PortfolioPage = () => {
                             <div className="flex items-start justify-between">
                                 <div className="flex-1 min-w-0">
                                     <h3 className="font-bold text-[#0015AA] text-3xl">
-                                        {PROJECTS[activeProjectIndex].name}
+                                        {projects[activeProjectIndex]?.name}
                                     </h3>
                                     <p className="mt-1 text-sm font-semibold uppercase tracking-wider text-gray-600">
-                                        {PROJECTS[activeProjectIndex].clientType}
+                                        {projects[activeProjectIndex]?.clientType}
                                     </p>
                                 </div>
                                 <img
-                                    src={PROJECTS[activeProjectIndex].logo}
-                                    alt={`${PROJECTS[activeProjectIndex].name} Logo`}
+                                    src={projects[activeProjectIndex]?.logo}
+                                    alt={`${projects[activeProjectIndex]?.name} Logo`}
                                     className="rounded-full object-cover shadow-md transition-transform duration-300 ml-4 w-20 h-20"
                                 />
                             </div>
@@ -427,76 +444,93 @@ const PortfolioPage = () => {
 
                     {/* Inactive Projects: Vertical Right Column - All in same container */}
                     <div className="lg:col-span-3 lg:col-start-10 flex flex-col gap-4">
-                        {PROJECTS.map((project, index) => {
-                            if (index === activeProjectIndex) return null;
+                        {loading ? (
+                            <div className="col-span-full flex justify-center items-center py-16">
+                                <Loader2 className="w-8 h-8 animate-spin text-[#0015AA]" />
+                                <span className="ml-2 text-gray-600">Loading projects...</span>
+                            </div>
+                        ) : error ? (
+                            <div className="col-span-full text-center py-16">
+                                <p className="text-red-600 mb-4">Failed to load projects: {error}</p>
+                                <button
+                                    onClick={() => dispatch(fetchProjects())}
+                                    className="bg-[#0015AA] text-white px-6 py-2 rounded-lg hover:bg-[#003366] transition-colors"
+                                >
+                                    Try Again
+                                </button>
+                            </div>
+                        ) : (
+                            projects.map((project, index) => {
+                                if (index === activeProjectIndex) return null;
 
-                            const fadeIn = useSpring({
-                                from: { opacity: 0, transform: 'translateY(50px)' },
-                                to: { opacity: 1, transform: 'translateY(0)' },
-                                delay: 200 + (index * 100),
-                                config: { tension: 120, friction: 14 }
-                            });
+                                const fadeIn = useSpring({
+                                    from: { opacity: 0, transform: 'translateY(50px)' },
+                                    to: { opacity: 1, transform: 'translateY(0)' },
+                                    delay: 200 + (index * 100),
+                                    config: { tension: 120, friction: 14 }
+                                });
 
-                            // Check if this is a design project (has tools array)
-                            const isDesignProject = project.tools && project.tools.length > 0;
+                                // Check if this is a design project (has designTools array from GraphQL)
+                                const isDesignProject = project.designTools && project.designTools.length > 0;
 
-                            if (isDesignProject) {
+                                if (isDesignProject) {
+                                    return (
+                                        <animated.div key={index} style={fadeIn}>
+                                            <DesignProjectCard
+                                                project={project}
+                                                isActive={false}
+                                                onClick={() => handleProjectClick(index)}
+                                            />
+                                        </animated.div>
+                                    );
+                                }
+
+                                // Default project card for non-design projects
                                 return (
-                                    <animated.div key={index} style={fadeIn}>
-                                        <DesignProjectCard
-                                            project={project}
-                                            isActive={false}
-                                            onClick={() => handleProjectClick(index)}
-                                        />
+                                    <animated.div
+                                        key={index}
+                                        style={fadeIn}
+                                        className="rounded-xl bg-gray-50 opacity-70 hover:opacity-100 transition-all duration-300 cursor-pointer h-64 flex flex-col p-4 md:p-6 group shadow-lg hover:shadow-xl"
+                                        onClick={() => handleProjectClick(index)}
+                                    >
+                                        <div className="flex items-start justify-between">
+                                            <div className="flex-1 min-w-0">
+                                                <h3 className="font-bold text-gray-800 text-xl">
+                                                    {project.name}
+                                                </h3>
+                                                <p className="mt-1 text-sm font-semibold uppercase tracking-wider text-gray-400">
+                                                    {project.clientType}
+                                                </p>
+                                            </div>
+                                            <img
+                                                src={project.logo}
+                                                alt={`${project.name} Logo`}
+                                                className="rounded-full object-cover shadow-md transition-transform duration-300 ml-4 w-12 h-12"
+                                            />
+                                        </div>
+
+                                        {/* Intro text/Teaser */}
+                                        <p className="mt-4 text-sm text-gray-700 flex-grow overflow-hidden">
+                                            {project.intro}
+                                        </p>
+
+                                        {/* CTA button */}
+                                        <div className="mt-4">
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleProjectClick(index);
+                                                }}
+                                                className="flex items-center font-bold py-2 px-4 transition-all duration-300 text-[#0015AA] hover:text-[#FBB03B] bg-white hover:bg-gray-100 rounded-lg shadow-md hover:shadow-lg"
+                                            >
+                                                View Details
+                                                <BsArrowRight className="ml-2 transition-transform duration-300 rotate-0" />
+                                            </button>
+                                        </div>
                                     </animated.div>
                                 );
-                            }
-
-                            // Default project card for non-design projects
-                            return (
-                                <animated.div
-                                    key={index}
-                                    style={fadeIn}
-                                    className="rounded-xl bg-gray-50 opacity-70 hover:opacity-100 transition-all duration-300 cursor-pointer h-64 flex flex-col p-4 md:p-6 group shadow-lg hover:shadow-xl"
-                                    onClick={() => handleProjectClick(index)}
-                                >
-                                    <div className="flex items-start justify-between">
-                                        <div className="flex-1 min-w-0">
-                                            <h3 className="font-bold text-gray-800 text-xl">
-                                                {project.name}
-                                            </h3>
-                                            <p className="mt-1 text-sm font-semibold uppercase tracking-wider text-gray-400">
-                                                {project.clientType}
-                                            </p>
-                                        </div>
-                                        <img
-                                            src={project.logo}
-                                            alt={`${project.name} Logo`}
-                                            className="rounded-full object-cover shadow-md transition-transform duration-300 ml-4 w-12 h-12"
-                                        />
-                                    </div>
-
-                                    {/* Intro text/Teaser */}
-                                    <p className="mt-4 text-sm text-gray-700 flex-grow overflow-hidden">
-                                        {project.intro}
-                                    </p>
-
-                                    {/* CTA button */}
-                                    <div className="mt-4">
-                                        <button
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                handleProjectClick(index);
-                                            }}
-                                            className="flex items-center font-bold py-2 px-4 transition-all duration-300 text-[#0015AA] hover:text-[#FBB03B] bg-white hover:bg-gray-100 rounded-lg shadow-md hover:shadow-lg"
-                                        >
-                                            View Details
-                                            <BsArrowRight className="ml-2 transition-transform duration-300 rotate-0" />
-                                        </button>
-                                    </div>
-                                </animated.div>
-                            );
-                        })}
+                            })
+                        )}
                     </div>
                 </div>
             </section>
