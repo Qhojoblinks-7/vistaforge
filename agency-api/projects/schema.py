@@ -118,13 +118,17 @@ class PublicQuery(graphene.ObjectType):
         description="Public list of completed and active portfolio projects."
     )
 
+    @staticmethod
     def resolve_allProjects(root, info):
+        print("Public query: allProjects - No authentication required")
         # N+1 Optimized: Fetch related data for public view
-        return Project.objects.filter(
+        projects = Project.objects.filter(
             is_active=True
         ).order_by(
             '-created_at'
         )
+        print(f"Public query returned {len(projects)} active projects")
+        return projects
 
 
 class PrivateQuery(graphene.ObjectType):
@@ -136,17 +140,25 @@ class PrivateQuery(graphene.ObjectType):
     # Private Query 2: All contact messages
     allContacts = graphene.List(graphene.NonNull(PublicContactSubmissionType), required=True)
 
+    @staticmethod
     @superuser_only # CRITICAL SECURITY ENFORCEMENT
     def resolve_allManagementProjects(root, info):
+        print("Admin query: allManagementProjects - Authentication passed")
         # The superuser can see all projects
-        return Project.objects.select_related().prefetch_related(
+        projects = Project.objects.select_related().prefetch_related(
             'images', 'tasks', 'milestones'
         ).all()
+        print(f"Admin query returned {len(projects)} total projects")
+        return projects
 
+    @staticmethod
     @superuser_only # CRITICAL SECURITY ENFORCEMENT
     def resolve_allContacts(root, info):
+        print("Admin query: allContacts - Authentication passed")
         # Only the superuser can view the client submissions
-        return ContactSubmission.objects.order_by('-submitted_at').all()
+        contacts = ContactSubmission.objects.order_by('-submitted_at').all()
+        print(f"Admin query returned {len(contacts)} contact submissions")
+        return contacts
 
 
 class Query(PublicQuery, PrivateQuery, graphene.ObjectType):

@@ -7,7 +7,7 @@ from django.contrib.auth.models import AnonymousUser
 from projects.schema import Query as ProjectsQuery
 from projects.models import ContactSubmission
 from projects.utils import send_contact_notification, send_project_inquiry_notification
-from projects.mutations import ContactMutation
+from projects.mutations import ContactMutation, CreateProjectMutation, UpdateProjectMutation, DeleteProjectMutation
 
 
 class UserType(DjangoObjectType):
@@ -46,8 +46,10 @@ class Mutation(AuthMutation, graphene.ObjectType):
     # PUBLIC mutation, no decorator needed on the field
     submit_contact = ContactMutation.Field()
 
-    # Private mutations (e.g., CreateProjectMutation, UpdateProjectMutation)
-    # would be defined here, and their internal `mutate` methods must use @superuser_only.
+    # Private mutations (admin only)
+    create_project = CreateProjectMutation.Field()
+    update_project = UpdateProjectMutation.Field()
+    delete_project = DeleteProjectMutation.Field()
 
 
 class Query(ProjectsQuery, graphene.ObjectType):

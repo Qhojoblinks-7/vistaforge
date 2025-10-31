@@ -3,13 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { BsPlus } from 'react-icons/bs';
 import {
-  fetchProjects,
+  fetchAdminProjects,
   fetchTasks,
   fetchMilestones,
   setActiveView,
   setSelectedProject,
   setDrawerOpen
-} from '../store/slices/portfolioSlice';
+} from '../store/slices/adminPortfolioSlice';
 // Import API service for logout
 import apiService from '../services/api';
 
@@ -33,7 +33,7 @@ const ProjectManagementPage = () => {
     activeView,
     selectedProject,
     isDrawerOpen
-  } = useSelector((state) => state.portfolio);
+  } = useSelector((state) => state.adminPortfolio);
 
   // Check authentication via token
   const token = localStorage.getItem('adminToken');
@@ -50,10 +50,24 @@ const ProjectManagementPage = () => {
   useEffect(() => {
     if (isAuthenticated) {
       console.log('Fetching data for authenticated user...');
-      dispatch(fetchProjects());
-      dispatch(fetchTasks());
-      dispatch(fetchMilestones());
+      // Add a longer delay to ensure token is properly set and any redirects are complete
+
+      // Store the timeout ID
+      const delayedFetchTimeout = setTimeout(() => {
+        console.log('Executing delayed fetch...');
+        dispatch(fetchAdminProjects());
+        dispatch(fetchTasks());
+        dispatch(fetchMilestones());
+      }, 500);
+
+      // Cleanup function to cancel the timeout
+      return () => {
+        console.log('Cleaning up delayed fetch timeout.');
+        clearTimeout(delayedFetchTimeout);
+      };
     }
+    // Note: No cleanup is needed if isAuthenticated is false
+    return undefined;
   }, [dispatch, isAuthenticated]);
 
   // Handle view switching

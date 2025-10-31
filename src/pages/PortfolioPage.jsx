@@ -5,7 +5,7 @@ import { BsArrowRight } from 'react-icons/bs';
 import { Target, Lightbulb, TrendingUp, Search, Cog, CheckCircle, Shield, BarChart3, Quote, Loader2 } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import DesignProjectCard from '../components/DesignProjectCard';
-import { fetchProjects } from '../store/slices/portfolioSlice';
+import { fetchPublicProjects } from '../store/slices/publicPortfolioSlice';
 import { Link } from 'react-router-dom';
 
 // Detailed data for your portfolio projects, now in a Storytelling Journey format
@@ -96,7 +96,7 @@ const PROJECTS = [
 
 const PortfolioPage = () => {
     const dispatch = useDispatch();
-    const { projects, loading, error } = useSelector((state) => state.portfolio);
+    const { projects, loading, error } = useSelector((state) => state.publicPortfolio);
 
     // Transform GraphQL data to match component expectations
     const transformedProjects = projects.map(project => ({
@@ -112,7 +112,7 @@ const PortfolioPage = () => {
 
     // Fetch projects on component mount
     useEffect(() => {
-        dispatch(fetchProjects());
+        dispatch(fetchPublicProjects());
     }, [dispatch]);
 
     const handleProjectClick = (index) => {
@@ -453,7 +453,7 @@ const PortfolioPage = () => {
                             <div className="col-span-full text-center py-16">
                                 <p className="text-red-600 mb-4">Failed to load projects: {error}</p>
                                 <button
-                                    onClick={() => dispatch(fetchProjects())}
+                                    onClick={() => dispatch(fetchPublicProjects())}
                                     className="bg-[#0015AA] text-white px-6 py-2 rounded-lg hover:bg-[#003366] transition-colors"
                                 >
                                     Try Again

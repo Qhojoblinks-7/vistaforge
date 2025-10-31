@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import { BsArrowRight, BsShieldLock, BsEye, BsEyeSlash } from 'react-icons/bs';
+import apiService from '../services/api';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -28,41 +29,24 @@ const LoginPage = () => {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:8000/graphql/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          query: `
-            mutation TokenAuth($username: String!, $password: String!) {
-              tokenAuth(username: $username, password: $password) {
-                token
-              }
-            }
-          `,
-          variables: {
-            username: formData.username,
-            password: formData.password
-          }
-        }),
-      });
+      console.log('Attempting login with:', formData.username);
+      const result = await apiService.login(formData);
+      console.log('Login result:', result);
 
-      const result = await response.json();
-
-      if (result.data && result.data.tokenAuth && result.data.tokenAuth.token) {
-        // Store token in localStorage
-        localStorage.setItem('adminToken', result.data.tokenAuth.token);
+      if (result.token) {
+        // Store authentication state
         localStorage.setItem('adminAuthenticated', 'true');
         localStorage.setItem('adminLoginTime', Date.now().toString());
 
+        console.log('Login successful, redirecting to project management');
         // Redirect to project management
         navigate('/admin/projects');
       } else {
-        setError(result.errors?.[0]?.message || 'Login failed');
+        setError('Login failed - no token received');
       }
     } catch (error) {
-      setError('Network error. Please try again.');
+      console.error('Login error:', error);
+      setError(error.message || 'Network error. Please try again.');
     } finally {
       setLoading(false);
     }

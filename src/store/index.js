@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
-import portfolioReducer from './slices/portfolioSlice';
+import publicPortfolioReducer from './slices/publicPortfolioSlice';
+import adminPortfolioReducer from './slices/adminPortfolioSlice';
 import contactReducer from './slices/contactSlice';
 
 export const store = configureStore({
   reducer: {
-    portfolio: portfolioReducer,
+    publicPortfolio: publicPortfolioReducer,
+    adminPortfolio: adminPortfolioReducer,
     contact: contactReducer,
   },
   middleware: (getDefaultMiddleware) =>
