@@ -7,6 +7,7 @@ import { BsLightbulbFill, BsGem, BsGraphUp, BsAwardFill } from 'react-icons/bs';
 import { FaHandshake } from 'react-icons/fa';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
+import Footer from '../components/Footer';
 
 // You will need to add a team member image to your project
 // Example: import amaBoatengImage from './assets/ama-boateng.webp';
@@ -367,6 +368,8 @@ const AboutUsPage = () => {
           </Link>
         </animated.div>
       </section>
+
+      <Footer />
     </main>
   );
 };

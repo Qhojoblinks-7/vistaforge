@@ -145,7 +145,7 @@ const ProjectListView = ({
                 project={project}
                 onEditClick={onProjectSelect}
                 onDeleteClick={(project) => {
-                  if (window.confirm(`Are you sure you want to delete "${project.name}"?`)) {
+                  if (window.confirm(`Are you sure you want to delete "${project.title}"?`)) {
                     onProjectDelete(project);
                   }
                 }}

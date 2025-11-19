@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import heroImage from '../assets/hero2.png';
 import hero3 from '../assets/hero3.jpeg';
 import '../styles/HeroAnimation.css'
+import Footer from '../components/Footer';
 
 // Reusable component for service cards
 const ServiceCard = ({ icon: Icon, title, description }) => (
@@ -309,6 +310,8 @@ const HomePage = () => {
           </Link>
         </div>
       </section>
+
+      <Footer />
     </main>
   );
 };

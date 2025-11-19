@@ -32,7 +32,7 @@ const ProjectCard = ({ project, onCardClick, phaseColor = 'border-gray-300' }) =
       <div className="flex items-start justify-between mb-3">
         <div className="flex-1 min-w-0">
           <h3 className="font-semibold text-gray-900 text-sm truncate">
-            {project.name}
+            {project.title}
           </h3>
           <p className="text-xs text-gray-500 mt-1">
             {project.client_type}
@@ -41,7 +41,7 @@ const ProjectCard = ({ project, onCardClick, phaseColor = 'border-gray-300' }) =
         <div className="flex-shrink-0 ml-2">
           <img
             src={project.logo}
-            alt={`${project.name} logo`}
+            alt={`${project.title} logo`}
             className="w-6 h-6 rounded-full"
           />
         </div>

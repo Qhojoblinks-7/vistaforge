@@ -15,22 +15,15 @@ class GraphQLService {
         console.log('API Request - Token present:', !!token);
         console.log('API Request - Token value:', token ? token.substring(0, 20) + '...' : 'null');
 
-        // DEBUG: Log all localStorage keys and values
-        console.log('DEBUG - localStorage contents:');
-        for (let i = 0; i < localStorage.length; i++) {
-            const key = localStorage.key(i);
-            const value = localStorage.getItem(key);
-            console.log(`  ${key}: ${value ? value.substring(0, 20) + '...' : 'null'}`);
-        }
-
         // Build headers from options but ensure Authorization is set last so it cannot be
-        // overridden by callers passing options.headers.
+        // overridden by callers passing options.headers. Support options.skipAuth to
+        // avoid attaching Authorization for requests like tokenAuth/login.
         const headers = Object.assign(
             { 'Content-Type': 'application/json' },
             options.headers || {}
         );
 
-        if (token) {
+        if (!options.skipAuth && token) {
             // Use JWT token format for graphql_jwt middleware
             headers['Authorization'] = `JWT ${token}`;
         }
@@ -57,7 +50,20 @@ class GraphQLService {
         }, {}));
 
         try {
+            console.log('API Request - About to fetch from URL:', this.graphqlURL);
+            console.log('API Request - Full config:', {
+                method: config.method,
+                headers: config.headers,
+                body: config.body ? JSON.parse(config.body) : null
+            });
+
             const response = await fetch(this.graphqlURL, config);
+            console.log('API Request - Response received:', {
+                ok: response.ok,
+                status: response.status,
+                statusText: response.statusText,
+                headers: Object.fromEntries(response.headers.entries())
+            });
 
             if (!response.ok) {
                 const errorText = await response.text();
@@ -67,6 +73,52 @@ class GraphQLService {
 
             const result = await response.json();
             console.log('GraphQL Response:', result);
+
+            // Handle Decimal serialization errors by converting them to numbers
+            if (result.errors && result.errors.some(error => error.message.includes('Received not compatible Decimal'))) {
+                console.warn('Decimal serialization issue detected, attempting to convert...');
+                if (result.data) {
+                    const convertDecimals = (obj) => {
+                        if (obj === null || obj === undefined) return obj;
+                        if (typeof obj === 'object') {
+                            for (const key in obj) {
+                                if (obj.hasOwnProperty(key)) {
+                                    if (typeof obj[key] === 'string' && /^\d+(\.\d+)?$/.test(obj[key])) {
+                                        obj[key] = parseFloat(obj[key]);
+                                    } else if (typeof obj[key] === 'object') {
+                                        convertDecimals(obj[key]);
+                                    }
+                                }
+                            }
+                        }
+                        return obj;
+                    };
+                    convertDecimals(result.data);
+                    console.log('Converted data:', result.data);
+                    return result.data;
+                }
+            }
+
+            // Handle successful responses with data that might contain Decimals
+            if (result.data) {
+                const convertDecimals = (obj) => {
+                    if (obj === null || obj === undefined) return obj;
+                    if (typeof obj === 'object') {
+                        for (const key in obj) {
+                            if (obj.hasOwnProperty(key)) {
+                                if (typeof obj[key] === 'string' && /^\d+(\.\d+)?$/.test(obj[key])) {
+                                    obj[key] = parseFloat(obj[key]);
+                                } else if (typeof obj[key] === 'object') {
+                                    convertDecimals(obj[key]);
+                                }
+                            }
+                        }
+                    }
+                    return obj;
+                };
+                convertDecimals(result.data);
+                console.log('Processed data:', result.data);
+            }
 
             if (result.errors) {
                 console.error('GraphQL Errors:', result.errors);
@@ -101,33 +153,18 @@ class GraphQLService {
                 query GetAllManagementProjects {
                     allManagementProjects {
                         id
-                        name
-                        slug
-                        clientType
-                        industry
-                        intro
-                        logo
-                        projectType
-                        designTools
-                        designToolsDisplay
-                        isDesignProject
-                        startingPoint
-                        theTransformation
-                        journeyEnd
-                        visuals
-                        deliverables
-                        designSystem
+                        title
+                        description
+                        client
+                        status
+                        projectPhase
+                        budget
+                        startDate
+                        endDate
                         isActive
-                        order
+                        designTools
                         createdAt
                         updatedAt
-                        images {
-                            id
-                            title
-                            imageUrl
-                            altText
-                            order
-                        }
                     }
                 }
             `;
@@ -136,23 +173,51 @@ class GraphQLService {
             console.log('GraphQL Service: Admin projects response:', result);
             return result.allManagementProjects;
         } else {
-            // Public access: use allProjects query
+            // Public access: use allProjects query and request case-study fields
             const query = `
                 query GetPublicProjects {
                     allProjects {
                         id
+                        title
                         name
                         slug
                         intro
+                        logo
+                        clientType
+                        industry
+                        caseStudy
                         createdAt
                     }
                 }
             `;
 
-            const result = await this.request(query);
+            const result = await this.request(query, {}, { skipAuth: true });
             console.log('GraphQL Service: Public projects response:', result);
             return result.allProjects;
         }
+    }
+
+    async getPublicProjects() {
+        // Public access: use allProjects query and request case-study fields
+        const query = `
+            query GetPublicProjects {
+                allProjects {
+                    id
+                    title
+                    name
+                    slug
+                    intro
+                    logo
+                    clientType
+                    industry
+                    caseStudy
+                    createdAt
+                }
+            }
+        `;
+
+        const result = await this.request(query, {}, { skipAuth: true });
+        return result.allProjects;
     }
 
     async getProject(slug) {
@@ -163,15 +228,21 @@ class GraphQLService {
             query GetProject($slug: String!) {
                 project(slug: $slug) {
                     id
+                    title
                     name
                     slug
                     intro
+                    logo
+                    clientType
+                    industry
+                    caseStudy
                     createdAt
+                    updatedAt
                 }
             }
         `;
 
-        const result = await this.request(query, { slug });
+        const result = await this.request(query, { slug }, { skipAuth: true });
         return result.project;
     }
 
@@ -181,7 +252,7 @@ class GraphQLService {
             query GetFeaturedProjects {
                 allProjects {
                     id
-                    name
+                    title
                     slug
                     intro
                     createdAt
@@ -224,7 +295,7 @@ class GraphQLService {
             }
         `;
 
-        const result = await this.request(mutation, credentials);
+    const result = await this.request(mutation, credentials, { skipAuth: true });
 
         // Store the token if login successful
         if (result.tokenAuth.token) {
@@ -329,7 +400,7 @@ class GraphQLService {
                 createProject(projectData: $projectData) {
                     project {
                         id
-                        name
+                        title
                         slug
                         clientType
                         industry
@@ -375,6 +446,7 @@ class GraphQLService {
                 updateProject(id: $id, projectData: $projectData) {
                     project {
                         id
+                        title
                         name
                         slug
                         clientType
@@ -437,6 +509,228 @@ class GraphQLService {
         }
 
         return result.deleteProject.success;
+    }
+
+    // Task GraphQL API
+    async getTasks(projectId = null) {
+        const query = `
+            query GetTasks($projectId: ID) {
+                allTasks(projectId: $projectId) {
+                    id
+                    project {
+                        id
+                        title
+                    }
+                    title
+                    status
+                    assignedTo
+                    dueDate
+                    description
+                    order
+                    createdAt
+                    updatedAt
+                }
+            }
+        `;
+
+        const result = await this.request(query, { projectId });
+        return result.allTasks;
+    }
+
+    async createTask(taskData) {
+        const mutation = `
+            mutation CreateTaskMutation($taskData: TaskCreateInput!) {
+                createTask(taskData: $taskData) {
+                    task {
+                        id
+                        project {
+                            id
+                            title
+                        }
+                        title
+                        status
+                        assignedTo
+                        dueDate
+                        description
+                        order
+                        createdAt
+                        updatedAt
+                    }
+                    errors
+                }
+            }
+        `;
+
+        const result = await this.request(mutation, { taskData });
+
+        if (result.createTask.errors && result.createTask.errors.length > 0) {
+            throw new Error(`Task creation failed: ${result.createTask.errors.join(', ')}`);
+        }
+
+        return result.createTask.task;
+    }
+
+    async updateTask(id, taskData) {
+        const mutation = `
+            mutation UpdateTaskMutation($id: ID!, $taskData: TaskUpdateInput!) {
+                updateTask(id: $id, taskData: $taskData) {
+                    task {
+                        id
+                        project {
+                            id
+                            title
+                        }
+                        title
+                        status
+                        assignedTo
+                        dueDate
+                        description
+                        order
+                        createdAt
+                        updatedAt
+                    }
+                    errors
+                }
+            }
+        `;
+
+        const result = await this.request(mutation, { id, taskData });
+
+        if (result.updateTask.errors && result.updateTask.errors.length > 0) {
+            throw new Error(`Task update failed: ${result.updateTask.errors.join(', ')}`);
+        }
+
+        return result.updateTask.task;
+    }
+
+    async deleteTask(id) {
+        const mutation = `
+            mutation DeleteTaskMutation($id: ID!) {
+                deleteTask(id: $id) {
+                    success
+                    errors
+                }
+            }
+        `;
+
+        const result = await this.request(mutation, { id });
+
+        if (result.deleteTask.errors && result.deleteTask.errors.length > 0) {
+            throw new Error(`Task deletion failed: ${result.deleteTask.errors.join(', ')}`);
+        }
+
+        return result.deleteTask.success;
+    }
+
+    // Milestone GraphQL API
+    async getMilestones(projectId = null) {
+        console.log('GraphQL Service: Fetching milestones with projectId:', projectId);
+
+        const query = `
+            query GetMilestones($projectId: ID) {
+                allMilestones(projectId: $projectId) {
+                    id
+                    project {
+                        id
+                        title
+                    }
+                    title
+                    dueDate
+                    isReached
+                    description
+                    order
+                    createdAt
+                    updatedAt
+                }
+            }
+        `;
+
+        const result = await this.request(query, { projectId });
+        console.log('GraphQL Service: Milestones response:', result);
+        return result.allMilestones;
+    }
+
+    async createMilestone(milestoneData) {
+        const mutation = `
+            mutation CreateMilestoneMutation($milestoneData: MilestoneCreateInput!) {
+                createMilestone(milestoneData: $milestoneData) {
+                    milestone {
+                        id
+                        project {
+                            id
+                            title
+                        }
+                        title
+                        dueDate
+                        isReached
+                        description
+                        order
+                        createdAt
+                        updatedAt
+                    }
+                    errors
+                }
+            }
+        `;
+
+        const result = await this.request(mutation, { milestoneData });
+
+        if (result.createMilestone.errors && result.createMilestone.errors.length > 0) {
+            throw new Error(`Milestone creation failed: ${result.createMilestone.errors.join(', ')}`);
+        }
+
+        return result.createMilestone.milestone;
+    }
+
+    async updateMilestone(id, milestoneData) {
+        const mutation = `
+            mutation UpdateMilestoneMutation($id: ID!, $milestoneData: MilestoneUpdateInput!) {
+                updateMilestone(id: $id, milestoneData: $milestoneData) {
+                    milestone {
+                        id
+                        project {
+                            id
+                            title
+                        }
+                        title
+                        dueDate
+                        isReached
+                        description
+                        order
+                        createdAt
+                        updatedAt
+                    }
+                    errors
+                }
+            }
+        `;
+
+        const result = await this.request(mutation, { id, milestoneData });
+
+        if (result.updateMilestone.errors && result.updateMilestone.errors.length > 0) {
+            throw new Error(`Milestone update failed: ${result.updateMilestone.errors.join(', ')}`);
+        }
+
+        return result.updateMilestone.milestone;
+    }
+
+    async deleteMilestone(id) {
+        const mutation = `
+            mutation DeleteMilestoneMutation($id: ID!) {
+                deleteMilestone(id: $id) {
+                    success
+                    errors
+                }
+            }
+        `;
+
+        const result = await this.request(mutation, { id });
+
+        if (result.deleteMilestone.errors && result.deleteMilestone.errors.length > 0) {
+            throw new Error(`Milestone deletion failed: ${result.deleteMilestone.errors.join(', ')}`);
+        }
+
+        return result.deleteMilestone.success;
     }
 }
 

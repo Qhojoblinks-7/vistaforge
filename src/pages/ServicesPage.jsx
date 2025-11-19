@@ -5,6 +5,7 @@ import { BsPen, BsStack, BsLaptop, BsBarChart, BsPhone, BsTools, BsCashStack,BsB
 import { Link } from 'react-router-dom';
 import aboutImage from '../assets/hero3.jpeg';
 import '../styles/ServicesPage.css';
+import Footer from '../components/Footer';
 
 const ServicesPage = () => {
   const serviceSpring = useSpring({
@@ -392,6 +393,8 @@ const ServicesPage = () => {
           </Link>
         </div>
       </section>
+
+      <Footer />
     </main>
   );
 };

@@ -6,22 +6,11 @@ export const fetchPublicProjects = createAsyncThunk(
   'publicPortfolio/fetchProjects',
   async (params = {}) => {
     console.log('Public GraphQL call: Fetching projects with params:', params);
-    // For public access, directly use the public query
-    const query = `
-      query GetPublicProjects {
-        allProjects {
-          id
-          name
-          slug
-          intro
-          createdAt
-        }
-      }
-    `;
-
-    const result = await apiService.request(query);
+    // Use apiService.getPublicProjects for public access
+    const result = await apiService.getPublicProjects();
     console.log('Public GraphQL response for projects:', result);
-    return result.allProjects;
+    // Ensure we always return an array
+    return Array.isArray(result) ? result : [];
   }
 );
 

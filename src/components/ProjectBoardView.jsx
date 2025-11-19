@@ -17,32 +17,32 @@ const ProjectBoardView = ({
     {
       id: 'discovery',
       name: 'Discovery',
-      color: 'bg-blue-50 border-blue-300',
-      phaseColor: 'border-blue-500'
+      color: 'bg-[#0015AA]/5 border-[#0015AA]/20',
+      phaseColor: 'border-[#0015AA]'
     },
     {
       id: 'design',
       name: 'Design',
-      color: 'bg-yellow-50 border-yellow-300',
-      phaseColor: 'border-yellow-500'
+      color: 'bg-[#FBB03B]/5 border-[#FBB03B]/20',
+      phaseColor: 'border-[#FBB03B]'
     },
     {
       id: 'development',
       name: 'Development',
-      color: 'bg-teal-50 border-teal-300',
-      phaseColor: 'border-teal-500'
+      color: 'bg-gray-50 border-gray-200',
+      phaseColor: 'border-gray-400'
     },
     {
       id: 'review',
       name: 'Review',
-      color: 'bg-purple-50 border-purple-300',
-      phaseColor: 'border-purple-500'
+      color: 'bg-[#0015AA]/5 border-[#0015AA]/20',
+      phaseColor: 'border-[#0015AA]'
     },
     {
       id: 'complete',
       name: 'Complete',
-      color: 'bg-green-50 border-green-300',
-      phaseColor: 'border-green-500'
+      color: 'bg-[#FBB03B]/5 border-[#FBB03B]/20',
+      phaseColor: 'border-[#FBB03B]'
     }
   ];
 
@@ -124,34 +124,35 @@ const ProjectBoardView = ({
   if (error) {
     return (
       <div className="text-center py-12">
-        <div className="text-red-600 mb-4">
+        <div className="text-gray-600 mb-4">
           <FaExclamationTriangle className="w-12 h-12 mx-auto" />
         </div>
         <h3 className="text-lg font-medium text-gray-900 mb-2">Error loading board</h3>
-        <p className="text-gray-500">{error}</p>
+        <p className="text-gray-600">{error}</p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 w-full overflow-x-hidden">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Project Board</h2>
           <p className="text-gray-600 mt-1">Visual project management by phase</p>
         </div>
-       
+
       </div>
 
       {/* Board */}
-      <div className="flex space-x-4 p-4 min-h-[80vh] bg-gray-50 overflow-x-auto overflow-y-hidden shadow-inner">
+      <div className="flex space-x-4 p-4 min-h-[80vh] bg-gray-50 overflow-x-auto overflow-y-hidden shadow-inner max-w-full" style={{ scrollbarWidth: 'thin', scrollbarColor: '#0015AA transparent' }}>
         {phases.map((phase) => (
           <div
             key={phase.id}
             className={`flex-shrink-0 w-80 ${phase.color} rounded-xl shadow-lg border`}
             onDragOver={handleDragOver}
             onDrop={(e) => handleDrop(e, phase.id)}
+            style={{ minWidth: '320px', maxWidth: '320px' }}
           >
             {/* Column Header */}
             <div className="sticky top-0 p-3 font-bold text-gray-700 bg-white rounded-t-xl border-b border-gray-100">

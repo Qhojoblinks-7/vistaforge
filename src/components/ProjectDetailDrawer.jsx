@@ -15,7 +15,7 @@ const ProjectDetailDrawer = ({
 }) => {
   const [activeTab, setActiveTab] = useState('details');
   const [newTask, setNewTask] = useState({ name: '', due_date: '', status: 'to_do' });
-  const [newMilestone, setNewMilestone] = useState({ name: '', target_date: '' });
+  const [newMilestone, setNewMilestone] = useState({ name: '', due_date: '' });
   const [tasks, setTasks] = useState(initialTasks);
   const [milestones, setMilestones] = useState(initialMilestones);
   const [loading, setLoading] = useState(false);
@@ -92,7 +92,7 @@ const ProjectDetailDrawer = ({
       const milestoneData = { ...newMilestone, project: project.id };
       const createdMilestone = await apiService.createMilestone(milestoneData);
       setMilestones(prev => [...prev, createdMilestone]);
-      setNewMilestone({ name: '', target_date: '' });
+      setNewMilestone({ name: '', due_date: '' });
     } catch (error) {
       console.error('Failed to create milestone:', error);
     }
@@ -427,8 +427,8 @@ const ProjectDetailDrawer = ({
                   <div className="flex space-x-2">
                     <input
                       type="date"
-                      value={newMilestone.target_date}
-                      onChange={(e) => setNewMilestone({ ...newMilestone, target_date: e.target.value })}
+                      value={newMilestone.due_date}
+                      onChange={(e) => setNewMilestone({ ...newMilestone, due_date: e.target.value })}
                       className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0015AA] focus:border-transparent text-sm sm:text-base"
                     />
                     <button
@@ -475,11 +475,11 @@ const ProjectDetailDrawer = ({
                       {milestone.description && (
                         <p className="text-sm text-gray-600 mt-1">{milestone.description}</p>
                       )}
-                      {milestone.target_date && (
+                      {milestone.due_date && (
                         <p className={`text-xs mt-1 ${
                           milestone.is_reached ? 'text-green-600' : 'text-gray-500'
                         }`}>
-                          Target: {new Date(milestone.target_date).toLocaleDateString()}
+                          Target: {new Date(milestone.due_date).toLocaleDateString()}
                         </p>
                       )}
                     </div>

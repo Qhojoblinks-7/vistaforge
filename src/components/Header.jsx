@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaBars, FaTimes } from 'react-icons/fa';
-import logo from '../assets/logo.svg'
+import { ShieldUser } from 'lucide-react';
+import logo from '../assets/logo.svg';
+import ActiveTimerComponent from '../modules/Projects/components/ActiveTimerComponent';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -31,17 +33,22 @@ const Header = () => {
         <ul className="hidden md:flex space-x-6 text-[#0015AA] font-semibold">
           <li><Link to="/" className="hover:text-[#FBB03B] transition-colors">Home</Link></li>
           <li><Link to="/services" className="hover:text-[#FBB03B] transition-colors">Services</Link></li>
-          <li><Link to="/portfolio" className="hover:text-[#FBB03B] transition-colors">Portfolio</Link></li>
-          <li><Link to="/admin/login" className="hover:text-[#FBB03B] transition-colors">Admin</Link></li>
+          <li><Link to="/portfolio" className="hover:text-[#FBB03B] transition-colors">Case Studies</Link></li>
           <li><Link to="/contact" className="hover:text-[#FBB03B] transition-colors">Contact</Link></li>
         </ul>
 
         {/* Desktop Call to Action Button */}
-        <Link to="/contact" className="hidden md:block">
-          <button className="bg-[#FBB03B] text-white font-bold py-2 px-4 sm:px-6 rounded-md hover:bg-opacity-90 transition-colors">
-            Book Consultation
-          </button>
-        </Link>
+        <div className="hidden md:flex items-center space-x-4">
+          <span className="text-sm text-gray-600">Ready to Work</span>
+          <Link to="/contact">
+            <button className="bg-[#FBB03B] text-white font-bold py-3 px-6 sm:px-8 rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 border-2 border-[#FBB03B] hover:border-[#E0A030]">
+              Book Consultation
+            </button>
+          </Link>
+          <Link to="/admin/login" className="text-[#0015AA] hover:text-[#FBB03B] transition-colors" title="Admin Portal">
+            <ShieldUser className="w-6 h-6" />
+          </Link>
+        </div>
 
         {/* Mobile Menu Button */}
         <button
@@ -59,10 +66,14 @@ const Header = () => {
           <ul className="flex flex-col space-y-4 px-4 py-6 text-[#0015AA] font-semibold">
             <li><Link to="/" onClick={toggleMenu} className="block hover:text-[#FBB03B] transition-colors">Home</Link></li>
             <li><Link to="/services" onClick={toggleMenu} className="block hover:text-[#FBB03B] transition-colors">Services</Link></li>
-            <li><Link to="/portfolio" onClick={toggleMenu} className="block hover:text-[#FBB03B] transition-colors">Portfolio</Link></li>
-            <li><Link to="/admin/login" onClick={toggleMenu} className="block hover:text-[#FBB03B] transition-colors">Admin</Link></li>
+            <li><Link to="/portfolio" onClick={toggleMenu} className="block hover:text-[#FBB03B] transition-colors">Case Studies</Link></li>
             <li><Link to="/contact" onClick={toggleMenu} className="block hover:text-[#FBB03B] transition-colors">Contact</Link></li>
-            <li className="pt-4">
+            <li className="pt-2">
+              <Link to="/admin/login" onClick={toggleMenu} className="flex items-center justify-center text-gray-500 hover:text-[#0015AA] transition-colors" title="Admin Portal">
+                <ShieldUser className="w-4 h-4" />
+              </Link>
+            </li>
+            <li className="pt-2">
               <Link to="/contact" onClick={toggleMenu}>
                 <button className="w-full bg-[#FBB03B] text-white font-bold py-3 px-6 rounded-md hover:bg-opacity-90 transition-colors">
                   Book Consultation

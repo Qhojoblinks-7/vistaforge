@@ -1,0 +1,104 @@
+[
+  {
+    "name": "SunRise Foods",
+    "clientType": "SME",
+    "industry": "FMCG",
+    "intro": "SunRise Foods is an Accra-based SME producing organic snacks for local supermarkets and schools. They needed to stand out in a competitive FMCG market.",
+    "logo": "https://via.placeholder.com/150/FBB03B/fff?text=SF",
+    "link": "/projects/sunrise",
+    "caseStudy": {
+      "startingPoint": "As a local SME with high-quality organic snacks, SunRise Foods was held back by outdated packaging and a lack of digital visibility, making them invisible to the growing health-conscious audience.",
+      "theTransformation": "We initiated a full brand refresh, designing a vibrant, modern packaging system and developing a seamless e-commerce-ready website to expand their reach beyond local retail.",
+      "journeyEnd": "Post-launch, SunRise Foods reported a **25% increase in retail orders** within the first 3 months and successfully launched their direct-to-consumer online channel.",
+      "visuals": {
+        "logoVariations": "https://via.placeholder.com/800x200/FBB03B/fff?text=Logo+Variations",
+        "packagingMockups": "https://via.placeholder.com/800x500/FBB03B/fff?text=Packaging+Mockups",
+        "websiteHomepage": "https://via.placeholder.com/800x500/FBB03B/fff?text=Website+Homepage+Mockup"
+      }
+    }
+  },
+  {
+    "name": "SwiftPay",
+    "clientType": "Fintech Startup",
+    "industry": "Fintech",
+    "intro": "SwiftPay is a Ghanaian fintech startup offering mobile-based international transfers for SMEs and individuals.",
+    "logo": "https://via.placeholder.com/150/0015AA/fff?text=SP",
+    "link": "/projects/swiftpay",
+    "caseStudy": {
+      "startingPoint": "As an early-stage fintech, SwiftPay's initial brand lacked the professional credibility and trust essential to attract serious investment and instill confidence in users making international transfers.",
+      "theTransformation": "We engineered a professional, secure brand identity, complete with a sleek logo and a high-fidelity UI/UX prototype for their mobile application, focused on speed and reliability.",
+      "journeyEnd": "Armed with a refined, trustworthy brand and solid visual presentation, SwiftPay successfully **secured a significant round of seed funding**, achieving a key business milestone.",
+      "visuals": {
+        "logoAndIdentity": "https://via.placeholder.com/800x400/0015AA/fff?text=Logo+and+Brand+Identity",
+        "appUIMockups": "https://via.placeholder.com/800x500/0015AA/fff?text=App+UI+Mockups"
+      }
+    }
+  },
+  {
+    "name": "EduBridge Ghana",
+    "clientType": "Non-profit",
+    "industry": "Education",
+    "intro": "EduBridge is a non-profit organization that connects rural students with digital learning resources.",
+    "logo": "https://via.placeholder.com/150/8a2be2/fff?text=EG",
+    "link": "/projects/edubridge",
+    "caseStudy": {
+      "startingPoint": "Their old branding felt corporate and didn’t connect emotionally with their donors or student audience, hindering their fundraising and outreach potential.",
+      "theTransformation": "VistaForge created a human-centered identity with warm tones, redesigned their website for better accessibility, and provided streamlined social media branding templates for consistent, emotional messaging.",
+      "journeyEnd": "EduBridge saw a powerful increase in emotional resonance, resulting in **donor engagement rising by 40%** and a significant boost in fundraising and community support.",
+      "visuals": {
+        "brandIdentity": "https://via.placeholder.com/800x400/8a2be2/fff?text=EduBridge+Brand+Identity",
+        "websiteMockup": "https://via.placeholder.com/800x500/8a2be2/fff?text=Website+Mockup",
+        "socialMediaTemplates": "https://via.placeholder.com/800x300/8a2be2/fff?text=Social+Media+Templates"
+      }
+    }
+  },
+  {
+    "name": "KenteMode",
+    "clientType": "Clothing Brand",
+    "industry": "Fashion",
+    "intro": "KenteMode is a fashion brand blending traditional Ghanaian fabrics with modern streetwear.",
+    "logo": "https://via.placeholder.com/150/6A0DAD/fff?text=KM",
+    "link": "/projects/kentemode",
+    "tools": ["figma", "photoshop", "illustrator"],
+    "deliverables": [
+      { "title": "Brand Identity", "description": "Complete logo design, color palette, and typography system" },
+      { "title": "E-commerce Store", "description": "Full UI/UX design for online shopping platform" },
+      { "title": "Social Media Kit", "description": "Instagram campaign visuals and branded content templates" }
+    ],
+    "designSystem": {
+      "colors": [
+        { "name": "Primary", "hex": "#6A0DAD" },
+        { "name": "Secondary", "hex": "#FFD700" },
+        { "name": "Accent", "hex": "#FF6B35" },
+        { "name": "Neutral", "hex": "#2D3748" }
+      ]
+    },
+    "caseStudy": {
+      "startingPoint": "KenteMode's bold, modern designs weren't reflected in their online visuals, limiting their appeal and market reach primarily to local buyers rather than an international streetwear audience.",
+      "theTransformation": "We developed a bold logo, designed a dynamic online store, and created a visually striking, lookbook-driven Instagram campaign to match the brand's creative energy and international aspirations.",
+      "journeyEnd": "The revamped brand attracted an international audience, leading to an impressive **60% increase in online orders** from outside Ghana in the first quarter post-launch.",
+      "visuals": {
+        "logoDesign": "https://via.placeholder.com/800x200/6A0DAD/fff?text=KenteMode+Logo+Design",
+        "onlineStore": "https://via.placeholder.com/800x500/6A0DAD/fff?text=Online+Store+Mockup",
+        "instagramCampaign": "https://via.placeholder.placeholder.com/800x300/6A0DAD/fff?text=Instagram+Campaign"
+      }
+    }
+  },
+  {
+    "name": "BrightFuture Academy",
+    "clientType": "Private School",
+    "industry": "Education",
+    "intro": "BrightFuture Academy is a private school in Tema aiming to modernize its image and attract more parents.",
+    "logo": "https://via.placeholder.com/150/003366/fff?text=BFA",
+    "link": "/projects/brightfuture",
+    "caseStudy": {
+      "startingPoint": "The Academy’s outdated digital presence and inconsistent branding made them less competitive in attracting new enrollments compared to modern, private school competitors.",
+      "theTransformation": "VistaForge conducted a brand refresh, redesigning the logo, building a parent-friendly, informative website, and introducing a professional student portal concept.",
+      "journeyEnd": "The modern image successfully connected with parents, boosting prospective student applications by **30%** and leading to a significant increase in enrollment and community trust.",
+      "visuals": {
+        "logoRedesign": "https://via.placeholder.com/800x200/003366/fff?text=Logo+Redesign",
+        "websiteMockup": "https://via.placeholder.com/800x500/003366/fff?text=Website+Mockup"
+      }
+    }
+  }
+]

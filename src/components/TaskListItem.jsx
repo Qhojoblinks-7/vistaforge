@@ -94,7 +94,7 @@ const TaskListItem = ({
               ? 'text-gray-500 line-through'
               : 'text-gray-800'
           } ${compact ? 'text-sm' : ''}`}>
-            {task.name}
+            {task.title}
           </h4>
           {task.priority && (
             <span className={`text-xs ${getPriorityColor(task.priority)}`}>

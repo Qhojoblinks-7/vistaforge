@@ -30,7 +30,7 @@ const ProjectListItem = ({ project, onEditClick, onDeleteClick }) => {
         <div className="flex items-center">
           <img
             src={project.logo}
-            alt={`${project.name} logo`}
+            alt={`${project.title} logo`}
             className="w-8 h-8 rounded-full mr-3"
           />
           <div>
@@ -38,7 +38,7 @@ const ProjectListItem = ({ project, onEditClick, onDeleteClick }) => {
               onClick={() => onEditClick(project)}
               className="text-left font-medium text-gray-900 hover:text-[#0015AA] cursor-pointer block"
             >
-              {project.name}
+              {project.title}
             </button>
             <div className="text-xs text-gray-500 mt-1">
               {project.slug} • {project.client_type}

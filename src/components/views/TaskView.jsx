@@ -92,12 +92,12 @@ const TaskView = ({ projects, tasks, milestones, onProjectSelect, loading, error
 
                     <img
                       src={project.logo}
-                      alt={`${project.name} logo`}
+                      alt={`${project.title} logo`}
                       className="w-8 h-8 rounded-full object-cover"
                     />
 
                     <div>
-                      <h3 className="font-semibold text-gray-900">{project.name}</h3>
+                      <h3 className="font-semibold text-gray-900">{project.title}</h3>
                       <p className="text-sm text-gray-500">{project.client_type} • {project.industry}</p>
                     </div>
                   </div>
@@ -152,7 +152,7 @@ const TaskView = ({ projects, tasks, milestones, onProjectSelect, loading, error
                               <div className="flex items-center space-x-4">
                                 <div className="flex items-center text-sm text-gray-600">
                                   <FaCalendarAlt className="w-4 h-4 mr-1" />
-                                  {formatDate(milestone.target_date)}
+                                  {formatDate(milestone.due_date)}
                                 </div>
                                 {milestone.is_reached && (
                                   <span className="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">

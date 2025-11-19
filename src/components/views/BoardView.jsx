@@ -5,12 +5,12 @@ import ProjectCard from '../ProjectCard';
 const BoardView = ({ projects, tasks, milestones, onProjectSelect, loading, error }) => {
   // Define project phases
   const phases = [
-    { id: 'lead', name: 'Lead', color: 'bg-gray-100 border-gray-300' },
-    { id: 'discovery', name: 'Discovery', color: 'bg-blue-50 border-blue-300' },
-    { id: 'design', name: 'Design', color: 'bg-yellow-50 border-yellow-300' },
-    { id: 'development', name: 'Development', color: 'bg-purple-50 border-purple-300' },
-    { id: 'launch', name: 'Launch', color: 'bg-green-50 border-green-300' },
-    { id: 'complete', name: 'Complete', color: 'bg-emerald-50 border-emerald-300' }
+    { id: 'lead', name: 'Lead', color: 'bg-gray-50 border-gray-200' },
+    { id: 'discovery', name: 'Discovery', color: 'bg-[#0015AA]/5 border-[#0015AA]/20' },
+    { id: 'design', name: 'Design', color: 'bg-[#FBB03B]/5 border-[#FBB03B]/20' },
+    { id: 'development', name: 'Development', color: 'bg-gray-50 border-gray-200' },
+    { id: 'launch', name: 'Launch', color: 'bg-[#0015AA]/5 border-[#0015AA]/20' },
+    { id: 'complete', name: 'Complete', color: 'bg-[#FBB03B]/5 border-[#FBB03B]/20' }
   ];
 
   // Calculate progress for each project
@@ -69,24 +69,25 @@ const BoardView = ({ projects, tasks, milestones, onProjectSelect, loading, erro
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 w-full overflow-x-hidden">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Project Board</h2>
           <p className="text-gray-600 mt-1">Visual project management by phase</p>
         </div>
-        
+
       </div>
 
       {/* Board */}
-      <div className="flex space-x-4 sm:space-x-6 overflow-x-auto pb-6 shadow-inner">
+      <div className="flex space-x-4 sm:space-x-6 overflow-x-auto pb-6 shadow-inner max-w-full" style={{ scrollbarWidth: 'thin', scrollbarColor: '#0015AA transparent', maxWidth: '100%', overflowX: 'auto' }}>
         {phases.map((phase) => (
           <div
             key={phase.id}
             className={`flex-shrink-0 w-72 sm:w-80 ${phase.color} rounded-lg border-2 p-3 sm:p-4 min-h-[600px] shadow-lg`}
             onDragOver={handleDragOver}
             onDrop={(e) => handleDrop(e, phase.id)}
+            style={{ minWidth: '288px', maxWidth: '320px' }}
           >
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-semibold text-gray-900">{phase.name}</h3>
@@ -113,11 +114,11 @@ const BoardView = ({ projects, tasks, milestones, onProjectSelect, loading, erro
                     <ProjectCard
                       project={enhancedProject}
                       onCardClick={onProjectSelect}
-                      phaseColor={`border-l-4 border-${phase.id === 'discovery' ? 'blue' :
-                        phase.id === 'design' ? 'yellow' :
-                        phase.id === 'development' ? 'purple' :
-                        phase.id === 'launch' ? 'green' :
-                        phase.id === 'complete' ? 'emerald' : 'gray'}-500`}
+                      phaseColor={`border-l-4 border-${phase.id === 'discovery' ? '[#0015AA]' :
+                        phase.id === 'design' ? '[#FBB03B]' :
+                        phase.id === 'development' ? 'gray' :
+                        phase.id === 'launch' ? '[#0015AA]' :
+                        phase.id === 'complete' ? '[#FBB03B]' : 'gray'}-500`}
                     />
                   </div>
                 );

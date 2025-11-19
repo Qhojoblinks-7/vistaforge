@@ -19,7 +19,7 @@ const DesignProjectCard = ({ project, isActive, onClick }) => {
                 <div className="flex items-start justify-between mb-4">
                     <div className="flex-1 min-w-0">
                         <h3 className={`font-bold ${isActive ? 'text-[#0015AA] text-3xl' : 'text-gray-800 text-xl'}`}>
-                            {project.name}
+                            {project.title}
                         </h3>
                         <p className={`mt-1 text-sm font-semibold uppercase tracking-wider ${isActive ? 'text-gray-600' : 'text-gray-400'}`}>
                             {project.clientType}
@@ -29,7 +29,7 @@ const DesignProjectCard = ({ project, isActive, onClick }) => {
                     <div className="flex flex-col items-end space-y-2">
                         <img
                             src={project.logo}
-                            alt={`${project.name} Logo`}
+                            alt={`${project.title} Logo`}
                             className={`rounded-full object-cover shadow-md transition-transform duration-300 ${
                                 isActive ? 'w-20 h-20' : 'w-12 h-12'
                             }`}

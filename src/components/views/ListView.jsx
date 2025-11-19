@@ -94,7 +94,7 @@ const ListView = ({ projects, tasks, milestones, onProjectSelect, loading, error
                     onEditClick={onProjectSelect}
                     onDeleteClick={(project) => {
                       // Handle delete with confirmation
-                      if (window.confirm(`Are you sure you want to delete "${project.name}"?`)) {
+                      if (window.confirm(`Are you sure you want to delete "${project.title}"?`)) {
                         console.log('Delete project:', project.id);
                         // TODO: Implement actual delete logic
                       }
@@ -122,7 +122,7 @@ const ListView = ({ projects, tasks, milestones, onProjectSelect, loading, error
                 <div className="space-y-3">
                   {/* Project Name */}
                   <div className="flex items-center justify-between">
-                    <h3 className="font-semibold text-gray-900 text-lg">{project.name}</h3>
+                    <h3 className="font-semibold text-gray-900 text-lg">{project.title}</h3>
                     <span className={`px-2 py-1 text-xs font-medium rounded-full ${project.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
                       {project.status || 'Active'}
                     </span>
@@ -174,7 +174,7 @@ const ListView = ({ projects, tasks, milestones, onProjectSelect, loading, error
                     </button>
                     <button
                       onClick={() => {
-                        if (window.confirm(`Are you sure you want to delete "${project.name}"?`)) {
+                        if (window.confirm(`Are you sure you want to delete "${project.title}"?`)) {
                           console.log('Delete project:', project.id);
                         }
                       }}

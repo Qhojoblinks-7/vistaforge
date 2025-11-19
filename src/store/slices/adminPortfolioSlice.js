@@ -38,7 +38,9 @@ export const deleteTask = createAsyncThunk(
 export const fetchMilestones = createAsyncThunk(
   'adminPortfolio/fetchMilestones',
   async (projectId = null) => {
+    console.log('Admin Portfolio Slice: Fetching milestones with projectId:', projectId);
     const response = await apiService.getMilestones(projectId);
+    console.log('Admin Portfolio Slice: Milestones response:', response);
     return response;
   }
 );
@@ -87,33 +89,21 @@ export const fetchAdminProjects = createAsyncThunk(
       query GetAllManagementProjects {
         allManagementProjects {
           id
+          title
           name
           slug
-          clientType
-          industry
           intro
-          logo
-          projectType
-          designTools
-          designToolsDisplay
-          isDesignProject
-          startingPoint
-          theTransformation
-          journeyEnd
-          visuals
-          deliverables
-          designSystem
+          description
+          status
+          projectPhase
+          budget
+          startDate
+          endDate
           isActive
+          designTools
           order
           createdAt
           updatedAt
-          images {
-            id
-            title
-            imageUrl
-            altText
-            order
-          }
         }
       }
     `;

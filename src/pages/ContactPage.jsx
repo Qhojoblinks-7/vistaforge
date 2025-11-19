@@ -3,11 +3,13 @@ import { Helmet } from 'react-helmet-async';
 import { useSpring, animated } from 'react-spring';
 import { BsArrowRight, BsEnvelope, BsPhone, BsPinMap, BsCheckCircle, BsXCircle } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
-import { submitContactForm } from '../store/slices/contactSlice';
+import { submitPublicInquiry } from '../store/slices/inquiriesSlice';
+import Footer from '../components/Footer';
 
 const ContactPage = () => {
   const dispatch = useDispatch();
-  const { loading, success, error } = useSelector((state) => state.contact);
+  const { loading, error } = useSelector((state) => state.inquiries);
+  const [success, setSuccess] = useState(false);
 
   // Spring animations for the form fields
   const formSpring = useSpring({
@@ -39,18 +41,26 @@ const ContactPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Map form data to API format
+    // Validate required fields
+    if (!formData.name || !formData.email) {
+      console.error('Name and email are required');
+      return;
+    }
+
+    // Map form data to API format for inquiry submission
     const apiData = {
-      name: formData.name,
-      email: formData.email,
-      company: formData.company || '',
+      clientName: formData.name,
+      clientEmail: formData.email,
+      clientCompany: formData.company || '',
+      serviceRequested: formData.project_type || 'OTHER', // backend will handle enum validation
+      budgetRange: formData.budget_range || null,
+      timeline: null, // Not collected in form
       message: formData.message,
-      project_type: formData.project_type || '',
-      budget_range: formData.budget_range || '',
     };
 
     try {
-      await dispatch(submitContactForm(apiData)).unwrap();
+      await dispatch(submitPublicInquiry(apiData)).unwrap();
+      setSuccess(true);
       // Clear form on success
       setFormData({
         name: '',
@@ -60,8 +70,21 @@ const ContactPage = () => {
         project_type: '',
         budget_range: '',
       });
+      // Clear success message after 5 seconds
+      setTimeout(() => setSuccess(false), 5000);
     } catch (error) {
       console.error('Submission failed:', error);
+      let errorMessage = 'An error occurred while submitting your inquiry.';
+      if (error.message && error.message.includes('GraphQL')) {
+        try {
+          const parsedError = JSON.parse(error.message.split(' - ')[1]);
+          if (parsedError.errors && parsedError.errors[0]) {
+            errorMessage = parsedError.errors[0].message;
+          }
+        } catch (e) {
+          // Keep default error message if parsing fails
+        }
+      }
     }
   };
 
@@ -190,7 +213,7 @@ const ContactPage = () => {
             {error && (
               <div className="bg-red-100 text-red-700 p-4 rounded-lg mb-6 text-sm flex items-center">
                 <BsXCircle className="mr-2" />
-                Oops! Something went wrong. Please try again later.
+                {typeof error === 'string' ? error : 'Oops! Something went wrong. Please try again later.'}
               </div>
             )}
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -248,11 +271,15 @@ const ContactPage = () => {
                   className="mt-1 block w-full border-b-2 border-gray-300 bg-transparent py-2 focus:border-[#FBB03B] focus:outline-none transition-colors"
                 >
                   <option value="">Select a service...</option>
-                  <option value="Branding">Branding</option>
-                  <option value="Web Design">Web Design</option>
-                  <option value="UI/UX">UI/UX</option>
-                  <option value="Social Media">Social Media</option>
-                  <option value="Other">Other</option>
+                  <option value="BRANDING">Branding & Logo Design</option>
+                  <option value="WEB_DESIGN">Web Design</option>
+                  <option value="WEB_DEV">Web Development</option>
+                  <option value="UI_UX">UI/UX Design</option>
+                  <option value="MOBILE_APP">Mobile App Development</option>
+                  <option value="SEO">SEO & Digital Marketing</option>
+                  <option value="CONSULTING">Technical Consulting</option>
+                  <option value="MAINTENANCE">Website Maintenance</option>
+                  <option value="OTHER">Other Services</option>
                 </select>
               </div>
               <div>
@@ -267,10 +294,13 @@ const ContactPage = () => {
                   className="mt-1 block w-full border-b-2 border-gray-300 bg-transparent py-2 focus:border-[#FBB03B] focus:outline-none transition-colors"
                 >
                   <option value="">Select budget range...</option>
-                  <option value="$1,000 - $5,000">$1,000 - $5,000</option>
-                  <option value="$5,000 - $10,000">$5,000 - $10,000</option>
-                  <option value="$10,000 - $25,000">$10,000 - $25,000</option>
-                  <option value="$25,000+">$25,000+</option>
+                  <option value="V_UNDER_1K">Under $1,000</option>
+                  <option value="V_SMALL_1K_5K">$1,000 - $5,000</option>
+                  <option value="V_MID_5K_10K">$5,000 - $10,000</option>
+                  <option value="V_MID_10K_25K">$10,000 - $25,000</option>
+                  <option value="V_LARGE_25K_50K">$25,000 - $50,000</option>
+                  <option value="V_OVER_50K">Over $50,000</option>
+                  <option value="V_DISCUSS">To be discussed</option>
                 </select>
               </div>
               <div>
@@ -359,6 +389,8 @@ const ContactPage = () => {
           </button>
         </div>
       </section>
+
+      <Footer />
     </main>
   );
 };
