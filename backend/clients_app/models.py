@@ -172,6 +172,9 @@ class ClientNote(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='client_notes')
     user = models.ForeignKey(User, on_delete=models.CASCADE, help_text="User who created the note")
 
+    # Relationship to inquiry if note originated from an inquiry
+    inquiry = models.ForeignKey('inquiries.Inquiry', on_delete=models.SET_NULL, null=True, blank=True, related_name='client_notes')
+
     NOTE_TYPE_CHOICES = [
         ('GENERAL', 'General Note'),
         ('MEETING', 'Meeting Notes'),

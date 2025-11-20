@@ -1,4 +1,4 @@
-// GraphQL API service for communicating with Django backend
+ // GraphQL API service for communicating with Django backend
 const GRAPHQL_URL = import.meta.env.VITE_GRAPHQL_URL || 'http://localhost:8000/graphql/';
 
 class GraphQLService {
@@ -155,7 +155,6 @@ class GraphQLService {
                         id
                         title
                         description
-                        client
                         status
                         projectPhase
                         budget
@@ -165,6 +164,11 @@ class GraphQLService {
                         designTools
                         createdAt
                         updatedAt
+                        client {
+                            id
+                            name
+                            company
+                        }
                     }
                 }
             `;
@@ -524,7 +528,6 @@ class GraphQLService {
                     title
                     status
                     assignedTo
-                    dueDate
                     description
                     order
                     createdAt
@@ -572,8 +575,8 @@ class GraphQLService {
 
     async updateTask(id, taskData) {
         const mutation = `
-            mutation UpdateTaskMutation($id: ID!, $taskData: TaskUpdateInput!) {
-                updateTask(id: $id, taskData: $taskData) {
+            mutation UpdateProjectTaskMutation($id: ID!, $input: ProjectTaskInput!) {
+                updateProjectTask(id: $id, input: $input) {
                     task {
                         id
                         project {
@@ -583,24 +586,17 @@ class GraphQLService {
                         title
                         status
                         assignedTo
-                        dueDate
                         description
                         order
                         createdAt
                         updatedAt
                     }
-                    errors
                 }
             }
         `;
 
-        const result = await this.request(mutation, { id, taskData });
-
-        if (result.updateTask.errors && result.updateTask.errors.length > 0) {
-            throw new Error(`Task update failed: ${result.updateTask.errors.join(', ')}`);
-        }
-
-        return result.updateTask.task;
+        const result = await this.request(mutation, { id, input: taskData });
+        return result.updateProjectTask.task;
     }
 
     async deleteTask(id) {
@@ -731,6 +727,64 @@ class GraphQLService {
         }
 
         return result.deleteMilestone.success;
+    }
+
+    async getTimeLogs() {
+      const query = `
+        query GetTimeLogs {
+          allTimeLogs {
+            id
+            client {
+              id
+              name
+            }
+            description
+            taskName
+            durationMinutes
+            isBillable
+            status
+            startTime
+            endTime
+            createdAt
+            updatedAt
+          }
+        }
+      `;
+
+      const result = await this.request(query);
+      return result.allTimeLogs;
+    }
+
+    async getInvoices() {
+      const query = `
+        query GetInvoices {
+          allInvoices {
+            id
+            invoiceNumber
+            client {
+              id
+              name
+            }
+            project {
+              id
+              title
+            }
+            issueDate
+            dueDate
+            status
+            subtotal
+            tax
+            discount
+            total
+            paidDate
+            createdAt
+            updatedAt
+          }
+        }
+      `;
+
+      const result = await this.request(query);
+      return result.allInvoices;
     }
 }
 

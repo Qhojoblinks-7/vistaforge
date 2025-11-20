@@ -7,16 +7,16 @@ const RecentActivityFeed = ({ timeLogs = [], invoices = [] }) => {
     ...timeLogs.map(log => ({
       id: `timelog-${log.id}`,
       type: 'timelog',
-      message: `Logged ${log.duration_hours}h on '${log.project_name}'`,
-      timestamp: new Date(log.created_at),
+      message: `Logged ${(log.durationMinutes / 60).toFixed(1)}h on '${log.client?.name || 'Unknown'}'`,
+      timestamp: new Date(log.createdAt),
       icon: BsClock,
       color: 'text-blue-600'
     })),
     ...invoices.map(invoice => ({
       id: `invoice-${invoice.id}`,
       type: 'invoice',
-      message: `Invoice #${invoice.id} status changed to ${invoice.status}`,
-      timestamp: new Date(invoice.updated_at),
+      message: `Invoice #${invoice.invoiceNumber} status changed to ${invoice.status}`,
+      timestamp: new Date(invoice.updatedAt),
       icon: BsFileText,
       color: 'text-green-600'
     }))
@@ -38,7 +38,7 @@ const RecentActivityFeed = ({ timeLogs = [], invoices = [] }) => {
         <BsPlayCircle className="mr-2 text-[#0015AA]" />
         Recent Activity
       </h3>
-      <div className="space-y-3 max-h-80 overflow-y-auto">
+      <div className="space-y-3 max-h-80 overflow-y-auto scrollbar-hide" style={{ scrollbarWidth: 'none' }}>
         {activities.map(activity => (
           <div key={activity.id} className="flex items-start space-x-3 p-3 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 hover:bg-white/20 transition-all duration-300 transform hover:scale-105">
             <activity.icon className={`mt-0.5 text-white`} size={16} />

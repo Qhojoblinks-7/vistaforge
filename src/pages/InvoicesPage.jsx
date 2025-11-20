@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Helmet } from 'react-helmet-async';
 import { useDispatch, useSelector } from 'react-redux';
-import { BsReceipt, BsPlus, BsDownload, BsEye, BsSend, BsFilter, BsBarChart, BsTrash, BsPencil, BsCheckCircle, BsExclamationTriangle } from 'react-icons/bs';
+import { BsReceipt, BsPlus, BsDownload, BsEye, BsSend, BsFilter, BsTrash, BsPencil, BsCheckCircle, BsExclamationTriangle } from 'react-icons/bs';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import {
@@ -21,10 +20,20 @@ import {
 import { fetchClients } from '../modules/Clients/services/clientsSlice';
 import { fetchPublicProjects } from '../store/slices/publicPortfolioSlice';
 
+// Import shared components
+import PageLayout from '../components/common/PageLayout';
+import PageHeader from '../components/common/PageHeader';
+import DataTable from '../components/common/DataTable';
+import MetricCard from '../components/common/MetricCard';
+import FilterPanel, { SelectFilter, DateRangeFilter } from '../components/common/FilterPanel';
+import { FormModal } from '../components/common/Modal';
+
 // Import components
 import InvoiceGenerator from '../components/InvoiceGenerator';
 import InvoiceViewer from '../components/InvoiceViewer';
-import InvoiceFilters from '../components/InvoiceFilters';
+
+// Remove unused imports
+// import InvoiceFilters from '../components/InvoiceFilters';
 
 const InvoicesPage = () => {
   const dispatch = useDispatch();
@@ -638,13 +647,6 @@ const InvoicesPage = () => {
     }
   };
 
-  // Handle sorting
-  const handleSort = (column) => {
-    const newOrder = sortBy === column && sortOrder === 'asc' ? 'desc' : 'asc';
-    dispatch(setSorting({ sortBy: column, sortOrder: newOrder }));
-    dispatch(fetchInvoices());
-  };
-
   // Handle filters
   const handleFiltersChange = (newFilters) => {
     dispatch(setFilters(newFilters));
@@ -658,325 +660,166 @@ const InvoicesPage = () => {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'Paid': return 'bg-green-100 text-green-800';
-      case 'Sent': return 'bg-blue-100 text-blue-800';
-      case 'Overdue': return 'bg-red-100 text-red-800';
+      case 'paid': return 'bg-green-100 text-green-800';
+      case 'sent': return 'bg-blue-100 text-blue-800';
+      case 'overdue': return 'bg-red-100 text-red-800';
+      case 'draft': return 'bg-gray-100 text-gray-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
 
+  const getStatusIcon = (status) => {
+    switch (status) {
+      case 'paid': return <BsCheckCircle className="text-green-500" size={16} />;
+      case 'sent': return <BsSend className="text-blue-500" size={16} />;
+      case 'overdue': return <BsExclamationTriangle className="text-red-500" size={16} />;
+      case 'draft': return <BsReceipt className="text-gray-500" size={16} />;
+      default: return <BsReceipt className="text-gray-500" size={16} />;
+    }
+  };
+
+  const tableColumns = [
+    { key: 'invoice_number', header: 'Invoice #', sortable: true },
+    { key: 'client', header: 'Client', sortable: true, render: (value) => value?.name || '—' },
+    { key: 'total', header: 'Amount', sortable: true, render: (value) => `$${parseFloat(value || 0).toFixed(2)}` },
+    { key: 'status', header: 'Status', render: (value) => (
+      <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${getStatusColor(value)}`}>
+        {getStatusIcon(value)}
+        <span className="ml-1 capitalize">{value || 'draft'}</span>
+      </span>
+    )},
+    { key: 'due_date', header: 'Due Date', sortable: true, render: (value) => value ? new Date(value).toLocaleDateString() : '—' },
+    { key: 'issue_date', header: 'Issue Date', sortable: true, render: (value) => value ? new Date(value).toLocaleDateString() : '—' }
+  ];
+
+  const tableActions = [
+    { icon: <BsEye />, label: 'View', onClick: handleViewInvoice },
+    { icon: <BsDownload />, label: 'Download', onClick: (invoice) => handleDownloadInvoice(invoice.id) },
+    { icon: <BsSend />, label: 'Send', onClick: (invoice) => handleSendInvoice(invoice.id), variant: 'primary' },
+    { icon: <BsCheckCircle />, label: 'Mark Paid', onClick: (invoice) => handleMarkPaid(invoice.id), variant: 'success' },
+    { icon: <BsTrash />, label: 'Delete', onClick: (invoice) => handleDeleteInvoice(invoice.id), variant: 'danger' }
+  ];
+
   return (
-    <div className="min-h-screen bg-gray-50 py-8 relative overflow-hidden">
-      {/* Background Banner */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0015AA]/5 via-transparent to-[#FBB03B]/5"></div>
-      <div className="absolute top-20 right-20 w-64 h-64 bg-[#FBB03B]/10 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-32 left-16 w-48 h-48 bg-[#0015AA]/8 rounded-full blur-2xl"></div>
-      <div className="absolute top-1/2 left-1/3 w-32 h-32 bg-blue-400/6 rounded-full blur-xl"></div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <Helmet>
-          <title>Invoices - Freespec</title>
-          <meta name="description" content="Generate, track, and manage your invoices" />
-        </Helmet>
-
-        {/* Analytics Dashboard */}
-        <div className="mb-8 grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="bg-gradient-to-r from-[#0015AA] to-[#003366] rounded-xl p-6 text-white shadow-lg">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-blue-100 text-sm font-medium">Total Revenue</p>
-                <p className="text-2xl font-bold">${analytics.totalRevenue?.toFixed(2) || '0.00'}</p>
-              </div>
-              <BsBarChart className="text-blue-200" size={24} />
-            </div>
-          </div>
-
-          <div className="bg-gradient-to-r from-[#FBB03B] to-[#E0A030] rounded-xl p-6 text-white shadow-lg">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-orange-100 text-sm font-medium">Pending Amount</p>
-                <p className="text-2xl font-bold">${analytics.pendingAmount?.toFixed(2) || '0.00'}</p>
-              </div>
-              <BsReceipt className="text-orange-200" size={24} />
-            </div>
-          </div>
-
-          <div className="bg-gradient-to-r from-green-500 to-green-600 rounded-xl p-6 text-white shadow-lg">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-green-100 text-sm font-medium">Paid Amount</p>
-                <p className="text-2xl font-bold">${analytics.paidAmount?.toFixed(2) || '0.00'}</p>
-              </div>
-              <BsCheckCircle className="text-green-200" size={24} />
-            </div>
-          </div>
-
-          <div className="bg-gradient-to-r from-red-500 to-red-600 rounded-xl p-6 text-white shadow-lg">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-red-100 text-sm font-medium">Overdue Amount</p>
-                <p className="text-2xl font-bold">${analytics.overdueAmount?.toFixed(2) || '0.00'}</p>
-              </div>
-              <BsExclamationTriangle className="text-red-200" size={24} />
-            </div>
-          </div>
-        </div>
-
-        {/* Header with CTA and Banner Background */}
-        <div className="mb-8 relative">
-          {/* Header Banner Background */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0015AA]/10 via-[#FBB03B]/5 to-[#0015AA]/10 rounded-xl"></div>
-          <div className="absolute top-4 right-8 w-24 h-24 bg-[#FBB03B]/20 rounded-full blur-xl"></div>
-          <div className="absolute bottom-2 left-12 w-16 h-16 bg-[#0015AA]/15 rounded-full blur-lg"></div>
-
-          <div className="relative z-10 flex items-center justify-between py-6 px-6">
-            <div>
-              <p className="text-gray-700 font-medium">Generate, track, and manage your invoices</p>
-              <p className="text-sm text-gray-500 mt-1">{invoices.length} total invoices</p>
-            </div>
-            <div className="flex space-x-3">
-              <button
-                onClick={() => setShowFilters(!showFilters)}
-                className="bg-gray-100 text-gray-700 px-4 py-3 rounded-lg hover:bg-gray-200 transition-all duration-200 flex items-center font-semibold"
-              >
-                <BsFilter className="mr-2" size={16} />
-                Filters
-              </button>
-              <button
-                onClick={() => setShowGenerator(true)}
-                className="bg-[#0015AA] text-white px-6 py-3 rounded-lg hover:bg-[#003366] shadow-lg hover:shadow-xl transition-all duration-300 flex items-center font-semibold hover:-translate-y-0.5"
-              >
-                <BsPlus className="mr-2" size={18} />
-                Create Invoice
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Filters */}
-        {showFilters && (
-          <InvoiceFilters
-            filters={filters}
-            onFiltersChange={handleFiltersChange}
-            onClearFilters={handleClearFilters}
-            clients={clients}
-            projects={projects}
-          />
-        )}
-
-        {/* Invoices Table - Primary Content */}
-        <div className="bg-white rounded-lg shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300">
-          <div className="px-6 py-5 border-b border-gray-200 bg-gradient-to-r from-[#0015AA] to-[#003366]">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-bold text-white">All Invoices</h2>
-              <div className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center">
-                <BsReceipt className="text-white" size={16} />
-              </div>
-            </div>
-          </div>
-
-          {loading && (
-            <div className="flex items-center justify-center py-12">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#0015AA]"></div>
-              <span className="ml-3 text-gray-600">Loading invoices...</span>
-            </div>
-          )}
-
-          {error && (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-4 m-6">
-              <div className="flex">
-                <div className="flex-shrink-0">
-                  <BsExclamationTriangle className="h-5 w-5 text-red-400" />
-                </div>
-                <div className="ml-3">
-                  <h3 className="text-sm font-medium text-red-800">Error loading invoices</h3>
-                  <div className="mt-2 text-sm text-red-700">{error}</div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {!loading && !error && (
-            <>
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors"
-                        onClick={() => handleSort('invoice_number')}
-                      >
-                        Invoice ID
-                        {sortBy === 'invoice_number' && (
-                          <span className="ml-1">{sortOrder === 'asc' ? '↑' : '↓'}</span>
-                        )}
-                      </th>
-                      <th
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors"
-                        onClick={() => handleSort('client_name')}
-                      >
-                        Client
-                        {sortBy === 'client_name' && (
-                          <span className="ml-1">{sortOrder === 'asc' ? '↑' : '↓'}</span>
-                        )}
-                      </th>
-                      <th
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors"
-                        onClick={() => handleSort('total')}
-                      >
-                        Amount
-                        {sortBy === 'total' && (
-                          <span className="ml-1">{sortOrder === 'asc' ? '↑' : '↓'}</span>
-                        )}
-                      </th>
-                      <th
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors"
-                        onClick={() => handleSort('status')}
-                      >
-                        Status
-                        {sortBy === 'status' && (
-                          <span className="ml-1">{sortOrder === 'asc' ? '↑' : '↓'}</span>
-                        )}
-                      </th>
-                      <th
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors"
-                        onClick={() => handleSort('due_date')}
-                      >
-                        Due Date
-                        {sortBy === 'due_date' && (
-                          <span className="ml-1">{sortOrder === 'asc' ? '↑' : '↓'}</span>
-                        )}
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Actions
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-100">
-                    {invoices.map((invoice, index) => (
-                      <tr key={invoice.id || invoice.invoice_number} className={`hover:bg-gradient-to-r hover:from-gray-50 hover:to-white transition-colors duration-200 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'}`}>
-                        <td className="px-6 py-5 whitespace-nowrap">
-                          <div className="flex items-center">
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold mr-3 ${
-                              invoice.status === 'paid' ? 'bg-green-100 text-green-800' :
-                              invoice.status === 'sent' ? 'bg-blue-100 text-blue-800' :
-                              invoice.status === 'overdue' ? 'bg-red-100 text-red-800' :
-                              'bg-gray-100 text-gray-700'
-                            }`}>
-                              {(invoice.invoice_number || invoice.id || '').split('-').pop()?.[0] || 'I'}
-                            </div>
-                            <div>
-                              <div className="text-sm font-bold text-gray-900">{invoice.invoice_number || invoice.id}</div>
-                              <div className="text-xs text-gray-500">Created: {new Date(invoice.created_at || invoice.issue_date).toLocaleDateString()}</div>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="px-6 py-5 whitespace-nowrap">
-                          <div className="text-sm font-semibold text-[#0015AA]">{invoice.client_name || invoice.client?.name || 'N/A'}</div>
-                        </td>
-                        <td className="px-6 py-5 whitespace-nowrap">
-                          <div className="text-lg font-bold text-gray-900">${(invoice.total || invoice.amount || 0).toFixed(2)}</div>
-                          <div className="text-xs text-gray-500">USD</div>
-                        </td>
-                        <td className="px-6 py-5 whitespace-nowrap">
-                          <span className={`inline-flex px-3 py-1 text-xs font-bold rounded-full shadow-sm capitalize ${
-                            invoice.status === 'paid' ? 'bg-green-100 text-green-800' :
-                            invoice.status === 'sent' ? 'bg-blue-100 text-blue-800' :
-                            invoice.status === 'overdue' ? 'bg-red-100 text-red-800' :
-                            'bg-gray-100 text-gray-700'
-                          }`}>
-                            {invoice.status || 'draft'}
-                          </span>
-                        </td>
-                        <td className="px-6 py-5 whitespace-nowrap">
-                          <div className="text-sm font-medium text-gray-900">{new Date(invoice.due_date).toLocaleDateString()}</div>
-                          <div className={`text-xs font-medium ${
-                            invoice.status === 'overdue' ? 'text-red-600' :
-                            new Date(invoice.due_date) < new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) ? 'text-orange-600' :
-                            'text-gray-600'
-                          }`}>
-                            {invoice.status === 'overdue' ? 'Overdue' :
-                             new Date(invoice.due_date) < new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) ? 'Due soon' :
-                             'On track'}
-                          </div>
-                        </td>
-                        <td className="px-6 py-5 whitespace-nowrap">
-                          <div className="flex space-x-2">
-                            <button
-                              onClick={() => handleViewInvoice(invoice)}
-                              className="bg-[#0015AA] text-white p-2 rounded-md hover:bg-[#003366] transition-all duration-200 flex items-center shadow-sm hover:shadow-md hover:shadow-lg hover:-translate-y-0.5"
-                              title="View Invoice"
-                            >
-                              <BsEye size={14} />
-                            </button>
-                            <button
-                              onClick={() => handleDownloadInvoice(invoice.id)}
-                              className="bg-[#FBB03B] text-white p-2 rounded-md hover:bg-[#E0A030] transition-all duration-200 flex items-center shadow-sm hover:shadow-md hover:shadow-lg hover:-translate-y-0.5"
-                              title="Download Invoice"
-                            >
-                              <BsDownload size={14} />
-                            </button>
-                            {invoice.status === 'draft' && (
-                              <button
-                                onClick={() => handleSendInvoice(invoice.id)}
-                                className="bg-green-600 text-white p-2 rounded-md hover:bg-green-700 transition-all duration-200 flex items-center shadow-sm hover:shadow-md hover:shadow-lg hover:-translate-y-0.5"
-                                title="Send Invoice"
-                              >
-                                <BsSend size={14} />
-                              </button>
-                            )}
-                            {(invoice.status === 'sent' || invoice.status === 'overdue') && (
-                              <button
-                                onClick={() => handleSendInvoice(invoice.id)}
-                                className="bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 transition-all duration-200 flex items-center shadow-sm hover:shadow-md hover:shadow-lg hover:-translate-y-0.5"
-                                title="Resend Invoice"
-                              >
-                                <BsSend size={14} />
-                              </button>
-                            )}
-                            {(invoice.status === 'sent' || invoice.status === 'overdue') && (
-                              <button
-                                onClick={() => handleMarkPaid(invoice.id)}
-                                className="bg-green-600 text-white p-2 rounded-md hover:bg-green-700 transition-all duration-200 flex items-center shadow-sm hover:shadow-md hover:shadow-lg hover:-translate-y-0.5"
-                                title="Mark as Paid"
-                              >
-                                <BsCheckCircle size={14} />
-                              </button>
-                            )}
-                            <button
-                              onClick={() => handleDeleteInvoice(invoice.id)}
-                              className="bg-red-600 text-white p-2 rounded-md hover:bg-red-700 transition-all duration-200 flex items-center shadow-sm hover:shadow-md hover:shadow-lg hover:-translate-y-0.5"
-                              title="Delete Invoice"
-                            >
-                              <BsTrash size={14} />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-
-              {invoices.length === 0 && (
-                <div className="text-center py-16 bg-gradient-to-br from-gray-50 to-white">
-                  <div className="w-20 h-20 bg-[#0015AA]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <BsReceipt className="h-10 w-10 text-[#0015AA]" />
-                  </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">No invoices yet</h3>
-                  <p className="text-gray-600 mb-6 max-w-md mx-auto">Create your first invoice to start managing your billing and get paid faster.</p>
-                  <button
-                    onClick={() => setShowGenerator(true)}
-                    className="bg-[#0015AA] text-white px-6 py-3 rounded-lg hover:bg-[#003366] shadow-lg hover:shadow-xl transition-all duration-300 font-semibold hover:-translate-y-0.5"
-                  >
-                    Create Your First Invoice
-                  </button>
-                </div>
-              )}
-            </>
-          )}
-        </div>
+    <PageLayout
+      title="Invoices"
+      description="Manage and track your invoices"
+      keywords="invoices, billing, payments, finance"
+    >
+      {/* Analytics Dashboard */}
+      <div className="mb-8 grid grid-cols-1 md:grid-cols-5 gap-6">
+        <MetricCard
+          title="Total Invoices"
+          value={analytics?.totalInvoices || 0}
+          icon={<BsReceipt size={24} />}
+          color="primary"
+        />
+        <MetricCard
+          title="Paid"
+          value={`$${analytics?.totalPaid || 0}`}
+          icon={<BsCheckCircle size={24} />}
+          color="success"
+        />
+        <MetricCard
+          title="Pending"
+          value={`$${analytics?.totalPending || 0}`}
+          icon={<BsSend size={24} />}
+          color="warning"
+        />
+        <MetricCard
+          title="Overdue"
+          value={`$${analytics?.totalOverdue || 0}`}
+          icon={<BsExclamationTriangle size={24} />}
+          color="danger"
+        />
+        <MetricCard
+          title="This Month"
+          value={`$${analytics?.monthlyTotal || 0}`}
+          icon={<BsBarChart size={24} />}
+          color="secondary"
+        />
       </div>
+
+      <PageHeader
+        title="Invoice Management"
+        description="Manage your invoices and track payments"
+        stats={[
+          { label: 'total', value: invoices.length },
+          { label: 'paid', value: invoices.filter(inv => inv.status === 'paid').length },
+          { label: 'pending', value: invoices.filter(inv => inv.status === 'sent').length }
+        ]}
+        actions={[
+          {
+            label: 'Filters',
+            icon: <BsFilter size={16} />,
+            onClick: () => setShowFilters(!showFilters),
+            variant: showFilters ? 'secondary' : 'default'
+          },
+          {
+            label: 'Create Invoice',
+            icon: <BsPlus size={18} />,
+            onClick: () => setShowGenerator(true),
+            variant: 'primary'
+          }
+        ]}
+      />
+
+      {/* Filters */}
+      {showFilters && (
+        <FilterPanel
+          isOpen={showFilters}
+          onToggle={() => setShowFilters(!showFilters)}
+          onClearFilters={handleClearFilters}
+        >
+          <SelectFilter
+            label="Status"
+            value={filters.status || ''}
+            onChange={(value) => handleFiltersChange({ ...filters, status: value })}
+            options={[
+              { value: 'draft', label: 'Draft' },
+              { value: 'sent', label: 'Sent' },
+              { value: 'paid', label: 'Paid' },
+              { value: 'overdue', label: 'Overdue' }
+            ]}
+          />
+          <SelectFilter
+            label="Client"
+            value={filters.client_id || ''}
+            onChange={(value) => handleFiltersChange({ ...filters, client_id: value })}
+            options={clients.map(client => ({ value: client.id, label: client.name }))}
+          />
+          <DateRangeFilter
+            label="Date Range"
+            startDate={filters.start_date || ''}
+            endDate={filters.end_date || ''}
+            onStartDateChange={(value) => handleFiltersChange({ ...filters, start_date: value })}
+            onEndDateChange={(value) => handleFiltersChange({ ...filters, end_date: value })}
+          />
+        </FilterPanel>
+      )}
+
+      {/* Invoices Table */}
+      <DataTable
+        title="All Invoices"
+        subtitle={`${invoices.length} total invoices`}
+        columns={tableColumns}
+        data={invoices}
+        loading={loading}
+        error={error}
+        emptyMessage="No invoices found. Create your first invoice to get started."
+        emptyAction={{
+          label: 'Create Invoice',
+          onClick: () => setShowGenerator(true)
+        }}
+        actions={tableActions}
+        headerActions={[
+          {
+            label: 'Export CSV',
+            icon: <BsDownload size={16} />,
+            onClick: () => {/* TODO: Implement CSV export */}
+          }
+        ]}
+      />
 
       {/* Modals */}
       <InvoiceGenerator
@@ -995,7 +838,7 @@ const InvoicesPage = () => {
         onSend={handleSendInvoice}
         onMarkPaid={handleMarkPaid}
       />
-    </div>
+    </PageLayout>
   );
 };
 

@@ -129,6 +129,9 @@ class Invoice(models.Model):
     # Additional information
     notes = models.TextField(blank=True, null=True, help_text="Invoice notes")
 
+    # Relationship to time logs being billed (many-to-many)
+    billed_time_logs = models.ManyToManyField('time_logs_app.TimeLog', blank=True, related_name='invoices', help_text="Time logs included in this invoice")
+
     # Metadata
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

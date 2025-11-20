@@ -1,9 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { BsPlus, BsPerson, BsFolder } from 'react-icons/bs';
+import { fetchClients, createClient } from '../modules/Clients/services/clientsSlice';
+import { createProject } from '../modules/Projects/services/projectsSlice';
 
 const QuickClientProjectEntry = () => {
+  const dispatch = useDispatch();
   const [showClientModal, setShowClientModal] = useState(false);
   const [showProjectModal, setShowProjectModal] = useState(false);
+
+  const { clients, loading: clientsLoading } = useSelector((state) => state.clients);
 
   const [clientForm, setClientForm] = useState({
     name: '',
@@ -12,27 +18,49 @@ const QuickClientProjectEntry = () => {
   });
 
   const [projectForm, setProjectForm] = useState({
-    name: '',
+    title: '',
     clientId: '',
     description: '',
-    dueDate: '',
-    projectRate: ''
+    endDate: '',
+    hourlyRate: ''
   });
 
-  const handleClientSubmit = (e) => {
+  useEffect(() => {
+    if (clients.length === 0) {
+      dispatch(fetchClients());
+    }
+  }, [dispatch, clients.length]);
+
+  const handleClientSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Implement client creation
-    console.log('Creating client:', clientForm);
-    setShowClientModal(false);
-    setClientForm({ name: '', email: '', company: '' });
+    try {
+      await dispatch(createClient({
+        name: clientForm.name,
+        contactEmail: clientForm.email,
+        company: clientForm.company
+      })).unwrap();
+      setShowClientModal(false);
+      setClientForm({ name: '', email: '', company: '' });
+    } catch (error) {
+      console.error('Failed to create client:', error);
+    }
   };
 
-  const handleProjectSubmit = (e) => {
+  const handleProjectSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Implement project creation
-    console.log('Creating project:', projectForm);
-    setShowProjectModal(false);
-    setProjectForm({ name: '', clientId: '', description: '', dueDate: '', projectRate: '' });
+    try {
+      await dispatch(createProject({
+        title: projectForm.title,
+        clientId: projectForm.clientId,
+        description: projectForm.description,
+        endDate: projectForm.endDate,
+        hourlyRate: parseFloat(projectForm.hourlyRate) || 0
+      })).unwrap();
+      setShowProjectModal(false);
+      setProjectForm({ title: '', clientId: '', description: '', endDate: '', hourlyRate: '' });
+    } catch (error) {
+      console.error('Failed to create project:', error);
+    }
   };
 
   return (
@@ -120,11 +148,11 @@ const QuickClientProjectEntry = () => {
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Add New Project</h3>
             <form onSubmit={handleProjectSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Project Name</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Project Title</label>
                 <input
                   type="text"
-                  value={projectForm.name}
-                  onChange={(e) => setProjectForm({...projectForm, name: e.target.value})}
+                  value={projectForm.title}
+                  onChange={(e) => setProjectForm({...projectForm, title: e.target.value})}
                   className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
                   required
                 />
@@ -136,11 +164,16 @@ const QuickClientProjectEntry = () => {
                   onChange={(e) => setProjectForm({...projectForm, clientId: e.target.value})}
                   className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
                   required
+                  disabled={clientsLoading}
                 >
-                  <option value="">Select a client</option>
-                  {/* TODO: Populate with actual clients */}
-                  <option value="1">Client 1</option>
-                  <option value="2">Client 2</option>
+                  <option value="">
+                    {clientsLoading ? 'Loading clients...' : 'Select a client'}
+                  </option>
+                  {clients.map(client => (
+                    <option key={client.id} value={client.id}>
+                      {client.name} {client.company ? `(${client.company})` : ''}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div>
@@ -157,8 +190,8 @@ const QuickClientProjectEntry = () => {
                   <label className="block text-sm font-medium text-gray-700 mb-1">Due Date</label>
                   <input
                     type="date"
-                    value={projectForm.dueDate}
-                    onChange={(e) => setProjectForm({...projectForm, dueDate: e.target.value})}
+                    value={projectForm.endDate}
+                    onChange={(e) => setProjectForm({...projectForm, endDate: e.target.value})}
                     className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
                   />
                 </div>
@@ -166,8 +199,8 @@ const QuickClientProjectEntry = () => {
                   <label className="block text-sm font-medium text-gray-700 mb-1">Rate ($/hr)</label>
                   <input
                     type="number"
-                    value={projectForm.projectRate}
-                    onChange={(e) => setProjectForm({...projectForm, projectRate: e.target.value})}
+                    value={projectForm.hourlyRate}
+                    onChange={(e) => setProjectForm({...projectForm, hourlyRate: e.target.value})}
                     className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
                   />
                 </div>

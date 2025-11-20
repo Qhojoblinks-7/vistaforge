@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import { BsPlus, BsGrid, BsList, BsKanban, BsClock, BsCurrencyDollar, BsCalendar, BsPeople } from 'react-icons/bs';
 
 // Redux imports
@@ -32,6 +33,7 @@ import FinancialMetricsPanel from '../components/FinancialMetricsPanel';
 import RecentActivityFeed from '../components/RecentActivityFeed';
 import UpcomingDeadlinesWidget from '../components/UpcomingDeadlinesWidget';
 import QuickClientProjectEntry from '../components/QuickClientProjectEntry';
+import ProjectDetailView from '../modules/Projects/screens/ProjectDetailView';
 
 // API service for logout
 import apiService from '../services/api';
@@ -46,17 +48,27 @@ const ProjectManagementPage = () => {
   const [showProjectModal, setShowProjectModal] = useState(false);
   const [showClientModal, setShowClientModal] = useState(false);
 
-  const {
-    projects,
-    loading,
-    error,
-    filters,
-    sortBy,
-    sortOrder,
-    currentProject
-  } = useSelector((state) => state.projects);
+  const projectsState = useSelector((state) => state.projects);
+  const projectsArray = Array.isArray(projectsState) ? projectsState : projectsState.projects || [];
+  const loading = projectsState.loading || false;
+  const error = projectsState.error || null;
+  const filters = projectsState.filters || {};
+  const sortBy = projectsState.sortBy || 'createdAt';
+  const sortOrder = projectsState.sortOrder || 'desc';
+  const currentProject = projectsState.currentProject || null;
 
   const { clients } = useSelector((state) => state.clients);
+
+  // Fetch time logs and invoices with React Query
+  const { data: timeLogs = [] } = useQuery({
+    queryKey: ['timelogs'],
+    queryFn: () => apiService.getTimeLogs()
+  });
+
+  const { data: invoices = [] } = useQuery({
+    queryKey: ['invoices'],
+    queryFn: () => apiService.getInvoices()
+  });
 
   // Check authentication via token
   const token = localStorage.getItem('adminToken');
@@ -99,6 +111,7 @@ const ProjectManagementPage = () => {
 
   const handleProjectSelect = (project) => {
     setSelectedProject(project);
+    dispatch(setCurrentProject(project));
     setActiveView('project-detail');
   };
 
@@ -109,7 +122,10 @@ const ProjectManagementPage = () => {
   const handleProjectCreated = async (projectData) => {
     try {
       // Use backend-integrated action that leverages automatic model relationships
-      await dispatch(createProjectWithRelationships(projectData)).unwrap();
+      const newProject = await dispatch(createProjectWithRelationships(projectData)).unwrap();
+
+      // Sync the creation in Redux state
+      dispatch(syncProjectCreation(newProject));
 
       // Backend automatically handles:
       // - Client project count updates
@@ -132,18 +148,60 @@ const ProjectManagementPage = () => {
     setShowClientModal(false);
   };
 
-  // Calculate metrics
-  const totalProjects = projects.length;
-  const activeProjects = projects.filter(p => p.status === 'IN_PROGRESS').length;
-  const completedProjects = projects.filter(p => p.status === 'COMPLETED').length;
-  const totalBudget = projects.reduce((sum, p) => sum + parseFloat(p.budget || 0), 0);
+  const handleFilterChange = (newFilters) => {
+    dispatch(setFilters(newFilters));
+  };
 
-  // Mock data for components that need it
-  const mockTimeLogs = [];
-  const mockInvoices = [];
-  const mockUnbilledAmount = 0;
-  const mockTotalRevenue = totalBudget;
-  const mockOverdueInvoices = 0;
+  const handleSortChange = (sortBy, sortOrder) => {
+    dispatch(setSorting({ sortBy, sortOrder }));
+  };
+
+  const handleProjectUpdate = async (projectId, projectData) => {
+    try {
+      await dispatch(updateProjectWithRelationships({ id: projectId, data: projectData })).unwrap();
+      dispatch(syncProjectUpdate(projectData));
+    } catch (error) {
+      console.error('Failed to update project:', error);
+    }
+  };
+
+  const handleProjectComplete = async (projectId) => {
+    try {
+      await dispatch(completeProjectWithRelationships(projectId)).unwrap();
+      dispatch(syncProjectUpdate({ id: projectId, status: 'COMPLETED' }));
+    } catch (error) {
+      console.error('Failed to complete project:', error);
+    }
+  };
+
+  const handleProjectDelete = async (projectId) => {
+    try {
+      await dispatch(syncProjectDeletion(projectId));
+    } catch (error) {
+      console.error('Failed to delete project:', error);
+    }
+  };
+
+  // Calculate metrics
+  const totalProjects = projectsArray.length;
+  const activeProjects = projectsArray.filter(p => p.status === 'IN_PROGRESS').length;
+  const completedProjects = projectsArray.filter(p => p.status === 'COMPLETED').length;
+  const totalBudget = projectsArray.reduce((sum, p) => sum + parseFloat(p.budget || 0), 0);
+
+  // Calculate real metrics from fetched data
+  const unbilledAmount = timeLogs?.filter(log => log.isBillable)
+    .reduce((sum, log) => sum + parseFloat(log.durationMinutes || 0) / 60 * parseFloat(log.hourlyRate || 0), 0) || 0;
+
+  const totalRevenue = invoices?.filter(inv => inv.status === 'PAID')
+    .reduce((sum, inv) => sum + parseFloat(inv.total || 0), 0) || 0;
+
+  const overdueInvoices = invoices?.filter(inv =>
+    inv.status === 'SENT' && new Date(inv.dueDate) < new Date()
+  ).length || 0;
+
+  const upcomingDeadlines = projectsArray?.filter(p => p.endDate)
+    .sort((a, b) => new Date(a.endDate) - new Date(b.endDate))
+    .slice(0, 5) || [];
 
   // Handle logout
   const handleLogout = async () => {
@@ -189,7 +247,7 @@ const ProjectManagementPage = () => {
 
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {projects.map((project) => (
+        {projectsArray.map((project) => (
           <div
             key={project.id}
             className="bg-white rounded-lg shadow-lg border border-gray-100 p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer"
@@ -214,11 +272,49 @@ const ProjectManagementPage = () => {
               <p className="text-sm text-gray-700 mb-4 line-clamp-2">{project.description}</p>
             )}
 
-            <div className="flex justify-between items-center text-sm text-gray-600">
+            <div className="flex justify-between items-center text-sm text-gray-600 mb-4">
               <span>Budget: ${project.budget}</span>
               {project.endDate && (
                 <span>Due: {new Date(project.endDate).toLocaleDateString()}</span>
               )}
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                {project.status !== 'COMPLETED' && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleProjectComplete(project.id);
+                    }}
+                    className="px-3 py-1 bg-green-500 text-white text-xs rounded hover:bg-green-600"
+                  >
+                    Complete
+                  </button>
+                )}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    // Could open edit modal here
+                    console.log('Edit project:', project.id);
+                  }}
+                  className="px-3 py-1 bg-blue-500 text-white text-xs rounded hover:bg-blue-600"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (window.confirm('Are you sure you want to delete this project?')) {
+                      handleProjectDelete(project.id);
+                    }
+                  }}
+                  className="px-3 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600"
+                >
+                  Delete
+                </button>
+              </div>
             </div>
           </div>
         ))}
@@ -307,9 +403,9 @@ const ProjectManagementPage = () => {
           <div className="space-y-8">
             {/* Financial Metrics */}
             <FinancialMetricsPanel
-              unbilledAmount={mockUnbilledAmount}
-              totalRevenue={mockTotalRevenue}
-              overdueInvoices={mockOverdueInvoices}
+              unbilledAmount={unbilledAmount}
+              totalRevenue={totalRevenue}
+              overdueInvoices={overdueInvoices}
             />
 
             {/* Project Overview Cards */}
@@ -356,18 +452,51 @@ const ProjectManagementPage = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Recent Activity */}
               <div className="lg:col-span-2">
-                <RecentActivityFeed timeLogs={mockTimeLogs} invoices={mockInvoices} />
+                <RecentActivityFeed timeLogs={timeLogs} invoices={invoices} />
               </div>
 
               {/* Upcoming Deadlines */}
               <div>
-                <UpcomingDeadlinesWidget projects={projects} />
+                <UpcomingDeadlinesWidget projects={projectsArray} />
               </div>
             </div>
 
             {/* Projects List */}
             <div className="bg-white rounded-lg shadow-lg border border-gray-100 p-6">
-              <h2 className="text-xl font-bold text-[#0015AA] mb-6">All Projects</h2>
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-bold text-[#0015AA]">All Projects</h2>
+                <div className="flex items-center space-x-4">
+                  {/* Filter Controls */}
+                  <select
+                    value={filters.status || ''}
+                    onChange={(e) => handleFilterChange({ ...filters, status: e.target.value })}
+                    className="px-3 py-2 border rounded-lg text-sm"
+                  >
+                    <option value="">All Status</option>
+                    <option value="PLANNING">Planning</option>
+                    <option value="IN_PROGRESS">In Progress</option>
+                    <option value="ON_HOLD">On Hold</option>
+                    <option value="COMPLETED">Completed</option>
+                  </select>
+
+                  {/* Sort Controls */}
+                  <select
+                    value={`${sortBy}_${sortOrder}`}
+                    onChange={(e) => {
+                      const [newSortBy, newSortOrder] = e.target.value.split('_');
+                      handleSortChange(newSortBy, newSortOrder);
+                    }}
+                    className="px-3 py-2 border rounded-lg text-sm"
+                  >
+                    <option value="createdAt_desc">Newest First</option>
+                    <option value="createdAt_asc">Oldest First</option>
+                    <option value="title_asc">Name A-Z</option>
+                    <option value="title_desc">Name Z-A</option>
+                    <option value="budget_desc">Highest Budget</option>
+                    <option value="budget_asc">Lowest Budget</option>
+                  </select>
+                </div>
+              </div>
               {renderProjectsList()}
             </div>
           </div>
@@ -376,7 +505,7 @@ const ProjectManagementPage = () => {
         {activeView === 'kanban' && (
           <div className="bg-white rounded-lg shadow-lg border border-gray-100 p-6">
             <h2 className="text-xl font-bold text-[#0015AA] mb-6">Project Kanban Board</h2>
-            <KanbanBoard projects={projects} tasks={[]} />
+            <KanbanBoard projects={projectsArray} tasks={[]} />
           </div>
         )}
 
@@ -388,30 +517,14 @@ const ProjectManagementPage = () => {
         )}
 
         {activeView === 'project-detail' && selectedProject && (
-          <div className="space-y-6">
-            <div className="flex items-center justify-between">
-              <button
-                onClick={() => setActiveView('dashboard')}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-              >
-                ← Back to Dashboard
-              </button>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-              <div className="lg:col-span-3">
-                <ProjectInfoPanel
-                  project={selectedProject}
-                  client={clients.find(c => c.id === selectedProject.client?.id)}
-                  timeLogs={mockTimeLogs}
-                />
-              </div>
-              <div className="space-y-6">
-                <DeadlineCard project={selectedProject} />
-                <StatusBadge status={selectedProject.status} />
-              </div>
-            </div>
-          </div>
+          <ProjectDetailView
+            projectId={selectedProject.id}
+            onBack={() => {
+              dispatch(clearCurrentProject());
+              setSelectedProject(null);
+              setActiveView('dashboard');
+            }}
+          />
         )}
 
         {/* Modals */}

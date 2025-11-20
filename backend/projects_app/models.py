@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils import timezone
 
 
@@ -8,6 +8,9 @@ class Project(models.Model):
     """Project model for managing client projects."""
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='projects_app_projects')
+
+    # Relationship to inquiry if project was created from an inquiry
+    inquiry = models.ForeignKey('inquiries.Inquiry', on_delete=models.SET_NULL, null=True, blank=True, related_name='created_projects')
 
     # Basic Information
     title = models.CharField(max_length=200, help_text="Project title")
@@ -19,7 +22,10 @@ class Project(models.Model):
     industry = models.CharField(max_length=120, blank=True, null=True, help_text="Industry label for the project")
     logo = models.CharField(max_length=500, blank=True, null=True, help_text="URL to project logo or avatar")
 
-    # Case study JSON blob: { startingPoint, theTransformation, journeyEnd, visuals: { ... } }
+    # Case study JSON blob: {
+    #   startingPoint, theTransformation, journeyEnd, visuals: { ... },
+    #   process: { researchMethods, technicalImplementation, testingValidation, lessonsLearned }
+    # }
     case_study = models.JSONField(default=dict, blank=True, null=True, help_text="Structured case study content")
     client = models.ForeignKey('clients_app.Client', on_delete=models.CASCADE, related_name='projects', help_text="Associated client")
 
@@ -242,7 +248,6 @@ class ProjectTask(models.Model):
     STATUS_CHOICES = [
         ('TODO', 'To Do'),
         ('IN_PROGRESS', 'In Progress'),
-        ('REVIEW', 'In Review'),
         ('COMPLETED', 'Completed'),
         ('BLOCKED', 'Blocked'),
     ]
@@ -363,3 +368,49 @@ class ProjectFile(models.Model):
 
     def __str__(self):
         return f"{self.title} - {self.project.title}"
+
+
+class UserGoals(models.Model):
+    """User-defined goals and targets for analytics tracking."""
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='goals')
+
+    # Revenue goals
+    monthly_revenue_target = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(0)],
+        help_text="Monthly revenue target in dollars"
+    )
+
+    # Client satisfaction goal (1-5 scale)
+    client_satisfaction_target = models.DecimalField(
+        max_digits=3,
+        decimal_places=1,
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(1), MaxValueValidator(5)],
+        help_text="Target client satisfaction rating (1-5)"
+    )
+
+    # Current client satisfaction (calculated from feedback/surveys)
+    current_client_satisfaction = models.DecimalField(
+        max_digits=3,
+        decimal_places=1,
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(1), MaxValueValidator(5)],
+        help_text="Current average client satisfaction rating"
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "User Goals"
+        verbose_name_plural = "User Goals"
+
+    def __str__(self):
+        return f"Goals for {self.user.username}"

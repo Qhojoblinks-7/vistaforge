@@ -8,8 +8,10 @@ class TimeLog(models.Model):
     """Time log entry for tracking work time on projects."""
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='time_logs')
-    # project = models.ForeignKey('api.Project', on_delete=models.CASCADE, related_name='time_logs', null=True, blank=True)
     client = models.ForeignKey('clients_app.Client', on_delete=models.CASCADE, related_name='time_logs', null=True, blank=True)
+    project = models.ForeignKey('projects_app.Project', on_delete=models.CASCADE, related_name='time_logs', null=True, blank=True)
+    task = models.ForeignKey('projects_app.ProjectTask', on_delete=models.SET_NULL, related_name='time_logs', null=True, blank=True)
+    milestone = models.ForeignKey('projects_app.ProjectMilestone', on_delete=models.SET_NULL, related_name='time_logs', null=True, blank=True)
 
     # Time tracking
     start_time = models.DateTimeField(help_text="When the timer started")
@@ -56,11 +58,15 @@ class TimeLog(models.Model):
         indexes = [
             models.Index(fields=['user', '-start_time']),
             models.Index(fields=['client', '-start_time']),
+            models.Index(fields=['project', '-start_time']),
+            models.Index(fields=['task', '-start_time']),
             models.Index(fields=['status']),
         ]
 
     def __str__(self):
-        return f"{self.user.username} - {self.task_name or 'Task'} ({self.duration_minutes} min)"
+        project_info = f" - {self.project.title}" if self.project else ""
+        task_info = f" - {self.task.name}" if self.task else f" - {self.task_name or 'Task'}"
+        return f"{self.user.username}{project_info}{task_info} ({self.duration_minutes} min)"
 
     @property
     def duration_hours(self):

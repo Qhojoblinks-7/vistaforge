@@ -1,55 +1,71 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useDispatch, useSelector } from 'react-redux';
 import { ArrowLeft, Play, Square, Plus, Edit, Trash2, Clock, DollarSign, User } from 'lucide-react';
-import apiClient from '../../../api/config';
 import { useTimer } from '../../../context/TimerContext';
 import ProjectInfoPanel from '../components/ProjectInfoPanel';
+import {
+  fetchProjectDetail,
+  updateProjectDetail,
+  createProjectTask,
+  updateProjectTask,
+  deleteProjectTask,
+  selectProjectDetail,
+  selectProjectTasks,
+  selectProjectTimeLogs,
+  selectProjectDetailLoading,
+  selectProjectDetailError,
+  clearProject
+} from '../../../store/slices/projectDetailSlice';
 
-const fetchProject = async (id) => {
-  const { data } = await apiClient.get(`/projects/${id}/`);
-  return data;
-};
-
-const fetchClient = async (id) => {
-  const { data } = await apiClient.get(`/clients/${id}/`);
-  return data;
-};
-
-const fetchTimeLogs = async (projectId) => {
-  const { data } = await apiClient.get(`/timelogs/?project_id=${projectId}`);
-  return data;
-};
-
-const ProjectDetailView = () => {
-  const { id } = useParams();
+const ProjectDetailView = ({ projectId, onBack }) => {
+  const { id: paramId } = useParams();
+  const id = projectId || paramId;
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
+  const dispatch = useDispatch();
   const { activeTimer, startTimer, stopTimer, formatTime } = useTimer();
   const [showTaskModal, setShowTaskModal] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
   const [showProjectModal, setShowProjectModal] = useState(false);
 
-  const { data: project, isLoading: projectLoading } = useQuery({
-    queryKey: ['project', id],
-    queryFn: () => fetchProject(id)
-  });
+  // Redux selectors
+  const project = useSelector(selectProjectDetail);
+  const tasks = useSelector(selectProjectTasks);
+  const timeLogs = useSelector(selectProjectTimeLogs);
+  const loading = useSelector(selectProjectDetailLoading);
+  const error = useSelector(selectProjectDetailError);
 
-  const { data: client } = useQuery({
-    queryKey: ['client', project?.client_id],
-    queryFn: () => fetchClient(project?.client_id),
-    enabled: !!project?.client_id
-  });
+  // Fetch project on mount
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchProjectDetail(id));
+    }
+    return () => {
+      dispatch(clearProject());
+    };
+  }, [dispatch, id]);
 
-  const { data: timeLogs } = useQuery({
-    queryKey: ['timelogs', id],
-    queryFn: () => fetchTimeLogs(id)
-  });
-
-  if (projectLoading) {
+  if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-lg">Loading project...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Error loading project</h1>
+          <p className="text-gray-600 mb-4">{error}</p>
+          <button
+            onClick={() => navigate('/projects')}
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          >
+            Back to Projects
+          </button>
+        </div>
       </div>
     );
   }
@@ -70,6 +86,8 @@ const ProjectDetailView = () => {
     );
   }
 
+  const client = project?.client;
+
   const handleStartTimer = (taskId) => {
     startTimer(taskId, project.id);
   };
@@ -77,7 +95,8 @@ const ProjectDetailView = () => {
   const handleStopTimer = async () => {
     if (activeTimer) {
       try {
-        await apiClient.patch(`/timelogs/stop/${activeTimer.taskId}/`);
+        // For now, just stop the timer locally
+        // TODO: Implement timer stop API call
         stopTimer();
       } catch (error) {
         console.error('Failed to stop timer:', error);
@@ -86,51 +105,21 @@ const ProjectDetailView = () => {
   };
 
   const handleProjectUpdate = () => {
-    // Invalidate and refetch project data
-    queryClient.invalidateQueries(['project', id]);
+    // Refetch project data
+    dispatch(fetchProjectDetail(id));
   };
 
   const handleProjectDelete = () => {
-    navigate('/projects');
-  };
-
-  // Mutations for task operations
-  const updateTaskMutation = useMutation({
-    mutationFn: ({ taskId, updates }) =>
-      apiClient.patch(`/projects/${id}/tasks/${taskId}`, updates),
-    onSuccess: () => {
-      queryClient.invalidateQueries(['project', id]);
-    }
-  });
-
-  const createTaskMutation = useMutation({
-    mutationFn: (taskData) =>
-      apiClient.post(`/projects/${id}/tasks/`, taskData),
-    onSuccess: () => {
-      queryClient.invalidateQueries(['project', id]);
-      setShowTaskModal(false);
-    }
-  });
-
-  const updateProjectMutation = useMutation({
-    mutationFn: (updates) =>
-      apiClient.patch(`/projects/${id}/`, updates),
-    onSuccess: () => {
-      queryClient.invalidateQueries(['project', id]);
-    }
-  });
-
-  const deleteProjectMutation = useMutation({
-    mutationFn: () =>
-      apiClient.delete(`/projects/${id}/`),
-    onSuccess: () => {
+    if (onBack) {
+      onBack();
+    } else {
       navigate('/projects');
     }
-  });
+  };
 
-  const totalLoggedHours = timeLogs?.reduce((sum, log) => sum + parseFloat(log.duration_hours || 0), 0) || 0;
-  const unbilledHours = timeLogs?.filter(log => !log.is_billed).reduce((sum, log) => sum + parseFloat(log.duration_hours || 0), 0) || 0;
-  const projectValue = totalLoggedHours * parseFloat(project?.project_rate || 0);
+  const totalLoggedHours = timeLogs?.reduce((sum, log) => sum + parseFloat(log.durationMinutes || 0) / 60, 0) || 0;
+  const unbilledHours = timeLogs?.filter(log => !log.isBillable).reduce((sum, log) => sum + parseFloat(log.durationMinutes || 0) / 60, 0) || 0;
+  const projectValue = totalLoggedHours * parseFloat(project?.hourly_rate || 0);
 
   return (
     <div className="min-h-screen bg-background flex">
@@ -152,7 +141,7 @@ const ProjectDetailView = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
                 <button
-                  onClick={() => navigate('/projects')}
+                  onClick={() => onBack ? onBack() : navigate('/projects')}
                   className="p-2 hover:bg-gray-100 rounded-lg"
                 >
                   <ArrowLeft className="w-5 h-5" />
@@ -163,7 +152,7 @@ const ProjectDetailView = () => {
                     {client && (
                       <div className="flex items-center space-x-1">
                         <User className="w-4 h-4" />
-                        <span>{client.client_name}</span>
+                        <span>{client.name}</span>
                       </div>
                     )}
                   </div>
@@ -209,6 +198,7 @@ const ProjectDetailView = () => {
 
           <FullKanbanBoard
             project={project}
+            tasks={tasks}
             onStartTimer={handleStartTimer}
             onEditTask={setEditingTask}
           />
@@ -220,6 +210,7 @@ const ProjectDetailView = () => {
         <TaskModal
           projectId={project.id}
           onClose={() => setShowTaskModal(false)}
+          onCreate={(data) => dispatch(createProjectTask({ projectId: project.id, taskData: data }))}
         />
       )}
 
@@ -229,6 +220,7 @@ const ProjectDetailView = () => {
           projectId={project.id}
           task={editingTask}
           onClose={() => setEditingTask(null)}
+          onUpdate={(taskId, data) => dispatch(updateProjectTask({ taskId, data }))}
         />
       )}
 
@@ -238,6 +230,7 @@ const ProjectDetailView = () => {
           project={project}
           onClose={() => setShowProjectModal(false)}
           onSave={handleProjectUpdate}
+          onUpdate={(data) => dispatch(updateProjectDetail({ id: project.id, data }))}
         />
       )}
     </div>
@@ -245,13 +238,14 @@ const ProjectDetailView = () => {
 };
 
 // Full Kanban Board Component
-const FullKanbanBoard = ({ project, onStartTimer, onEditTask }) => {
+const FullKanbanBoard = ({ project, tasks, onStartTimer, onEditTask }) => {
+  const dispatch = useDispatch();
   const [draggedTask, setDraggedTask] = useState(null);
 
   const columns = [
-    { id: 3, title: 'To Do', color: 'bg-gray-100' },
-    { id: 2, title: 'In Progress', color: 'bg-blue-100' },
-    { id: 1, title: 'Done', color: 'bg-green-100' }
+    { id: 'TODO', title: 'To Do', color: 'bg-gray-100' },
+    { id: 'IN_PROGRESS', title: 'In Progress', color: 'bg-blue-100' },
+    { id: 'COMPLETED', title: 'Done', color: 'bg-green-100' }
   ];
 
   const handleDragStart = (e, task) => {
@@ -262,16 +256,15 @@ const FullKanbanBoard = ({ project, onStartTimer, onEditTask }) => {
     e.preventDefault();
   };
 
-  const handleDrop = async (e, priority) => {
+  const handleDrop = async (e, status) => {
     e.preventDefault();
     if (!draggedTask) return;
 
     try {
-      await apiClient.patch(`/projects/${project.id}/tasks/${draggedTask.task_id}`, {
-        priority,
-        is_complete: priority === 1
-      });
-      window.location.reload(); // Temporary solution
+      await dispatch(updateProjectTask({
+        taskId: draggedTask.id,
+        data: { status }
+      }));
     } catch (error) {
       console.error('Failed to update task:', error);
     }
@@ -295,14 +288,15 @@ const FullKanbanBoard = ({ project, onStartTimer, onEditTask }) => {
           </div>
 
           <div className="p-4 space-y-3">
-            {project.tasks?.filter(task => task.priority === column.id).map(task => (
+            {tasks?.filter(task => task.status === column.id).map(task => (
               <TaskCard
-                key={task.task_id}
+                key={task.id}
                 task={task}
                 projectId={project.id}
                 onStartTimer={onStartTimer}
                 onEditTask={onEditTask}
                 onDragStart={handleDragStart}
+                onDelete={(taskId) => dispatch(deleteProjectTask(taskId))}
               />
             ))}
           </div>
@@ -313,7 +307,7 @@ const FullKanbanBoard = ({ project, onStartTimer, onEditTask }) => {
 };
 
 // Task Card Component
-const TaskCard = ({ task, projectId, onStartTimer, onEditTask, onDragStart }) => {
+const TaskCard = ({ task, projectId, onStartTimer, onEditTask, onDragStart, onDelete }) => {
   return (
     <div
       className="p-3 bg-gray-50 rounded-lg border cursor-move hover:shadow-sm transition-shadow"
@@ -321,10 +315,10 @@ const TaskCard = ({ task, projectId, onStartTimer, onEditTask, onDragStart }) =>
       onDragStart={(e) => onDragStart(e, task)}
     >
       <div className="flex items-start justify-between mb-2">
-        <h4 className="font-medium text-sm text-gray-900">{task.description}</h4>
+        <h4 className="font-medium text-sm text-gray-900">{task.name}</h4>
         <div className="flex items-center space-x-1">
           <button
-            onClick={() => onStartTimer(task.task_id)}
+            onClick={() => onStartTimer(task.id)}
             className="p-1 hover:bg-blue-100 rounded"
             title="Start Timer"
           >
@@ -336,6 +330,13 @@ const TaskCard = ({ task, projectId, onStartTimer, onEditTask, onDragStart }) =>
             title="Edit Task"
           >
             <Edit className="w-3 h-3 text-gray-500" />
+          </button>
+          <button
+            onClick={() => onDelete && onDelete(task.id)}
+            className="p-1 hover:bg-red-100 rounded"
+            title="Delete Task"
+          >
+            <Trash2 className="w-3 h-3 text-red-500" />
           </button>
         </div>
       </div>
@@ -350,20 +351,21 @@ const TaskCard = ({ task, projectId, onStartTimer, onEditTask, onDragStart }) =>
 };
 
 // Task Modal Component
-const TaskModal = ({ projectId, task, onClose }) => {
+const TaskModal = ({ projectId, task, onClose, onCreate, onUpdate }) => {
   const [formData, setFormData] = useState({
+    name: task?.name || '',
     description: task?.description || '',
     estimated_hours: task?.estimated_hours || '',
-    priority: task?.priority || 3
+    priority: task?.priority || 'MEDIUM'
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       if (task) {
-        await updateTaskMutation.mutateAsync({ taskId: task.task_id, updates: formData });
+        onUpdate(task.id, formData);
       } else {
-        await createTaskMutation.mutateAsync(formData);
+        onCreate(formData);
       }
       onClose();
     } catch (error) {
@@ -379,6 +381,19 @@ const TaskModal = ({ projectId, task, onClose }) => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
+              Name
+            </label>
+            <input
+              type="text"
+              value={formData.name}
+              onChange={(e) => setFormData({...formData, name: e.target.value})}
+              className="w-full p-2 border rounded-lg"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Description
             </label>
             <textarea
@@ -386,7 +401,6 @@ const TaskModal = ({ projectId, task, onClose }) => {
               onChange={(e) => setFormData({...formData, description: e.target.value})}
               className="w-full p-2 border rounded-lg"
               rows={3}
-              required
             />
           </div>
 
@@ -412,9 +426,10 @@ const TaskModal = ({ projectId, task, onClose }) => {
               onChange={(e) => setFormData({...formData, priority: e.target.value})}
               className="w-full p-2 border rounded-lg"
             >
-              <option value={3}>To Do</option>
-              <option value={2}>In Progress</option>
-              <option value={1}>Done</option>
+              <option value="LOW">Low</option>
+              <option value="MEDIUM">Medium</option>
+              <option value="HIGH">High</option>
+              <option value="URGENT">Urgent</option>
             </select>
           </div>
 
@@ -428,10 +443,10 @@ const TaskModal = ({ projectId, task, onClose }) => {
             </button>
             <button
               type="submit"
-              disabled={createTaskMutation.isPending || updateTaskMutation.isPending}
+              disabled={createTaskMutation?.isPending || updateTaskMutation?.isPending}
               className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50"
             >
-              {createTaskMutation.isPending || updateTaskMutation.isPending ? 'Saving...' : (task ? 'Update' : 'Create') + ' Task'}
+              {createTaskMutation?.isPending || updateTaskMutation?.isPending ? 'Saving...' : (task ? 'Update' : 'Create') + ' Task'}
             </button>
           </div>
         </form>
@@ -441,18 +456,18 @@ const TaskModal = ({ projectId, task, onClose }) => {
 };
 
 // Project Modal Component
-const ProjectModal = ({ project, onClose, onSave }) => {
+const ProjectModal = ({ project, onClose, onSave, onUpdate }) => {
   const [formData, setFormData] = useState({
     title: project?.title || '',
-    project_rate: project?.project_rate || '',
-    budget_hours: project?.budget_hours || '',
-    status: project?.status || 'Planning'
+    hourly_rate: project?.hourly_rate || '',
+    budget: project?.budget || '',
+    status: project?.status || 'PLANNING'
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await updateProjectMutation.mutateAsync(formData);
+      onUpdate(formData);
       onSave();
       onClose();
     } catch (error) {
@@ -481,13 +496,13 @@ const ProjectModal = ({ project, onClose, onSave }) => {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Project Rate ($/hour)
+              Hourly Rate ($/hour)
             </label>
             <input
               type="number"
               step="0.01"
-              value={formData.project_rate}
-              onChange={(e) => setFormData({...formData, project_rate: e.target.value})}
+              value={formData.hourly_rate}
+              onChange={(e) => setFormData({...formData, hourly_rate: e.target.value})}
               className="w-full p-2 border rounded-lg"
               required
             />
@@ -495,13 +510,13 @@ const ProjectModal = ({ project, onClose, onSave }) => {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Budget Hours
+              Budget
             </label>
             <input
               type="number"
-              step="0.5"
-              value={formData.budget_hours}
-              onChange={(e) => setFormData({...formData, budget_hours: e.target.value})}
+              step="0.01"
+              value={formData.budget}
+              onChange={(e) => setFormData({...formData, budget: e.target.value})}
               className="w-full p-2 border rounded-lg"
               required
             />
@@ -516,11 +531,11 @@ const ProjectModal = ({ project, onClose, onSave }) => {
               onChange={(e) => setFormData({...formData, status: e.target.value})}
               className="w-full p-2 border rounded-lg"
             >
-              <option value="Planning">Planning</option>
-              <option value="In Progress">In Progress</option>
-              <option value="On Hold">On Hold</option>
-              <option value="Completed">Completed</option>
-              <option value="Cancelled">Cancelled</option>
+              <option value="PLANNING">Planning</option>
+              <option value="IN_PROGRESS">In Progress</option>
+              <option value="ON_HOLD">On Hold</option>
+              <option value="COMPLETED">Completed</option>
+              <option value="CANCELLED">Cancelled</option>
             </select>
           </div>
 
@@ -534,10 +549,10 @@ const ProjectModal = ({ project, onClose, onSave }) => {
             </button>
             <button
               type="submit"
-              disabled={updateProjectMutation.isPending}
+              disabled={updateProjectMutation?.isPending}
               className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50"
             >
-              {updateProjectMutation.isPending ? 'Saving...' : 'Update Project'}
+              {updateProjectMutation?.isPending ? 'Saving...' : 'Update Project'}
             </button>
           </div>
         </form>

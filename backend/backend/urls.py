@@ -21,10 +21,18 @@ from django.views.decorators.csrf import csrf_exempt
 from graphql_jwt.decorators import jwt_cookie
 from admin_security.admin_config import exclusive_admin_site
 from .schema import schema
+from . import views
 
 urlpatterns = [
+    # Health checks for monitoring and load balancers
+    path('health/', views.health_check, name='health_check'),
+    path('readiness/', views.readiness_check, name='readiness_check'),
+
+    # Admin URLs
     path('admin/login/', exclusive_admin_site.urls),
     path('admin/', admin.site.urls),  # Fallback admin URL
+
+    # GraphQL API
     path('graphql/', jwt_cookie(csrf_exempt(GraphQLView.as_view(
         graphiql=True,
         schema=schema

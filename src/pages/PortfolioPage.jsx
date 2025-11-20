@@ -179,42 +179,54 @@ const PortfolioPage = () => {
                             className="p-8 bg-white border-t border-gray-100 space-y-6"
                         >
                             {/* Problem Statement */}
-                            <div className="bg-red-50 border-l-4 border-red-400 p-4 rounded-r-lg">
-                                <div className="flex items-center mb-2">
-                                    <Target className="w-5 h-5 text-red-600 mr-2" />
-                                    <h5 className="font-bold text-lg text-red-800">The Challenge</h5>
+                            {sourceProjects[activeProjectIndex]?.caseStudy?.startingPoint && (
+                                <div className="bg-red-50 border-l-4 border-red-400 p-4 rounded-r-lg">
+                                    <div className="flex items-center mb-2">
+                                        <Target className="w-5 h-5 text-red-600 mr-2" />
+                                        <h5 className="font-bold text-lg text-red-800">The Challenge</h5>
+                                    </div>
+                                    <p className="text-red-700 text-base leading-relaxed">
+                                        {sourceProjects[activeProjectIndex].caseStudy.startingPoint}
+                                    </p>
                                 </div>
-                                <p className="text-red-700 text-base leading-relaxed">
-                                    {sourceProjects[activeProjectIndex]?.caseStudy?.startingPoint}
-                                </p>
-                            </div>
+                            )}
 
                             {/* Solution Overview */}
-                            <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg">
-                                <div className="flex items-center mb-2">
-                                    <Lightbulb className="w-5 h-5 text-blue-600 mr-2" />
-                                    <h5 className="font-bold text-lg text-blue-800">Our Solution</h5>
+                            {sourceProjects[activeProjectIndex]?.caseStudy?.theTransformation && (
+                                <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg">
+                                    <div className="flex items-center mb-2">
+                                        <Lightbulb className="w-5 h-5 text-blue-600 mr-2" />
+                                        <h5 className="font-bold text-lg text-blue-800">Our Solution</h5>
+                                    </div>
+                                    <p className="text-blue-700 text-base leading-relaxed">
+                                        {sourceProjects[activeProjectIndex].caseStudy.theTransformation}
+                                    </p>
                                 </div>
-                                <p className="text-blue-700 text-base leading-relaxed">
-                                    {sourceProjects[activeProjectIndex]?.caseStudy?.theTransformation}
-                                </p>
-                            </div>
+                            )}
 
                             {/* Quantifiable Outcome */}
-                            <div className="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
-                                <div className="flex items-center mb-2">
-                                    <TrendingUp className="w-5 h-5 text-green-600 mr-2" />
-                                    <h5 className="font-bold text-lg text-green-800">The Results</h5>
+                            {sourceProjects[activeProjectIndex]?.caseStudy?.journeyEnd && (
+                                <div className="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
+                                    <div className="flex items-center mb-2">
+                                        <TrendingUp className="w-5 h-5 text-green-600 mr-2" />
+                                        <h5 className="font-bold text-lg text-green-800">The Results</h5>
+                                    </div>
+                                    <p className="text-green-700 text-base leading-relaxed font-semibold">
+                                        {sourceProjects[activeProjectIndex].caseStudy.journeyEnd}
+                                    </p>
                                 </div>
-                                <p className="text-green-700 text-base leading-relaxed font-semibold">
-                                    {sourceProjects[activeProjectIndex]?.caseStudy?.journeyEnd}
-                                </p>
-                            </div>
+                            )}
 
-                            <div className="flex justify-start text-sm pt-4 space-x-6 border-t border-gray-200">
-                                <p className="font-semibold text-gray-800">Industry: <span className="font-normal text-gray-600">{sourceProjects[activeProjectIndex]?.industry}</span></p>
-                                <p className="font-semibold text-gray-800">Client Type: <span className="font-normal text-gray-600">{sourceProjects[activeProjectIndex]?.clientType}</span></p>
-                            </div>
+                            {(sourceProjects[activeProjectIndex]?.industry || sourceProjects[activeProjectIndex]?.clientType) && (
+                                <div className="flex justify-start text-sm pt-4 space-x-6 border-t border-gray-200">
+                                    {sourceProjects[activeProjectIndex]?.industry && (
+                                        <p className="font-semibold text-gray-800">Industry: <span className="font-normal text-gray-600">{sourceProjects[activeProjectIndex].industry}</span></p>
+                                    )}
+                                    {sourceProjects[activeProjectIndex]?.clientType && (
+                                        <p className="font-semibold text-gray-800">Client Type: <span className="font-normal text-gray-600">{sourceProjects[activeProjectIndex].clientType}</span></p>
+                                    )}
+                                </div>
+                            )}
                         </animated.div>
 
                         {/* 3. CTA or Collapse button */}
@@ -232,108 +244,113 @@ const PortfolioPage = () => {
                         </div>
 
                         {/* 4. DETAILED PROCESS DOCUMENTATION - Layer 2 */}
-                        <animated.div
-                            className="p-8 bg-gray-50 border-t border-gray-200 space-y-8 flex-grow"
-                        >
-                            <h4 className="text-2xl font-bold text-[#0015AA] text-center">Detailed Process Documentation</h4>
+                        {sourceProjects[activeProjectIndex]?.caseStudy?.process && (
+                            <animated.div
+                                className="p-8 bg-gray-50 border-t border-gray-200 space-y-8 flex-grow"
+                            >
+                                <h4 className="text-2xl font-bold text-[#0015AA] text-center">Detailed Process Documentation</h4>
 
                             {/* Research Methods & Design Process */}
-                            <div className="bg-white p-6 rounded-lg shadow-md">
-                                <div className="flex items-center mb-4">
-                                    <Search className="w-5 h-5 text-[#0015AA] mr-2" />
-                                    <h5 className="text-lg font-bold text-gray-800">Research & Design Process</h5>
-                                </div>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div>
-                                        <h6 className="font-semibold text-gray-700 mb-2">Discovery Phase</h6>
-                                        <ul className="text-sm text-gray-600 space-y-1">
-                                            <li>• Stakeholder interviews</li>
-                                            <li>• Market research analysis</li>
-                                            <li>• Competitive landscape review</li>
-                                            <li>• User persona development</li>
-                                        </ul>
+                            {sourceProjects[activeProjectIndex]?.caseStudy?.process?.researchMethods && (
+                                <div className="bg-white p-6 rounded-lg shadow-md">
+                                    <div className="flex items-center mb-4">
+                                        <Search className="w-5 h-5 text-[#0015AA] mr-2" />
+                                        <h5 className="text-lg font-bold text-gray-800">Research & Design Process</h5>
                                     </div>
-                                    <div>
-                                        <h6 className="font-semibold text-gray-700 mb-2">Design Iterations</h6>
-                                        <ul className="text-sm text-gray-600 space-y-1">
-                                            <li>• Wireframe development</li>
-                                            <li>• User flow mapping</li>
-                                            <li>• Prototype testing</li>
-                                            <li>• Visual design refinement</li>
-                                        </ul>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        {sourceProjects[activeProjectIndex].caseStudy.process.researchMethods.discoveryPhase && (
+                                            <div>
+                                                <h6 className="font-semibold text-gray-700 mb-2">Discovery Phase</h6>
+                                                <ul className="text-sm text-gray-600 space-y-1">
+                                                    {sourceProjects[activeProjectIndex].caseStudy.process.researchMethods.discoveryPhase.map((item, idx) => (
+                                                        <li key={idx}>• {item}</li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        )}
+                                        {sourceProjects[activeProjectIndex].caseStudy.process.researchMethods.designIterations && (
+                                            <div>
+                                                <h6 className="font-semibold text-gray-700 mb-2">Design Iterations</h6>
+                                                <ul className="text-sm text-gray-600 space-y-1">
+                                                    {sourceProjects[activeProjectIndex].caseStudy.process.researchMethods.designIterations.map((item, idx) => (
+                                                        <li key={idx}>• {item}</li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
-                            </div>
+                            )}
 
                             {/* Technical Implementation */}
-                            <div className="bg-white p-6 rounded-lg shadow-md">
-                                <div className="flex items-center mb-4">
-                                    <Cog className="w-5 h-5 text-[#0015AA] mr-2" />
-                                    <h5 className="text-lg font-bold text-gray-800">Technical Implementation</h5>
-                                </div>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div>
-                                        <h6 className="font-semibold text-gray-700 mb-2">Frontend Stack</h6>
-                                        <ul className="text-sm text-gray-600 space-y-1">
-                                            <li>• React.js for component architecture</li>
-                                            <li>• Tailwind CSS for styling</li>
-                                            <li>• Framer Motion for animations</li>
-                                            <li>• Responsive design principles</li>
-                                        </ul>
+                            {sourceProjects[activeProjectIndex]?.caseStudy?.process?.technicalImplementation && (
+                                <div className="bg-white p-6 rounded-lg shadow-md">
+                                    <div className="flex items-center mb-4">
+                                        <Cog className="w-5 h-5 text-[#0015AA] mr-2" />
+                                        <h5 className="text-lg font-bold text-gray-800">Technical Implementation</h5>
                                     </div>
-                                    <div>
-                                        <h6 className="font-semibold text-gray-700 mb-2">Development Tools</h6>
-                                        <ul className="text-sm text-gray-600 space-y-1">
-                                            <li>• Figma for design collaboration</li>
-                                            <li>• Git for version control</li>
-                                            <li>• Performance optimization</li>
-                                            <li>• Cross-browser testing</li>
-                                        </ul>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        {sourceProjects[activeProjectIndex].caseStudy.process.technicalImplementation.frontendStack && (
+                                            <div>
+                                                <h6 className="font-semibold text-gray-700 mb-2">Frontend Stack</h6>
+                                                <ul className="text-sm text-gray-600 space-y-1">
+                                                    {sourceProjects[activeProjectIndex].caseStudy.process.technicalImplementation.frontendStack.map((item, idx) => (
+                                                        <li key={idx}>• {item}</li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        )}
+                                        {sourceProjects[activeProjectIndex].caseStudy.process.technicalImplementation.developmentTools && (
+                                            <div>
+                                                <h6 className="font-semibold text-gray-700 mb-2">Development Tools</h6>
+                                                <ul className="text-sm text-gray-600 space-y-1">
+                                                    {sourceProjects[activeProjectIndex].caseStudy.process.technicalImplementation.developmentTools.map((item, idx) => (
+                                                        <li key={idx}>• {item}</li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
-                            </div>
+                            )}
 
                             {/* Testing & Validation */}
-                            <div className="bg-white p-6 rounded-lg shadow-md">
-                                <div className="flex items-center mb-4">
-                                    <CheckCircle className="w-5 h-5 text-[#0015AA] mr-2" />
-                                    <h5 className="text-lg font-bold text-gray-800">Testing & Validation</h5>
-                                </div>
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-                                    <div className="p-4 bg-green-50 rounded-lg">
-                                        <CheckCircle className="w-8 h-8 text-green-600 mx-auto mb-2" />
-                                        <h6 className="font-semibold text-green-800">User Testing</h6>
-                                        <p className="text-xs text-green-600 mt-1">A/B testing with target users</p>
+                            {sourceProjects[activeProjectIndex]?.caseStudy?.process?.testingValidation && (
+                                <div className="bg-white p-6 rounded-lg shadow-md">
+                                    <div className="flex items-center mb-4">
+                                        <CheckCircle className="w-5 h-5 text-[#0015AA] mr-2" />
+                                        <h5 className="text-lg font-bold text-gray-800">Testing & Validation</h5>
                                     </div>
-                                    <div className="p-4 bg-blue-50 rounded-lg">
-                                        <Shield className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-                                        <h6 className="font-semibold text-blue-800">Accessibility Audit</h6>
-                                        <p className="text-xs text-blue-600 mt-1">WCAG compliance validation</p>
-                                    </div>
-                                    <div className="p-4 bg-purple-50 rounded-lg">
-                                        <BarChart3 className="w-8 h-8 text-purple-600 mx-auto mb-2" />
-                                        <h6 className="font-semibold text-purple-800">Performance Metrics</h6>
-                                        <p className="text-xs text-purple-600 mt-1">Load time optimization</p>
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                                        {sourceProjects[activeProjectIndex].caseStudy.process.testingValidation.map((test, idx) => (
+                                            <div key={idx} className={`p-4 rounded-lg ${test.bgColor || 'bg-gray-50'}`}>
+                                                <CheckCircle className={`w-8 h-8 mx-auto mb-2 ${test.iconColor || 'text-gray-600'}`} />
+                                                <h6 className="font-semibold">{test.title}</h6>
+                                                <p className="text-xs mt-1">{test.description}</p>
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
-                            </div>
+                            )}
 
                             {/* Lessons Learned */}
-                            <div className="bg-white p-6 rounded-lg shadow-md">
-                                <div className="flex items-center mb-4">
-                                    <Quote className="w-5 h-5 text-[#0015AA] mr-2" />
-                                    <h5 className="text-lg font-bold text-gray-800">Lessons Learned</h5>
-                                </div>
-                                <div className="space-y-3">
-                                    <div className="border-l-4 border-[#FBB03B] pl-4">
-                                        <p className="text-gray-700 italic">"Early user feedback was crucial in refining the design direction and ensuring the final product met real user needs."</p>
+                            {sourceProjects[activeProjectIndex]?.caseStudy?.process?.lessonsLearned && (
+                                <div className="bg-white p-6 rounded-lg shadow-md">
+                                    <div className="flex items-center mb-4">
+                                        <Quote className="w-5 h-5 text-[#0015AA] mr-2" />
+                                        <h5 className="text-lg font-bold text-gray-800">Lessons Learned</h5>
                                     </div>
-                                    <div className="border-l-4 border-[#0015AA] pl-4">
-                                        <p className="text-gray-700 italic">"Iterative prototyping saved significant development time by identifying potential issues before full implementation."</p>
+                                    <div className="space-y-3">
+                                        {sourceProjects[activeProjectIndex].caseStudy.process.lessonsLearned.map((lesson, idx) => (
+                                            <div key={idx} className={`border-l-4 pl-4 ${lesson.borderColor || 'border-[#FBB03B]'}`}>
+                                                <p className="text-gray-700 italic">"{lesson.quote}"</p>
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
-                            </div>
+                            )}
                         </animated.div>
+)}
 
                         {/* 5. PROJECT VISUALS SECTION - USES THE REST OF THE SPACE */}
                         <animated.div
@@ -352,15 +369,17 @@ const PortfolioPage = () => {
                             ))}
 
                             {/* Layer 2 Access - Detailed Process Documentation */}
-                            <div className="pt-6 text-center border-t border-gray-200">
-                                <button
-                                    onClick={() => setIsModalOpen(true)}
-                                    className="inline-flex items-center font-bold py-3 px-6 rounded-full bg-gray-800 text-white hover:bg-gray-900 transition-colors"
-                                >
-                                    View Detailed Process Documentation
-                                    <BsArrowRight className="ml-2" />
-                                </button>
-                            </div>
+                            {sourceProjects[activeProjectIndex]?.caseStudy?.process && (
+                                <div className="pt-6 text-center border-t border-gray-200">
+                                    <button
+                                        onClick={() => setIsModalOpen(true)}
+                                        className="inline-flex items-center font-bold py-3 px-6 rounded-full bg-gray-800 text-white hover:bg-gray-900 transition-colors"
+                                    >
+                                        View Detailed Process Documentation
+                                        <BsArrowRight className="ml-2" />
+                                    </button>
+                                </div>
+                            )}
                         </animated.div>
                     </animated.div>
 

@@ -91,17 +91,6 @@ const WelcomeBanner = () => {
             </div>
           </div>
 
-          {/* Status indicators with enhanced icons */}
-          <div className="flex flex-col sm:flex-row items-center md:items-start justify-center md:justify-start gap-2 sm:gap-4">
-            <div className="flex items-center space-x-2 bg-white bg-opacity-15 backdrop-blur-sm px-3 sm:px-4 py-2 rounded-full border border-white border-opacity-20">
-              <BsCheckCircle className="w-3 h-3 sm:w-4 sm:h-4 text-green-400" />
-              <span className="text-white font-medium text-xs sm:text-sm">All systems operational</span>
-            </div>
-            <div className="flex items-center space-x-2 bg-white bg-opacity-15 backdrop-blur-sm px-3 sm:px-4 py-2 rounded-full border border-white border-opacity-20">
-              <BsExclamationTriangle className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-400" />
-              <span className="text-white font-medium text-xs sm:text-sm">Tasks pending review</span>
-            </div>
-          </div>
         </div>
 
         {/* Right Side: Profile Image */}

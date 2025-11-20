@@ -12,21 +12,20 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 import os
 from pathlib import Path
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Environment-based settings
+ENVIRONMENT = os.getenv('ENVIRONMENT', 'development')
+DEBUG = ENVIRONMENT != 'production'
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-l9!*66neoz$ldsv*pzi546yqp5zqp6+hr9v(1)1pvs_k%(lxjp')
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-l9!*66neoz$ldsv*pzi546yqp5zqp6+hr9v(1)1pvs_k%(lxjp"
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS configuration
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+if os.getenv('RENDER_EXTERNAL_URL'):
+    ALLOWED_HOSTS.append(os.getenv('RENDER_EXTERNAL_URL').replace('https://', ''))
 
 
 # Application definition
@@ -49,10 +48,12 @@ INSTALLED_APPS = [
     "clients_app",
     "time_logs_app",
     "projects_app",
+    "analytics_app",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",  # WhiteNoise for static files
     "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -85,12 +86,23 @@ WSGI_APPLICATION = "backend.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+if ENVIRONMENT == 'production':
+    # Production database configuration for Render (PostgreSQL)
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=os.getenv('DATABASE_URL'),
+            conn_max_age=600,
+            conn_health_checks=True,
+        )
     }
-}
+else:
+    # Development database (SQLite)
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 
 # Password validation
@@ -127,7 +139,18 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+# WhiteNoise configuration for production static files
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+# Media files
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -135,24 +158,51 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # CORS settings
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://localhost:3001",
-    "http://localhost:3002",
-    "http://localhost:5173",
-    "http://127.0.0.1:3001",
-    "http://127.0.0.1:3000",
-    "http://127.0.0.1:3002",
-    "http://127.0.0.1:5173",
-]
+if ENVIRONMENT == 'production':
+    # Production CORS - allow your frontend domain
+    CORS_ALLOWED_ORIGINS = [
+        os.getenv('FRONTEND_URL', 'https://your-frontend-domain.com'),
+    ]
+    # Allow credentials for GraphQL authentication
+    CORS_ALLOW_CREDENTIALS = True
+else:
+    # Development CORS
+    CORS_ALLOWED_ORIGINS = [
+        "http://localhost:3000",
+        "http://localhost:3001",
+        "http://localhost:3002",
+        "http://localhost:5173",
+        "http://127.0.0.1:3001",
+        "http://127.0.0.1:3000",
+        "http://127.0.0.1:3002",
+        "http://127.0.0.1:5173",
+    ]
+    CORS_ALLOW_CREDENTIALS = True
 
-CORS_ALLOW_CREDENTIALS = True
-
-# Ensure Authorization header is allowed in CORS preflight (keeps defaults but explicit here for clarity)
+# Ensure Authorization header is allowed in CORS preflight
 from corsheaders.defaults import default_headers
 CORS_ALLOW_HEADERS = list(default_headers) + [
     'authorization',
 ]
+
+# Security settings for production
+if ENVIRONMENT == 'production':
+    # HTTPS settings
+    SECURE_SSL_REDIRECT = True
+    SECURE_HSTS_SECONDS = 31536000  # 1 year
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+
+    # Secure cookies
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_HTTPONLY = True
+    CSRF_COOKIE_HTTPONLY = True
+
+    # Additional security headers
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_BROWSER_XSS_FILTER = True
+    X_FRAME_OPTIONS = 'DENY'
 
 # GraphQL settings
 GRAPHENE = {
@@ -162,15 +212,20 @@ GRAPHENE = {
     ],
 }
 
-# Email settings for system notifications
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # For development - prints to console
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  # Uncomment for production
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = 'your-email@gmail.com'  # Replace with actual email
-# EMAIL_HOST_PASSWORD = 'your-app-password'  # Replace with app password
-DEFAULT_FROM_EMAIL = 'noreply@vistaforgedev.local'
+# Email settings
+if ENVIRONMENT == 'production':
+    # Production email configuration
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
+    EMAIL_PORT = int(os.getenv('EMAIL_PORT', 587))
+    EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True').lower() == 'true'
+    EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+    EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+    DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'noreply@vistaforge.com')
+else:
+    # Development email - console backend
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+    DEFAULT_FROM_EMAIL = 'noreply@vistaforgedev.local'
 
 # System notification settings
 SYSTEM_NOTIFICATION_EMAIL = 'immanueleshun9@gmail.com'
@@ -180,6 +235,60 @@ AUTHENTICATION_BACKENDS = [
     'graphql_jwt.backends.JSONWebTokenBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
+
+# Logging configuration
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+    },
+}
+
+# Add file logging in production if logs directory exists
+if ENVIRONMENT == 'production':
+    import os
+    logs_dir = BASE_DIR / 'logs'
+    if not os.path.exists(logs_dir):
+        os.makedirs(logs_dir, exist_ok=True)
+
+    LOGGING['handlers']['file'] = {
+        'class': 'logging.FileHandler',
+        'filename': logs_dir / 'django.log',
+        'formatter': 'verbose',
+    }
+
+    LOGGING['loggers']['django']['handlers'].append('file')
+    LOGGING['loggers']['django.request']['handlers'].append('file')
 
 # Exclusive Admin Configuration
 # Define the one and only username allowed to access the Django Admin.

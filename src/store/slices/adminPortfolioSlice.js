@@ -101,7 +101,6 @@ export const fetchAdminProjects = createAsyncThunk(
           endDate
           isActive
           designTools
-          order
           createdAt
           updatedAt
         }
@@ -182,6 +181,20 @@ const adminPortfolioSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // Fetch tasks
+      .addCase(fetchTasks.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchTasks.fulfilled, (state, action) => {
+        state.loading = false;
+        state.tasks = action.payload;
+      })
+      .addCase(fetchTasks.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+
       // Fetch admin projects
       .addCase(fetchAdminProjects.pending, (state) => {
         state.loading = true;
@@ -223,6 +236,23 @@ const adminPortfolioSlice = createSlice({
         }
       })
       .addCase(updateProject.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+
+      // Update task
+      .addCase(updateTask.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateTask.fulfilled, (state, action) => {
+        state.loading = false;
+        const index = state.tasks.findIndex(t => t.id === action.payload.id);
+        if (index !== -1) {
+          state.tasks[index] = action.payload;
+        }
+      })
+      .addCase(updateTask.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       })

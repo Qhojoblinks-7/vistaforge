@@ -8,6 +8,10 @@ import timeLogsReducer from './slices/timeLogsSlice';
 import invoicesReducer from '../modules/Invoices/services/invoicesSlice';
 import clientsReducer from '../modules/Clients/services/clientsSlice';
 import projectsReducer from '../modules/Projects/services/projectsSlice';
+import financialMetricsReducer from './slices/financialMetricsSlice';
+import kanbanReducer from './slices/kanbanSlice';
+import projectDetailReducer from './slices/projectDetailSlice';
+import analyticsReducer from './slices/analyticsSlice';
 
 export const store = configureStore({
   reducer: {
@@ -20,6 +24,10 @@ export const store = configureStore({
     invoices: invoicesReducer,
     clients: clientsReducer,
     projects: projectsReducer,
+    financialMetrics: financialMetricsReducer,
+    kanban: kanbanReducer,
+    projectDetail: projectDetailReducer,
+    analytics: analyticsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

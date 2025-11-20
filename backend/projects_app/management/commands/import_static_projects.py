@@ -73,6 +73,18 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.ERROR('No user or client available to associate with projects. Provide --user-id and --client-id or create a user and a client first.'))
                 return
 
+            from datetime import date, timedelta
+            # Set end dates for all projects (spread over next 60 days)
+            base_date = date.today()
+            end_dates = [
+                base_date + timedelta(days=7),   # SunRise Foods
+                base_date + timedelta(days=14),  # SwiftPay
+                base_date + timedelta(days=21),  # EduBridge Ghana
+                base_date + timedelta(days=30),  # KenteMode
+                base_date + timedelta(days=45),  # BrightFuture Academy
+            ]
+            project_index = len([p for p in data[:data.index(item)] if p.get('title') or p.get('name')])  # index in data
+
             defaults = {
                 'title': title,
                 'intro': item.get('intro', ''),
@@ -84,6 +96,7 @@ class Command(BaseCommand):
                 'is_active': True,
                 'user': user,
                 'client': client,
+                'end_date': end_dates[project_index] if project_index < len(end_dates) else base_date + timedelta(days=60 + project_index * 7),
             }
 
             # Try to find an existing project by slug or title
@@ -100,10 +113,33 @@ class Command(BaseCommand):
                     project.save()
                 updated += 1
                 self.stdout.write(self.style.SUCCESS(f'Updated: {defaults["title"]}'))
+                project_instance = project
             else:
                 if not dry_run:
-                    Project.objects.create(**defaults)
+                    project_instance = Project.objects.create(**defaults)
                 created += 1
                 self.stdout.write(self.style.SUCCESS(f'Created: {defaults["title"]}'))
+
+            # Add sample tasks if not dry run
+            if not dry_run and 'project_instance' in locals():
+                from projects_app.models import ProjectTask
+                tasks_data = [
+                    {'title': 'Initial Research', 'status': 'COMPLETED', 'estimated_hours': 4},
+                    {'title': 'Design Mockups', 'status': 'COMPLETED', 'estimated_hours': 8},
+                    {'title': 'Client Review', 'status': 'COMPLETED', 'estimated_hours': 2},
+                    {'title': 'Development Setup', 'status': 'IN_PROGRESS', 'estimated_hours': 6},
+                    {'title': 'Core Implementation', 'status': 'TODO', 'estimated_hours': 20},
+                    {'title': 'Testing', 'status': 'TODO', 'estimated_hours': 10},
+                ]
+                for i, task_data in enumerate(tasks_data):
+                    ProjectTask.objects.get_or_create(
+                        project=project_instance,
+                        title=task_data['title'],
+                        defaults={
+                            'status': task_data['status'],
+                            'estimated_hours': task_data['estimated_hours'],
+                            'order': i
+                        }
+                    )
 
         self.stdout.write(self.style.SUCCESS(f'Done. Created={created} Updated={updated}'))

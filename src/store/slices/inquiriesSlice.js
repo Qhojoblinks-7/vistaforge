@@ -410,12 +410,12 @@ export const submitPublicInquiry = createAsyncThunk(
     // Map the contact form data to the inquiry format
       const apiData = {
       input: sanitizeInputEnums({
-        clientName: inquiryData.clientName,
-        clientEmail: inquiryData.clientEmail,
-        clientCompany: inquiryData.clientCompany || '',
+        client_name: inquiryData.clientName,
+        client_email: inquiryData.clientEmail,
+        client_company: inquiryData.clientCompany || '',
         message: inquiryData.message,
-        serviceRequested: inquiryData.serviceRequested || 'OTHER',
-        budgetRange: inquiryData.budgetRange || null,
+        service_requested: inquiryData.serviceRequested || 'OTHER',
+        budget_range: inquiryData.budgetRange || null,
         timeline: inquiryData.timeline || null,
         priority: 'MEDIUM',
         source: 'WEBSITE'

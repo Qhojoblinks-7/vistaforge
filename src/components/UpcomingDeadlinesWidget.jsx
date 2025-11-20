@@ -5,15 +5,15 @@ import { Link } from 'react-router-dom';
 const UpcomingDeadlinesWidget = ({ projects }) => {
   // Filter projects due within the next 7 days
   const upcomingDeadlines = projects
-    ?.filter(p => p.due_date)
+    ?.filter(p => p.endDate)
     .filter(p => {
-      const dueDate = new Date(p.due_date);
+      const dueDate = new Date(p.endDate);
       const today = new Date();
       const sevenDaysFromNow = new Date(today);
       sevenDaysFromNow.setDate(today.getDate() + 7);
       return dueDate >= today && dueDate <= sevenDaysFromNow;
     })
-    .sort((a, b) => new Date(a.due_date) - new Date(b.due_date))
+    .sort((a, b) => new Date(a.endDate) - new Date(b.endDate))
     .slice(0, 5) || [];
 
   const isOverdue = (dueDate) => new Date(dueDate) < new Date();
@@ -28,7 +28,7 @@ const UpcomingDeadlinesWidget = ({ projects }) => {
         {upcomingDeadlines.map(project => (
           <Link
             key={project.id}
-            to={`/admin/projects/${project.id}`}
+            to={`/projects/${project.id}`}
             className="block p-3 bg-white/10 backdrop-blur-sm rounded-lg hover:bg-white/20 transition-all duration-300 border border-white/20 hover:border-[#FBB03B]/50 transform hover:scale-105"
           >
             <div className="flex items-center justify-between">
@@ -38,13 +38,13 @@ const UpcomingDeadlinesWidget = ({ projects }) => {
               </div>
               <div className="text-right">
                 <div className={`text-sm font-medium flex items-center ${
-                  isOverdue(project.due_date) ? 'text-red-300' : 'text-white'
+                  isOverdue(project.endDate) ? 'text-red-300' : 'text-white'
                 }`}>
-                  {isOverdue(project.due_date) && <BsExclamationTriangle className="mr-1" />}
-                  {new Date(project.due_date).toLocaleDateString()}
+                  {isOverdue(project.endDate) && <BsExclamationTriangle className="mr-1" />}
+                  {new Date(project.endDate).toLocaleDateString()}
                 </div>
                 <div className="text-xs text-white/60">
-                  {Math.ceil((new Date(project.due_date) - new Date()) / (1000 * 60 * 60 * 24))} days
+                  {Math.ceil((new Date(project.endDate) - new Date()) / (1000 * 60 * 60 * 24))} days
                 </div>
               </div>
             </div>

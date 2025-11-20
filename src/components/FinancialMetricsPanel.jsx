@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { BsCashStack, BsGraphUp, BsExclamationTriangle } from 'react-icons/bs';
+import { fetchInvoices, fetchTimeLogs, selectUnbilledAmount, selectTotalRevenue, selectOverdueInvoices } from '../store/slices/financialMetricsSlice';
 
 const MetricCard = ({ title, value, color, cta }) => {
   const colorClasses = {
@@ -32,7 +34,37 @@ const MetricCard = ({ title, value, color, cta }) => {
   );
 };
 
-const FinancialMetricsPanel = ({ unbilledAmount, totalRevenue, overdueInvoices }) => {
+const FinancialMetricsPanel = () => {
+  const dispatch = useDispatch();
+  const unbilledAmount = useSelector(selectUnbilledAmount);
+  const totalRevenue = useSelector(selectTotalRevenue);
+  const overdueInvoices = useSelector(selectOverdueInvoices);
+  const { loading } = useSelector((state) => state.financialMetrics);
+
+  useEffect(() => {
+    dispatch(fetchInvoices());
+    dispatch(fetchTimeLogs());
+  }, [dispatch]);
+
+  if (loading) {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="bg-gray-200 p-6 rounded-xl animate-pulse">
+          <div className="h-4 bg-gray-300 rounded mb-2"></div>
+          <div className="h-8 bg-gray-300 rounded"></div>
+        </div>
+        <div className="bg-gray-200 p-6 rounded-xl animate-pulse">
+          <div className="h-4 bg-gray-300 rounded mb-2"></div>
+          <div className="h-8 bg-gray-300 rounded"></div>
+        </div>
+        <div className="bg-gray-200 p-6 rounded-xl animate-pulse">
+          <div className="h-4 bg-gray-300 rounded mb-2"></div>
+          <div className="h-8 bg-gray-300 rounded"></div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
       <MetricCard

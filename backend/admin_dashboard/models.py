@@ -112,6 +112,12 @@ class SystemLog(models.Model):
     user_agent = models.TextField(blank=True, null=True)
     metadata = models.JSONField(default=dict, blank=True)
 
+    # Relationships to track what the log is about
+    related_client = models.ForeignKey('clients_app.Client', on_delete=models.SET_NULL, null=True, blank=True, related_name='system_logs')
+    related_project = models.ForeignKey('projects_app.Project', on_delete=models.SET_NULL, null=True, blank=True, related_name='system_logs')
+    related_invoice = models.ForeignKey('invoices_app.Invoice', on_delete=models.SET_NULL, null=True, blank=True, related_name='system_logs')
+    related_inquiry = models.ForeignKey('inquiries.Inquiry', on_delete=models.SET_NULL, null=True, blank=True, related_name='system_logs')
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

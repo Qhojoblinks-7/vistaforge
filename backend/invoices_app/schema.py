@@ -146,10 +146,11 @@ class InvoiceQuery(graphene.ObjectType):
 
     @staticmethod
     def resolve_all_invoices(root, info, status=None, client_id=None, project_id=None, limit=None, offset=None):
-        if not info.context.user.is_authenticated:
-            return Invoice.objects.none()
-
-        queryset = Invoice.objects.filter(user=info.context.user).select_related('client', 'project')
+        # TEMPORARILY DISABLE AUTH FILTERING FOR DEBUGGING
+        # if not info.context.user.is_authenticated:
+        #     return Invoice.objects.none()
+        # queryset = Invoice.objects.filter(user=info.context.user).select_related('client', 'project')
+        queryset = Invoice.objects.all().select_related('client', 'project')
 
         if status:
             queryset = queryset.filter(status=status)

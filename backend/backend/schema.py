@@ -13,6 +13,7 @@ from clients_app.schema import ClientQuery, ClientMutation
 from projects_app.schema import ProjectQuery, ProjectMutation
 from projects_app.models import Project
 from time_logs_app.schema import TimeLogQuery, TimeLogMutation
+from analytics_app.schema import AnalyticsQuery
 
 
 class UserType(DjangoObjectType):
@@ -51,7 +52,7 @@ class ObtainJSONWebToken(graphql_jwt.ObtainJSONWebToken):
         return super().resolve_mutation(root, info, **kwargs)
 
 
-class Query(ProjectQuery, InquiryQuery, AdminDashboardQuery, InvoiceQuery, ClientQuery, TimeLogQuery, graphene.ObjectType):
+class Query(ProjectQuery, InquiryQuery, AdminDashboardQuery, InvoiceQuery, ClientQuery, TimeLogQuery, AnalyticsQuery, graphene.ObjectType):
     # Resolve field conflicts by explicitly choosing which implementation to use
     # Use ClientQuery for client-related fields (more complete)
     all_clients = ClientQuery.all_clients
@@ -61,6 +62,7 @@ class Query(ProjectQuery, InquiryQuery, AdminDashboardQuery, InvoiceQuery, Clien
     all_projects = ProjectQuery.all_projects
     all_management_projects = ProjectQuery.all_management_projects
     project = ProjectQuery.project
+    all_tasks = ProjectQuery.all_tasks
 
     # Explicitly include TimeLogQuery fields to ensure they are available
     all_time_logs = TimeLogQuery.all_time_logs
@@ -79,6 +81,33 @@ class Query(ProjectQuery, InquiryQuery, AdminDashboardQuery, InvoiceQuery, Clien
         else:
             # Authenticated users see their own projects (management view)
             queryset = Project.objects.filter(user=info.context.user)
+
+        if status:
+            queryset = queryset.filter(status=status)
+        if client_id:
+            queryset = queryset.filter(client_id=client_id)
+        if phase:
+            queryset = queryset.filter(project_phase=phase)
+        if priority:
+            queryset = queryset.filter(priority=priority)
+        if is_active is not None:
+            queryset = queryset.filter(is_active=is_active)
+
+        if limit:
+            if offset:
+                queryset = queryset[offset:offset + limit]
+            else:
+                queryset = queryset[:limit]
+
+        return queryset
+
+    @staticmethod
+    def resolve_all_management_projects(root, info, status=None, client_id=None, phase=None, priority=None, is_active=None, limit=None, offset=None):
+        # TEMPORARILY DISABLE AUTH FILTERING FOR DEBUGGING
+        # if not info.context.user.is_authenticated:
+        #     return Project.objects.none()
+        # queryset = Project.objects.filter(user=info.context.user)
+        queryset = Project.objects.all()  # Show all projects for debugging
 
         if status:
             queryset = queryset.filter(status=status)

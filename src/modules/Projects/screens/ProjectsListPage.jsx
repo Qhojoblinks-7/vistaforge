@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import apiService from '../../../services/api';
 import { fetchAdminProjects } from '../../../store/slices/adminPortfolioSlice';
 import { fetchTasks } from '../../../store/slices/adminPortfolioSlice';
+import { useTimer } from '../../../context/TimerContext';
 import ActiveTimerComponent from '../components/ActiveTimerComponent';
 import WelcomeBanner from '../components/WelcomeBanner';
 import FinancialMetricsPanel from '../../../components/FinancialMetricsPanel';
@@ -13,30 +14,30 @@ import UpcomingDeadlinesWidget from '../../../components/UpcomingDeadlinesWidget
 import RecentActivityFeed from '../../../components/RecentActivityFeed';
 import QuickClientProjectEntry from '../../../components/QuickClientProjectEntry';
 
-const fetchProjects = async () => {
-  try {
-    return await apiService.getProjects();
-  } catch (error) {
-    console.error('Error fetching projects:', error);
-    return [];
-  }
-};
-
-const fetchTasksData = async () => {
-  return await apiService.getTasks();
-};
-
-const fetchInvoices = async () => {
-  // Note: Invoices are not implemented in GraphQL yet, return empty array for now
-  return [];
-};
-
-const fetchTimeLogs = async () => {
-  // Note: TimeLogs are not implemented in GraphQL yet, return empty array for now
-  return [];
-};
-
 const ProjectsListPage = () => {
+  const { startTimer } = useTimer();
+  const [editingTask, setEditingTask] = useState(null);
+
+  const fetchProjects = useCallback(async () => {
+    try {
+      return await apiService.getProjects();
+    } catch (error) {
+      console.error('Error fetching projects:', error);
+      return [];
+    }
+  }, []);
+
+  const fetchTasksData = useCallback(async () => {
+    return await apiService.getTasks();
+  }, []);
+
+  const fetchInvoices = useCallback(async () => {
+    return await apiService.getInvoices();
+  }, []);
+
+  const fetchTimeLogs = useCallback(async () => {
+    return await apiService.getTimeLogs();
+  }, []);
   const dispatch = useDispatch();
 
   // Use Redux for admin data
@@ -48,11 +49,11 @@ const ProjectsListPage = () => {
   } = useSelector((state) => state.adminPortfolio);
 
   // Use React Query for additional data
-  const { data: projectsQuery, isLoading: projectsLoading, error: projectsError } = useQuery({
-    queryKey: ['projects'],
-    queryFn: fetchProjects,
-    retry: false
-  });
+  // const { data: projectsQuery, isLoading: projectsLoading, error: projectsError } = useQuery({
+  //   queryKey: ['adminProjects'],
+  //   queryFn: fetchProjects,
+  //   retry: false
+  // });
 
   const { data: tasksQuery, isLoading: tasksLoading } = useQuery({
     queryKey: ['tasks'],
@@ -70,18 +71,22 @@ const ProjectsListPage = () => {
   });
 
   // Use Redux data if available, otherwise fall back to query data
-  const displayProjects = projects.length > 0 ? projects : (projectsQuery || []);
-  const displayTasks = tasks.length > 0 ? tasks : (tasksQuery || []);
+  const displayProjects = projects || [];
+  const displayTasks = (tasks?.length > 0) ? tasks : (tasksQuery || []);
 
   // Initialize Redux data on component mount - only once
   React.useEffect(() => {
-    if (!reduxLoading && projects.length === 0 && !reduxError) {
-      dispatch(fetchAdminProjects());
-      dispatch(fetchTasks());
+    if (!reduxLoading && !reduxError) {
+      if (projects?.length === 0 || projects === null) {
+        dispatch(fetchAdminProjects());
+      }
+      if (tasks?.length === 0 || tasks === null) {
+        dispatch(fetchTasks());
+      }
     }
   }, []); // Empty dependency array to run only once on mount
 
-  if (projectsLoading || reduxLoading) {
+  if (reduxLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-lg">Loading dashboard...</div>
@@ -89,8 +94,8 @@ const ProjectsListPage = () => {
     );
   }
 
-  if (projectsError) {
-    console.error('Projects query error:', projectsError);
+  if (reduxError) {
+    console.error('Projects redux error:', reduxError);
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -101,20 +106,32 @@ const ProjectsListPage = () => {
     );
   }
 
-  // Calculate metrics
-  const unbilledAmount = timeLogs?.filter(log => !log.is_billed && log.is_billable)
-    .reduce((sum, log) => sum + parseFloat(log.duration_hours), 0) || 0;
-
-  const totalRevenue = invoices?.filter(inv => inv.status === 'Paid')
-    .reduce((sum, inv) => sum + parseFloat(inv.total_amount), 0) || 0;
-
-  const overdueInvoices = invoices?.filter(inv =>
-    inv.status === 'Sent' && new Date(inv.due_date) < new Date()
-  ).length || 0;
-
-  const upcomingDeadlines = projects?.filter(p => p.due_date)
-    .sort((a, b) => new Date(a.due_date) - new Date(b.due_date))
+  const upcomingDeadlines = projects?.filter(p => p.endDate)
+    .sort((a, b) => new Date(a.endDate) - new Date(b.endDate))
     .slice(0, 5) || [];
+
+  const handleStartTimer = (taskId) => {
+    // Find the task to get project id
+    const allTasks = displayTasks || [];
+    const task = allTasks.find(t => t.id === taskId);
+    if (task) {
+      startTimer(taskId, task.project.id);
+    }
+  };
+
+  const handleEditTask = (task) => {
+    setEditingTask(task);
+  };
+
+  const handleCompleteTask = async (taskId) => {
+    try {
+      await apiService.updateTask(taskId, { status: 'COMPLETED' });
+      // Refetch tasks
+      dispatch(fetchTasks());
+    } catch (error) {
+      console.error('Failed to complete task:', error);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -126,11 +143,7 @@ const ProjectsListPage = () => {
         </div>
 
         {/* 2. Financial Metrics Panel */}
-        <FinancialMetricsPanel
-          unbilledAmount={unbilledAmount}
-          totalRevenue={totalRevenue}
-          overdueInvoices={overdueInvoices}
-        />
+        <FinancialMetricsPanel />
 
         {/* 3. Immediate Work Focus - KanbanBoardLite */}
         <div className="mb-8">
@@ -141,7 +154,12 @@ const ProjectsListPage = () => {
                 View All Projects →
               </Link>
             </div>
-            <KanbanBoardLite projects={displayProjects} tasks={displayTasks} />
+            <KanbanBoardLite
+              projects={displayProjects}
+              onStartTimer={handleStartTimer}
+              onEditTask={handleEditTask}
+              onComplete={handleCompleteTask}
+            />
           </div>
         </div>
 

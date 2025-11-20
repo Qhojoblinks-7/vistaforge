@@ -6,6 +6,9 @@ class Inquiry(models.Model):
     # RLS Field: Links the inquiry to the freelancer user
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    # Relationship to client when inquiry is converted
+    converted_client = models.ForeignKey('clients_app.Client', on_delete=models.SET_NULL, null=True, blank=True, related_name='converted_from_inquiries')
+
     # Core Contact Fields
     client_name = models.CharField(max_length=150, help_text="Name of the person making the inquiry.")
     client_email = models.EmailField(max_length=254)
@@ -120,6 +123,8 @@ class Inquiry(models.Model):
             }
         )
 
+        # Link inquiry to client
+        self.converted_client = client
         # Update inquiry status
         self.status = 'WON'
         self.save()
@@ -137,6 +142,7 @@ class Inquiry(models.Model):
         project = Project.objects.create(
             user=self.user,
             client=client,
+            inquiry=self,  # Link to the inquiry
             title=f"{self.service_requested.replace('_', ' ').title()} Project",
             description=f"Inquiry: {self.message}",
             status='PLANNING',
