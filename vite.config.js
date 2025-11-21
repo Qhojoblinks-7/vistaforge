@@ -29,7 +29,7 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: true, // Enable sourcemaps to debug production issues
-    minify: 'terser',
+    minify: false,
     terserOptions: {
       compress: {
         drop_console: true, // Remove console.log in production
