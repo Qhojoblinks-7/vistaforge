@@ -163,6 +163,7 @@ if ENVIRONMENT == 'production':
     CORS_ALLOWED_ORIGINS = [
         os.getenv('FRONTEND_URL', 'https://your-frontend-domain.com'),
         'https://vistaforge.onrender.com',
+        'https://vistaforge.vercel.app',
         'https://vistaforge-ohporms9e-qhojoblinks-7s-projects.vercel.app',
         'https://vistaforge-h0lgzukx9-qhojoblinks-7s-projects.vercel.app',
         'https://vistaforge-git-main-qhojoblinks-7s-projects.vercel.app',
