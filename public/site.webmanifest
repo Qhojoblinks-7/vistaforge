@@ -1,0 +1,65 @@
+{
+  "name": "VistaForge - Brand Design & Creative Agency",
+  "short_name": "VistaForge",
+  "description": "Professional brand design and web development agency specializing in logo design, brand identity, and digital strategy for businesses in Ghana and Africa.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0015AA",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en-US",
+  "categories": ["business", "design", "productivity"],
+  "icons": [
+    {
+      "src": "/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo2.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Our Services",
+      "short_name": "Services",
+      "description": "Explore our brand design and web development services",
+      "url": "/services",
+      "icons": [
+        {
+          "src": "/logo.svg",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Our Work",
+      "short_name": "Portfolio",
+      "description": "View our brand design and web development projects",
+      "url": "/portfolio",
+      "icons": [
+        {
+          "src": "/logo.svg",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Contact Us",
+      "short_name": "Contact",
+      "description": "Get in touch for your brand design project",
+      "url": "/contact",
+      "icons": [
+        {
+          "src": "/logo.svg",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ]
+}
