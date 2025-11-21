@@ -13,8 +13,6 @@ const AnalyticsPage = () => {
   const analyticsLoading = useSelector(selectAnalyticsLoading);
   const analyticsError = useSelector(selectAnalyticsError);
 
-  // Derive top clients from server-driven projects (names only)
-  const projects = useSelector((s) => s.publicPortfolio.projects || []);
 
   useEffect(() => {
     dispatch(fetchPublicProjects());
@@ -82,11 +80,6 @@ const AnalyticsPage = () => {
     }
   };
 
-  const cancelEdit = () => {
-    setRevenueTarget(goals.monthlyRevenueGoal?.target || '');
-    setSatisfactionTarget(goals.clientSatisfaction?.target || '');
-    setEditingGoals(false);
-  };
 
   // Show loading state
   if (analyticsLoading) {
@@ -354,7 +347,11 @@ const AnalyticsPage = () => {
                       <BsCheck className="text-green-600" size={14} />
                     </button>
                     <button
-                      onClick={cancelEdit}
+                      onClick={() => {
+                        setRevenueTarget(goals.monthlyRevenueGoal?.target || '');
+                        setSatisfactionTarget(goals.clientSatisfaction?.target || '');
+                        setEditingGoals(false);
+                      }}
                       disabled={savingGoals}
                       className="p-1 hover:bg-red-100 rounded transition-colors disabled:opacity-50"
                       title="Cancel"
