@@ -137,6 +137,26 @@ const SEO = ({
     "currenciesAccepted": "GHS"
   };
 
+  // Breadcrumb structured data
+  const breadcrumbSchema = section ? {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://vistaforge.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": section,
+        "item": canonicalUrl
+      }
+    ]
+  } : null;
+
   // Enhanced WebPage schema for AI search
   const webpageSchema = {
     "@context": "https://schema.org",
@@ -199,26 +219,6 @@ const SEO = ({
       "@id": `${canonicalUrl}#breadcrumb`
     } : undefined
   };
-
-  // Breadcrumb structured data
-  const breadcrumbSchema = section ? {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "https://vistaforge.com"
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": section,
-        "item": canonicalUrl
-      }
-    ]
-  } : null;
 
   // Article structured data for blog/news pages
   const articleSchema = type === 'article' && published ? {
