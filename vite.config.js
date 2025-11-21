@@ -28,16 +28,28 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    sourcemap: true,
+    sourcemap: false, // Disable sourcemaps in production for smaller bundle
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true, // Remove console.log in production
+        drop_debugger: true,
+      },
+    },
     rollupOptions: {
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],
           router: ['react-router-dom'],
-          animations: ['react-spring', 'react-awesome-reveal']
+          ui: ['lucide-react', 'react-icons'],
+          animations: ['react-spring', 'react-awesome-reveal'],
+          dnd: ['@dnd-kit/core', '@dnd-kit/sortable', '@dnd-kit/utilities'],
+          redux: ['@reduxjs/toolkit', 'react-redux'],
+          utils: ['html2canvas', 'jspdf', 'react-helmet-async']
         }
       }
-    }
+    },
+    chunkSizeWarningLimit: 1000,
   },
   preview: {
     port: 4173,

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Helmet } from 'react-helmet-async';
 import { useSpring, animated } from 'react-spring';
 import { useInView } from 'react-intersection-observer';
 import { Link } from 'react-router-dom';
@@ -8,6 +7,7 @@ import { FaHandshake } from 'react-icons/fa';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import Footer from '../components/Footer';
+import SEO from '../components/SEO';
 
 // You will need to add a team member image to your project
 // Example: import amaBoatengImage from './assets/ama-boateng.webp';
@@ -96,61 +96,83 @@ const AboutUsPage = () => {
     delay: 100,
   });
 
+  // Enhanced structured data for About page
+  const aboutStructuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "AboutPage",
+        "name": "About VistaForge",
+        "description": "Learn about VistaForge, Ghana's leading brand design agency. Meet our team of creative strategists and discover our mission to empower African businesses.",
+        "url": "https://vistaforge.com/about",
+        "mainEntity": {
+          "@type": "Organization",
+          "name": "VistaForge",
+          "description": "Professional brand design and creative agency specializing in logo design, brand identity, and digital strategy for African businesses.",
+          "foundingDate": "2024",
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "GH",
+            "addressLocality": "Accra"
+          },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+233-59-255-8160",
+            "contactType": "customer service",
+            "email": "hello@vistaforge.com"
+          },
+          "employee": TEAM_MEMBERS.map(member => ({
+            "@type": "Person",
+            "name": member.name,
+            "jobTitle": member.role,
+            "description": member.tagline
+          }))
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What makes VistaForge different from other design agencies?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "VistaForge combines deep understanding of African markets with global design standards, offering strategic thinking alongside creative execution. We focus on measurable business impact rather than just aesthetics."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How long has VistaForge been in business?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "VistaForge was founded in 2024 and has quickly established itself as Ghana's premier brand design agency, serving clients across Africa and internationally."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What industries does VistaForge specialize in?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "We work with startups, SMEs, and established businesses across technology, healthcare, finance, retail, professional services, and various other industries."
+            }
+          }
+        ]
+      }
+    ]
+  };
+
   return (
-    <main className="bg-white text-gray-800 font-poppins" id="main-content">
-      <Helmet>
-        <title>About VistaForge - Professional Brand Design & Creative Agency</title>
-        <meta name="description" content="Learn about VistaForge, Ghana's leading brand design agency. Meet our team of creative strategists and discover our mission to empower African businesses with innovative branding solutions." />
-        <meta name="keywords" content="about VistaForge, brand design agency Ghana, creative team, brand strategy, digital agency Accra, African branding" />
-
-        {/* Open Graph / Facebook */}
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://vistaforge.com/about" />
-        <meta property="og:title" content="About VistaForge - Professional Brand Design & Creative Agency" />
-        <meta property="og:description" content="Meet the team behind VistaForge and discover our mission to empower African businesses with innovative branding and digital solutions." />
-        <meta property="og:image" content="https://vistaforge.com/about-og-image.jpg" />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-        <meta property="og:site_name" content="VistaForge" />
-        <meta property="og:locale" content="en_US" />
-
-        {/* Twitter */}
-        <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content="https://vistaforge.com/about" />
-        <meta property="twitter:title" content="About VistaForge - Professional Brand Design & Creative Agency" />
-        <meta property="twitter:description" content="Meet the team behind VistaForge and discover our mission to empower African businesses with innovative branding and digital solutions." />
-        <meta property="twitter:image" content="https://vistaforge.com/about-twitter-image.jpg" />
-
-        {/* Additional SEO meta tags */}
-        <meta name="robots" content="index, follow" />
-        <meta name="author" content="VistaForge" />
-        <meta name="language" content="English" />
-
-        {/* Canonical URL */}
-        <link rel="canonical" href="https://vistaforge.com/about" />
-
-        {/* Breadcrumbs structured data */}
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            "itemListElement": [
-              {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "Home",
-                "item": "https://vistaforge.com"
-              },
-              {
-                "@type": "ListItem",
-                "position": 2,
-                "name": "About",
-                "item": "https://vistaforge.com/about"
-              }
-            ]
-          })}
-        </script>
-      </Helmet>
+    <>
+      <SEO
+        title="About Us - Meet the VistaForge Creative Team"
+        description="Learn about VistaForge, Ghana's leading brand design agency. Meet our team of creative strategists and discover our mission to empower African businesses with innovative branding solutions."
+        keywords="about VistaForge, brand design agency Ghana, creative team, brand strategy, digital agency Accra, African branding, team VistaForge"
+        image="/hero2.png"
+        url="/about"
+        section="About"
+        structuredData={aboutStructuredData}
+      />
+      <main className="bg-white text-gray-800 font-poppins" id="main-content">
       {/* 1. Hero Section - This section will be the same for both versions */}
       <section className="relative bg-[#0015AA] text-white py-16 px-4 sm:py-20 sm:px-6 lg:py-24 lg:px-8 text-center overflow-hidden">
         {/* Subtle Background Shapes */}
@@ -371,6 +393,7 @@ const AboutUsPage = () => {
 
       <Footer />
     </main>
+    </>
   );
 };
 

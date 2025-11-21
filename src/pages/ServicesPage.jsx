@@ -1,11 +1,11 @@
 import React from 'react';
-import { Helmet } from 'react-helmet-async';
 import { useSpring, animated } from 'react-spring';
 import { BsPen, BsStack, BsLaptop, BsBarChart, BsPhone, BsTools, BsCashStack,BsBriefcase,BsRocket } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import aboutImage from '../assets/hero3.jpeg';
 import '../styles/ServicesPage.css';
 import Footer from '../components/Footer';
+import SEO from '../components/SEO';
 
 const ServicesPage = () => {
   const serviceSpring = useSpring({
@@ -15,78 +15,357 @@ const ServicesPage = () => {
     config: { tension: 120, friction: 14 }
   });
 
-  return (
-    <main className="bg-white" id="main-content">
-      <Helmet>
-        <title>Services - VistaForge Brand Design & Web Development</title>
-        <meta name="description" content="Explore VistaForge's comprehensive brand design and web development services. From logo design to full brand identity and stunning websites, we help businesses stand out." />
-        <meta name="keywords" content="brand design services, logo design, web development, brand identity, graphic design, creative services, Ghana design agency" />
+  // AI-optimized structured data for Services page
+  const servicesStructuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      // Comprehensive HowTo schema for the brand building process
+      {
+        "@type": "HowTo",
+        "@id": "https://vistaforge.com/services#howto-brand-building",
+        "name": "Complete Guide: How to Build a Professional Brand Identity",
+        "description": "Step-by-step guide to creating a brand identity that drives business growth and customer loyalty",
+        "image": "https://vistaforge.com/services-process.jpg",
+        "totalTime": "P8W",
+        "estimatedCost": {
+          "@type": "MonetaryAmount",
+          "currency": "GHS",
+          "value": "2000"
+        },
+        "step": [
+          {
+            "@type": "HowToStep",
+            "position": 1,
+            "name": "Brand Strategy & Research",
+            "text": "Conduct market research, define your target audience, analyze competitors, and develop your brand positioning and messaging strategy.",
+            "image": "https://vistaforge.com/strategy-step.jpg",
+            "url": "https://vistaforge.com/services#strategy"
+          },
+          {
+            "@type": "HowToStep",
+            "position": 2,
+            "name": "Logo & Visual Identity Design",
+            "text": "Create a memorable logo and develop your complete visual identity including colors, typography, and brand elements.",
+            "image": "https://vistaforge.com/logo-step.jpg",
+            "url": "https://vistaforge.com/services#logo"
+          },
+          {
+            "@type": "HowToStep",
+            "position": 3,
+            "name": "Website & Digital Presence",
+            "text": "Build a professional website and create digital assets that bring your brand to life online.",
+            "image": "https://vistaforge.com/website-step.jpg",
+            "url": "https://vistaforge.com/services#website"
+          },
+          {
+            "@type": "HowToStep",
+            "position": 4,
+            "name": "Brand Implementation & Launch",
+            "text": "Implement your brand across all touchpoints and launch with a comprehensive marketing strategy.",
+            "image": "https://vistaforge.com/launch-step.jpg",
+            "url": "https://vistaforge.com/services#launch"
+          }
+        ],
+        "supply": [
+          {
+            "@type": "HowToSupply",
+            "name": "Brand Strategy Document"
+          },
+          {
+            "@type": "HowToSupply",
+            "name": "Logo Design Files (AI, EPS, PNG, JPG, SVG)"
+          },
+          {
+            "@type": "HowToSupply",
+            "name": "Brand Guidelines Manual"
+          },
+          {
+            "@type": "HowToSupply",
+            "name": "Website Files and Assets"
+          }
+        ],
+        "tool": [
+          {
+            "@type": "HowToTool",
+            "name": "Adobe Illustrator"
+          },
+          {
+            "@type": "HowToTool",
+            "name": "Adobe Photoshop"
+          },
+          {
+            "@type": "HowToTool",
+            "name": "Figma"
+          },
+          {
+            "@type": "HowToTool",
+            "name": "WordPress"
+          }
+        ]
+      },
 
-        {/* Open Graph / Facebook */}
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://vistaforge.com/services" />
-        <meta property="og:title" content="Services - VistaForge Brand Design & Web Development" />
-        <meta property="og:description" content="Explore our comprehensive brand design and web development services. From logo design to full brand identity, we help businesses stand out." />
-        <meta property="og:image" content="https://vistaforge.com/services-og-image.jpg" />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-        <meta property="og:site_name" content="VistaForge" />
-        <meta property="og:locale" content="en_US" />
-
-        {/* Twitter */}
-        <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content="https://vistaforge.com/services" />
-        <meta property="twitter:title" content="Services - VistaForge Brand Design & Web Development" />
-        <meta property="twitter:description" content="Explore our comprehensive brand design and web development services. From logo design to full brand identity, we help businesses stand out." />
-        <meta property="twitter:image" content="https://vistaforge.com/services-twitter-image.jpg" />
-
-        {/* Additional SEO meta tags */}
-        <meta name="robots" content="index, follow" />
-        <meta name="author" content="VistaForge" />
-        <meta name="language" content="English" />
-
-        {/* Canonical URL */}
-        <link rel="canonical" href="https://vistaforge.com/services" />
-
-        {/* Breadcrumbs structured data */}
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            "itemListElement": [
-              {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "Home",
-                "item": "https://vistaforge.com"
-              },
-              {
-                "@type": "ListItem",
-                "position": 2,
-                "name": "Services",
-                "item": "https://vistaforge.com/services"
-              }
-            ]
-          })}
-        </script>
-
-        {/* Service structured data */}
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Service",
-            "name": "Brand Design & Web Development Services",
-            "description": "Professional brand design, logo design, and web development services for businesses in Ghana and beyond.",
-            "provider": {
-              "@type": "Organization",
-              "name": "VistaForge",
-              "url": "https://vistaforge.com"
+      // Enhanced Service schemas with detailed AI-friendly information
+      {
+        "@type": "Service",
+        "@id": "https://vistaforge.com/services#brand-strategy",
+        "name": "Brand Strategy & Positioning Services",
+        "description": "Professional brand strategy development including market research, audience analysis, competitor analysis, brand positioning, messaging strategy, and brand architecture planning.",
+        "provider": {
+          "@id": "https://vistaforge.com/#organization"
+        },
+        "serviceType": "Brand Strategy Consulting",
+        "category": "Marketing Strategy",
+        "areaServed": [
+          {
+            "@type": "Country",
+            "name": "Ghana"
+          },
+          {
+            "@type": "Place",
+            "name": "West Africa"
+          }
+        ],
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Brand Strategy Packages",
+          "itemListElement": [
+            {
+              "@type": "Offer",
+              "name": "Foundation Strategy Package",
+              "description": "Basic brand strategy for startups and small businesses",
+              "price": "2000",
+              "priceCurrency": "GHS",
+              "priceValidUntil": "2025-12-31"
             },
-            "serviceType": "Creative Design Services",
-            "areaServed": "Ghana"
-          })}
-        </script>
-      </Helmet>
+            {
+              "@type": "Offer",
+              "name": "Comprehensive Strategy Package",
+              "description": "Full brand strategy with market analysis and positioning",
+              "price": "5000",
+              "priceCurrency": "GHS",
+              "priceValidUntil": "2025-12-31"
+            }
+          ]
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "reviewCount": "47",
+          "bestRating": "5",
+          "worstRating": "1"
+        }
+      },
+
+      {
+        "@type": "Service",
+        "@id": "https://vistaforge.com/services#logo-design",
+        "name": "Professional Logo Design & Visual Identity",
+        "description": "Custom logo design and complete visual identity systems including color palettes, typography, brand guidelines, and usage standards.",
+        "provider": {
+          "@id": "https://vistaforge.com/#organization"
+        },
+        "serviceType": "Graphic Design",
+        "category": "Brand Identity",
+        "areaServed": {
+          "@type": "Country",
+          "name": "Ghana"
+        },
+        "offers": {
+          "@type": "Offer",
+          "priceRange": "₵600 - ₵2000",
+          "availability": "https://schema.org/InStock",
+          "priceValidUntil": "2025-12-31"
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.8",
+          "reviewCount": "89",
+          "bestRating": "5",
+          "worstRating": "1"
+        }
+      },
+
+      {
+        "@type": "Service",
+        "@id": "https://vistaforge.com/services#web-development",
+        "name": "Custom Website Design & Development",
+        "description": "Responsive, modern website design and development using the latest technologies. From simple business sites to complex e-commerce platforms.",
+        "provider": {
+          "@id": "https://vistaforge.com/#organization"
+        },
+        "serviceType": "Web Development",
+        "category": "Digital Marketing",
+        "areaServed": {
+          "@type": "Country",
+          "name": "Ghana"
+        },
+        "offers": {
+          "@type": "Offer",
+          "priceRange": "₵1200 - ₵4500+",
+          "availability": "https://schema.org/InStock",
+          "priceValidUntil": "2025-12-31"
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "reviewCount": "63",
+          "bestRating": "5",
+          "worstRating": "1"
+        }
+      },
+
+      {
+        "@type": "Service",
+        "@id": "https://vistaforge.com/services#ui-ux-design",
+        "name": "UI/UX Design for Digital Products",
+        "description": "User interface and experience design for websites, mobile apps, and digital products. Includes wireframes, prototypes, and high-fidelity designs.",
+        "provider": {
+          "@id": "https://vistaforge.com/#organization"
+        },
+        "serviceType": "UX Design",
+        "category": "Digital Design",
+        "areaServed": {
+          "@type": "Country",
+          "name": "Ghana"
+        },
+        "offers": {
+          "@type": "Offer",
+          "priceRange": "₵1200 - ₵4500",
+          "availability": "https://schema.org/InStock",
+          "priceValidUntil": "2025-12-31"
+        }
+      },
+
+      {
+        "@type": "Service",
+        "@id": "https://vistaforge.com/services#social-media",
+        "name": "Social Media Branding & Campaign Design",
+        "description": "Complete social media branding including profile designs, post templates, campaign graphics, and brand-consistent content creation.",
+        "provider": {
+          "@id": "https://vistaforge.com/#organization"
+        },
+        "serviceType": "Social Media Marketing",
+        "category": "Digital Marketing",
+        "areaServed": {
+          "@type": "Country",
+          "name": "Ghana"
+        },
+        "offers": {
+          "@type": "Offer",
+          "priceRange": "₵600 - ₵2000",
+          "availability": "https://schema.org/InStock",
+          "priceValidUntil": "2025-12-31"
+        }
+      },
+
+      // AI-optimized FAQ schema
+      {
+        "@type": "FAQPage",
+        "@id": "https://vistaforge.com/services#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How much does professional logo design cost in Ghana?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Professional logo design in Ghana costs between ₵600 to ₵2,000 depending on complexity and deliverables. Our packages include multiple concepts, unlimited revisions, and all file formats needed for print and digital use."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How long does it take to complete a brand identity project?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A complete brand identity project typically takes 4-8 weeks. This includes brand strategy (2 weeks), design development (2-4 weeks), and final implementation (1-2 weeks). Rush orders are available for an additional fee."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do you work with startups and small businesses?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Absolutely! We specialize in working with startups and small businesses in Ghana and across Africa. Our flexible packages and payment terms are designed to support growing businesses with limited budgets."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What makes VistaForge different from other design agencies?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "VistaForge combines deep understanding of the African market with global design standards. We're not just designers – we're strategic partners invested in your business success, offering end-to-end brand solutions."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can you handle both branding and website development?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes! We offer complete brand-to-digital solutions. Many clients choose us for both branding and web development to ensure perfect alignment between their visual identity and online presence."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do you provide training on how to use the brand assets?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, all our packages include brand usage training and guidelines. We provide comprehensive brand manuals and offer optional training sessions to ensure your team can effectively use and maintain brand consistency."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What file formats do you provide for logo designs?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "We provide logos in all necessary formats: vector files (AI, EPS, SVG) for scalability, raster files (PNG, JPG) for web use, and specialized formats for embroidery, signage, and other applications."
+            }
+          }
+        ]
+      },
+
+      // CreativeWork schema for the services guide
+      {
+        "@type": "CreativeWork",
+        "@id": "https://vistaforge.com/services#services-guide",
+        "name": "VistaForge Services Guide",
+        "description": "Complete guide to VistaForge's brand design and web development services",
+        "author": {
+          "@id": "https://vistaforge.com/#organization"
+        },
+        "publisher": {
+          "@id": "https://vistaforge.com/#organization"
+        },
+        "datePublished": "2024-01-01",
+        "dateModified": new Date().toISOString().split('T')[0],
+        "about": [
+          {
+            "@type": "Thing",
+            "name": "Brand Design"
+          },
+          {
+            "@type": "Thing",
+            "name": "Logo Design"
+          },
+          {
+            "@type": "Thing",
+            "name": "Web Development"
+          }
+        ]
+      }
+    ]
+  };
+
+  return (
+    <>
+      <SEO
+        title="Our Services - Brand Design, Logo Design & Web Development"
+        description="Explore VistaForge's comprehensive brand design and web development services. From logo design to full brand identity and stunning websites, we help businesses stand out."
+        keywords="brand design services, logo design, web development, brand identity, graphic design, creative services, Ghana design agency, UI/UX design"
+        image="/hero2.png"
+        url="/services"
+        section="Services"
+        structuredData={servicesStructuredData}
+      />
+      <main className="bg-white" id="main-content">
       {/* Hero Section with Subtle Shapes */}
       <section className="relative bg-[#0015AA] text-white py-16 px-4 sm:py-20 sm:px-6 lg:py-24 lg:px-8 text-center overflow-hidden">
         {/* Subtle Background Shapes */}
@@ -396,6 +675,7 @@ const ServicesPage = () => {
 
       <Footer />
     </main>
+    </>
   );
 };
 

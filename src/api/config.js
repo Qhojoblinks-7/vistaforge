@@ -1,6 +1,8 @@
 import axios from 'axios';
 
 export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+export const GRAPHQL_URL = import.meta.env.VITE_GRAPHQL_URL || 'http://localhost:8000/graphql';
+export const APP_ENV = import.meta.env.VITE_APP_ENV || 'development';
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
