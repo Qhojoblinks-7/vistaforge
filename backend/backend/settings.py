@@ -162,6 +162,7 @@ if ENVIRONMENT == 'production':
     # Production CORS - allow your frontend domain
     CORS_ALLOWED_ORIGINS = [
         os.getenv('FRONTEND_URL', 'https://your-frontend-domain.com'),
+        'https://vistaforge-ohporms9e-qhojoblinks-7s-projects.vercel.app',
     ]
     # Allow credentials for GraphQL authentication
     CORS_ALLOW_CREDENTIALS = True

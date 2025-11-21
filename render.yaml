@@ -12,7 +12,7 @@ services:
       - key: EXCLUSIVE_ADMIN_USERNAME
         value: admin
       - key: FRONTEND_URL
-        value: https://your-frontend-domain.com
+        value: https://vistaforge-ohporms9e-qhojoblinks-7s-projects.vercel.app
       - key: ALLOWED_HOSTS
         value: your-backend-domain.onrender.com
       - key: DATABASE_URL
