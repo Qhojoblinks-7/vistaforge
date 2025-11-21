@@ -170,6 +170,8 @@ if ENVIRONMENT == 'production':
     ]
     # Allow credentials for GraphQL authentication
     CORS_ALLOW_CREDENTIALS = True
+    # Temporarily allow all origins for testing
+    CORS_ALLOW_ALL_ORIGINS = True
 else:
     # Development CORS
     CORS_ALLOWED_ORIGINS = [
