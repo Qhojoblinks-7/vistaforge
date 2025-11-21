@@ -1,1 +1,1 @@
-from backend.wsgi import application
+from backend.wsgi import application as app
