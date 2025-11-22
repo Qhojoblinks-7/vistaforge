@@ -4,7 +4,6 @@ import { BsPlus, BsEye, BsFilter, BsTrash, BsPencil, BsTag, BsCalendar, BsCheckC
 import {
   fetchInquiries,
   createInquiry,
-  updateInquiry,
   bulkUpdateInquiries,
   deleteInquiry,
   setFilters,
@@ -134,12 +133,6 @@ const InquiriesPage = () => {
     URL.revokeObjectURL(url);
   };
 
-  // Handle sorting
-  const handleSort = (column) => {
-    const newOrder = sortBy === column && sortOrder === 'asc' ? 'desc' : 'asc';
-    dispatch(setSorting({ sortBy: column, sortOrder: newOrder }));
-  };
-
   // Handle filters
   const handleFiltersChange = (newFilters) => {
     dispatch(setFilters(newFilters));
@@ -153,22 +146,7 @@ const InquiriesPage = () => {
     dispatch(fetchInquiries());
   };
 
-  // Selection handlers
-  const handleSelectAll = () => {
-    if (selectedInquiries.length === inquiries.length) {
-      setSelectedInquiries([]);
-    } else {
-      setSelectedInquiries(inquiries.map(inv => inv.id));
-    }
-  };
-
-  const handleSelectInquiry = (inquiryId) => {
-    if (selectedInquiries.includes(inquiryId)) {
-      setSelectedInquiries(selectedInquiries.filter(id => id !== inquiryId));
-    } else {
-      setSelectedInquiries([...selectedInquiries, inquiryId]);
-    }
-  };
+  // Selection is handled by the DataTable component
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -208,7 +186,7 @@ const InquiriesPage = () => {
   const tableColumns = [
     { key: 'name', header: 'Name', sortable: true },
     { key: 'email', header: 'Email', sortable: true },
-    { key: 'message', header: 'Message', render: (value) => (
+    { key: 'message', render: (value) => (
       <div className="truncate max-w-xs" title={value}>{value || '—'}</div>
     )},
     { key: 'status', header: 'Status', sortable: true, render: (value) => (
@@ -234,11 +212,6 @@ const InquiriesPage = () => {
   ];
 
   const bulkActions = [
-    { label: 'Mark Contacted', onClick: () => handleBulkUpdate({ status: 'CONTACTED' }), variant: 'primary' },
-    { label: 'Export CSV', onClick: handleExportSelected, variant: 'secondary' },
-    { label: 'Delete Selected', onClick: handleBulkDeleteSelected, variant: 'danger' }
-  ];
-
   return (
     <PageLayout
       title="Inquiries"
