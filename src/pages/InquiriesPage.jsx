@@ -246,7 +246,7 @@ const InquiriesPage = () => {
       keywords="inquiries, leads, sales, pipeline, crm"
     >
       {/* Analytics Dashboard */}
-      <div className="mb-8 grid grid-cols-1 md:grid-cols-5 gap-6">
+      <div className="mb-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6">
         <MetricCard
           title="Total Inquiries"
           value={analytics?.totalInquiries || 0}

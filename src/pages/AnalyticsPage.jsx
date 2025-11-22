@@ -141,7 +141,7 @@ const AnalyticsPage = () => {
         </div> */}
 
         {/* Key Metrics - Primary Importance */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
           <div className="bg-white p-6 rounded-lg shadow-lg border-l-4 border-[#0015AA] hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
             <div className="flex items-center justify-between mb-4">
               <div className="p-2 bg-[#0015AA] rounded-lg">
@@ -211,7 +211,7 @@ const AnalyticsPage = () => {
         </div>
 
         {/* Charts and Detailed Analytics - Secondary Importance */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 mb-8">
           {/* Revenue Chart */}
           <div className="bg-white p-6 rounded-lg shadow-lg border-t-4 border-[#0015AA]">
             <div className="flex items-center justify-between mb-6">
@@ -277,7 +277,7 @@ const AnalyticsPage = () => {
         </div>
 
         {/* Additional Analytics - Tertiary Importance */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200 hover:shadow-lg transition-shadow">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-bold text-[#0015AA]">Project Performance</h3>
