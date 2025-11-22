@@ -1,6 +1,5 @@
 import React from 'react';
 import { useTimer } from '../../../context/TimerContext';
-import apiService from '../../../services/api';
 
 const ActiveTimerComponent = () => {
   const { activeTimer, elapsedTime, formatTime, stopTimer } = useTimer();
@@ -8,7 +7,8 @@ const ActiveTimerComponent = () => {
   const handleStopTimer = async () => {
     if (activeTimer) {
       try {
-        await apiClient.patch(`/timelogs/stop/${activeTimer.taskId}/`);
+        // Use Redux dispatch for stopTimer instead of direct API call
+        // The stopTimer action will handle the GraphQL mutation
         stopTimer();
       } catch (error) {
         console.error('Failed to stop timer:', error);

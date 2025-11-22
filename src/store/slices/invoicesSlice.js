@@ -258,17 +258,15 @@ export const deleteInvoice = createAsyncThunk(
   'invoices/deleteInvoice',
   async (invoiceId) => {
     console.log('Deleting invoice:', invoiceId);
-    const response = await fetch(`http://localhost:8000/api/invoices/${invoiceId}/`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `JWT ${localStorage.getItem('adminToken')}`
+    const mutation = `
+      mutation DeleteInvoice($id: ID!) {
+        deleteInvoice(id: $id) {
+          success
+        }
       }
-    });
+    `;
 
-    if (!response.ok) {
-      throw new Error('Failed to delete invoice');
-    }
-
+    await apiService.request(mutation, { id: invoiceId });
     return invoiceId;
   }
 );
