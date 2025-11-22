@@ -206,7 +206,7 @@ const ClientsPage = () => {
         </Helmet>
 
         {/* Analytics Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
           <div className="bg-white rounded-lg shadow-lg border border-gray-100 p-6">
             <div className="flex items-center justify-between">
               <div>
@@ -252,13 +252,13 @@ const ClientsPage = () => {
           <div className="absolute top-4 right-8 w-24 h-24 bg-[#FBB03B]/20 rounded-full blur-xl"></div>
           <div className="absolute bottom-2 left-12 w-16 h-16 bg-[#0015AA]/15 rounded-full blur-lg"></div>
 
-          <div className="relative z-10 flex items-center justify-between py-6 px-6">
+          <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between py-6 px-4 sm:px-6 space-y-4 sm:space-y-0">
             <div>
-              <p className="text-gray-700 font-medium">Manage your client relationships and contacts</p>
+              <p className="text-gray-700 font-medium text-sm sm:text-base">Manage your client relationships and contacts</p>
             </div>
             <button
               onClick={() => setShowCreateModal(true)}
-              className="bg-[#0015AA] text-white px-6 py-3 rounded-lg hover:bg-[#003366] shadow-lg hover:shadow-xl transition-all duration-300 flex items-center font-semibold hover:-translate-y-0.5"
+              className="bg-[#0015AA] text-white px-4 sm:px-6 py-3 rounded-lg hover:bg-[#003366] shadow-lg hover:shadow-xl transition-all duration-300 flex items-center font-semibold hover:-translate-y-0.5 min-h-[44px] w-full sm:w-auto justify-center"
             >
               <BsPlus className="mr-2" size={18} />
               Add New Client
@@ -267,9 +267,9 @@ const ClientsPage = () => {
         </div>
 
         {/* Search and Filters */}
-        <div className="mb-6 bg-white rounded-lg shadow-lg border border-gray-100 p-6">
-          <div className="flex flex-col md:flex-row gap-4">
-            <form onSubmit={handleSearch} className="flex-1">
+        <div className="mb-6 bg-white rounded-lg shadow-lg border border-gray-100 p-4 sm:p-6">
+          <div className="flex flex-col space-y-4">
+            <form onSubmit={handleSearch} className="w-full">
               <div className="relative">
                 <BsSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 <input
@@ -277,14 +277,14 @@ const ClientsPage = () => {
                   placeholder="Search clients..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0015AA] focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0015AA] focus:border-transparent min-h-[44px]"
                 />
               </div>
             </form>
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-2">
               <button
                 onClick={() => setShowFilters(!showFilters)}
-                className={`px-4 py-2 rounded-lg border transition-all duration-200 flex items-center ${
+                className={`px-4 py-3 rounded-lg border transition-all duration-200 flex items-center justify-center min-h-[44px] font-medium ${
                   showFilters ? 'bg-[#0015AA] text-white border-[#0015AA]' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
                 }`}
               >
@@ -293,7 +293,7 @@ const ClientsPage = () => {
               </button>
               <button
                 onClick={() => dispatch(clearFilters())}
-                className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all duration-200"
+                className="px-4 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all duration-200 min-h-[44px] font-medium"
               >
                 Clear
               </button>
@@ -331,32 +331,32 @@ const ClientsPage = () => {
 
         {/* Clients Grid */}
         {!loading && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {clients.map((client, index) => (
-              <div key={client.id} className="bg-white rounded-lg shadow-lg border border-gray-100 p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {clients.map((client) => (
+              <div key={client.id} className="bg-white rounded-lg shadow-lg border border-gray-100 p-4 sm:p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
                 {/* Card Background Accent */}
                 <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-[#0015AA]/5 to-transparent rounded-bl-3xl"></div>
 
                 {/* Header Section */}
-                <div className="flex items-start justify-between mb-4 relative z-10">
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 bg-[#0015AA] rounded-full flex items-center justify-center shadow-md">
-                      <BsPeople className="text-white" size={20} />
+                <div className="flex flex-col sm:flex-row items-start justify-between mb-4 relative z-10 space-y-3 sm:space-y-0">
+                  <div className="flex items-center min-w-0 flex-1">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#0015AA] rounded-full flex items-center justify-center shadow-md flex-shrink-0">
+                      <BsPeople className="text-white" size={16} />
                     </div>
-                    <div className="ml-3">
-                      <h3 className="text-lg font-bold text-[#0015AA]">{client.name}</h3>
-                      <p className="text-sm text-gray-600 font-medium">{client.company || 'Individual'}</p>
+                    <div className="ml-3 min-w-0 flex-1">
+                      <h3 className="text-base sm:text-lg font-bold text-[#0015AA] truncate">{client.name}</h3>
+                      <p className="text-sm text-gray-600 font-medium truncate">{client.company || 'Individual'}</p>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2 flex-shrink-0">
                     {/* Status Badge */}
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(client.status)}`}>
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium whitespace-nowrap ${getStatusColor(client.status)}`}>
                       {client.status}
                     </span>
                     {/* Three Dots Menu */}
                     <button
                       onClick={() => setSelectedClient(selectedClient === client.id ? null : client.id)}
-                      className="p-2 hover:bg-gray-100 rounded-full transition-colors relative z-10"
+                      className="p-2 hover:bg-gray-100 rounded-full transition-colors relative z-10 min-h-[44px] min-w-[44px] flex items-center justify-center"
                     >
                       <BsThreeDotsVertical className="text-gray-400" />
                     </button>
@@ -449,16 +449,16 @@ const ClientsPage = () => {
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex space-x-2">
+                <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
                   <button
                     onClick={() => handleViewDetails(client)}
-                    className="flex-1 bg-gray-100 text-gray-700 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-gray-200 transition-all duration-200 shadow-sm hover:shadow-md"
+                    className="flex-1 bg-gray-100 text-gray-700 px-3 py-3 rounded-lg text-sm font-medium hover:bg-gray-200 transition-all duration-200 shadow-sm hover:shadow-md min-h-[44px] justify-center flex items-center"
                   >
                     View Details
                   </button>
                   <button
                     onClick={() => handleNewProject(client)}
-                    className="flex-1 bg-[#0015AA] text-white px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-[#003366] transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5"
+                    className="flex-1 bg-[#0015AA] text-white px-3 py-3 rounded-lg text-sm font-medium hover:bg-[#003366] transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 min-h-[44px] justify-center flex items-center"
                   >
                     New Project
                   </button>
@@ -632,7 +632,7 @@ const ClientsPage = () => {
                       required
                       value={clientForm.name}
                       onChange={(e) => handleFormChange('name', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0015AA] focus:border-transparent"
+                      className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0015AA] focus:border-transparent min-h-[44px]"
                       placeholder="Enter client name"
                     />
                   </div>
@@ -918,7 +918,7 @@ const ClientsPage = () => {
         {/* Create Client Modal */}
         {showCreateModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto m-4 sm:m-0">
               <div className="flex items-center justify-between p-6 border-b border-gray-200">
                 <h2 className="text-xl font-bold text-[#0015AA]">Add New Client</h2>
                 <button
@@ -929,8 +929,8 @@ const ClientsPage = () => {
                 </button>
               </div>
 
-              <form onSubmit={handleCreateClient} className="p-6 space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <form onSubmit={handleCreateClient} className="p-4 sm:p-6 space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                   {/* Basic Information */}
                   <div className="md:col-span-2">
                     <h3 className="text-lg font-semibold text-gray-900 mb-4">Basic Information</h3>
@@ -1010,17 +1010,17 @@ const ClientsPage = () => {
                   </div>
                 </div>
 
-                <div className="flex justify-end space-x-3 pt-6 border-t border-gray-200">
+                <div className="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-3 pt-6 border-t border-gray-200">
                   <button
                     type="button"
                     onClick={() => setShowCreateModal(false)}
-                    className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                    className="px-4 py-3 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors min-h-[44px] font-medium"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-6 py-2 bg-[#0015AA] text-white rounded-lg hover:bg-[#003366] transition-colors font-semibold"
+                    className="px-6 py-3 bg-[#0015AA] text-white rounded-lg hover:bg-[#003366] transition-colors font-semibold min-h-[44px]"
                   >
                     Create Client
                   </button>

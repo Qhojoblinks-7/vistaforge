@@ -282,15 +282,15 @@ const ProjectManagementPage = () => {
         {projectsArray.map((project) => (
           <div
             key={project.id}
-            className="bg-white rounded-lg shadow-lg border border-gray-100 p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+            className="bg-white rounded-lg shadow-lg border border-gray-100 p-4 sm:p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer"
             onClick={() => handleProjectSelect(project)}
           >
-            <div className="flex items-start justify-between mb-4">
-              <div className="flex-1">
-                <h3 className="text-lg font-bold text-[#0015AA] mb-1">{project.title}</h3>
-                <p className="text-sm text-gray-600">{project.client?.name}</p>
+            <div className="flex flex-col sm:flex-row items-start justify-between mb-4 space-y-2 sm:space-y-0">
+              <div className="flex-1 min-w-0">
+                <h3 className="text-base sm:text-lg font-bold text-[#0015AA] mb-1 truncate">{project.title}</h3>
+                <p className="text-sm text-gray-600 truncate">{project.client?.name}</p>
               </div>
-              <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+              <span className={`px-2 py-1 rounded-full text-xs font-medium whitespace-nowrap ${
                 project.status === 'COMPLETED' ? 'bg-green-100 text-green-800' :
                 project.status === 'IN_PROGRESS' ? 'bg-blue-100 text-blue-800' :
                 project.status === 'ON_HOLD' ? 'bg-yellow-100 text-yellow-800' :
@@ -304,23 +304,23 @@ const ProjectManagementPage = () => {
               <p className="text-sm text-gray-700 mb-4 line-clamp-2">{project.description}</p>
             )}
 
-            <div className="flex justify-between items-center text-sm text-gray-600 mb-4">
-              <span>Budget: ${project.budget}</span>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center text-sm text-gray-600 mb-4 space-y-1 sm:space-y-0">
+              <span className="font-medium">Budget: ${project.budget}</span>
               {project.endDate && (
-                <span>Due: {new Date(project.endDate).toLocaleDateString()}</span>
+                <span className="text-xs sm:text-sm">Due: {new Date(project.endDate).toLocaleDateString()}</span>
               )}
             </div>
 
             {/* Action Buttons */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:justify-between">
+              <div className="flex flex-wrap items-center gap-2">
                 {project.status !== 'COMPLETED' && (
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
                       handleProjectComplete(project.id);
                     }}
-                    className="px-3 py-1 bg-green-500 text-white text-xs rounded hover:bg-green-600"
+                    className="px-3 py-2 bg-green-500 text-white text-xs rounded hover:bg-green-600 transition-colors min-h-[36px] font-medium"
                   >
                     Complete
                   </button>
@@ -331,7 +331,7 @@ const ProjectManagementPage = () => {
                     // Could open edit modal here
                     console.log('Edit project:', project.id);
                   }}
-                  className="px-3 py-1 bg-blue-500 text-white text-xs rounded hover:bg-blue-600"
+                  className="px-3 py-2 bg-blue-500 text-white text-xs rounded hover:bg-blue-600 transition-colors min-h-[36px] font-medium"
                 >
                   Edit
                 </button>
@@ -342,7 +342,7 @@ const ProjectManagementPage = () => {
                       handleProjectDelete(project.id);
                     }
                   }}
-                  className="px-3 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600"
+                  className="px-3 py-2 bg-red-500 text-white text-xs rounded hover:bg-red-600 transition-colors min-h-[36px] font-medium"
                 >
                   Delete
                 </button>
@@ -397,11 +397,11 @@ const ProjectManagementPage = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* View Switcher */}
         <div className="mb-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-1 bg-gray-100 rounded-lg p-1">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-4 sm:space-y-0">
+            <div className="flex flex-wrap items-center space-x-1 bg-gray-100 rounded-lg p-1 w-full sm:w-auto">
               <button
                 onClick={() => handleViewChange('dashboard')}
-                className={`px-4 py-2 rounded-md transition-colors flex items-center ${
+                className={`px-3 sm:px-4 py-2 rounded-md transition-colors flex items-center text-sm font-medium min-h-[44px] ${
                   activeView === 'dashboard' ? 'bg-white shadow-sm text-[#0015AA]' : 'text-gray-600 hover:text-gray-800'
                 }`}
               >
@@ -410,7 +410,7 @@ const ProjectManagementPage = () => {
               </button>
               <button
                 onClick={() => handleViewChange('kanban')}
-                className={`px-4 py-2 rounded-md transition-colors flex items-center ${
+                className={`px-3 sm:px-4 py-2 rounded-md transition-colors flex items-center text-sm font-medium min-h-[44px] ${
                   activeView === 'kanban' ? 'bg-white shadow-sm text-[#0015AA]' : 'text-gray-600 hover:text-gray-800'
                 }`}
               >
@@ -419,7 +419,7 @@ const ProjectManagementPage = () => {
               </button>
               <button
                 onClick={() => handleViewChange('list')}
-                className={`px-4 py-2 rounded-md transition-colors flex items-center ${
+                className={`px-3 sm:px-4 py-2 rounded-md transition-colors flex items-center text-sm font-medium min-h-[44px] ${
                   activeView === 'list' ? 'bg-white shadow-sm text-[#0015AA]' : 'text-gray-600 hover:text-gray-800'
                 }`}
               >
@@ -441,7 +441,7 @@ const ProjectManagementPage = () => {
             />
 
             {/* Project Overview Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               <div className="bg-white rounded-lg shadow-lg border border-gray-100 p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -481,7 +481,7 @@ const ProjectManagementPage = () => {
             </div>
 
             {/* Dashboard Widgets */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
               {/* Recent Activity */}
               <div className="lg:col-span-2">
                 <RecentActivityFeed timeLogs={timeLogs} invoices={invoices} />
@@ -494,15 +494,15 @@ const ProjectManagementPage = () => {
             </div>
 
             {/* Projects List */}
-            <div className="bg-white rounded-lg shadow-lg border border-gray-100 p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold text-[#0015AA]">All Projects</h2>
-                <div className="flex items-center space-x-4">
+            <div className="bg-white rounded-lg shadow-lg border border-gray-100 p-4 sm:p-6">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 space-y-4 sm:space-y-0">
+                <h2 className="text-lg sm:text-xl font-bold text-[#0015AA]">All Projects</h2>
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 w-full sm:w-auto">
                   {/* Filter Controls */}
                   <select
                     value={filters.status || ''}
                     onChange={(e) => handleFilterChange({ ...filters, status: e.target.value })}
-                    className="px-3 py-2 border rounded-lg text-sm"
+                    className="px-3 py-2 border rounded-lg text-sm min-h-[40px]"
                   >
                     <option value="">All Status</option>
                     <option value="PLANNING">Planning</option>
@@ -518,7 +518,7 @@ const ProjectManagementPage = () => {
                       const [newSortBy, newSortOrder] = e.target.value.split('_');
                       handleSortChange(newSortBy, newSortOrder);
                     }}
-                    className="px-3 py-2 border rounded-lg text-sm"
+                    className="px-3 py-2 border rounded-lg text-sm min-h-[40px]"
                   >
                     <option value="createdAt_desc">Newest First</option>
                     <option value="createdAt_asc">Oldest First</option>
