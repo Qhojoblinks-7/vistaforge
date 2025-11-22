@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { BsPlus, BsGrid, BsList, BsKanban, BsClock, BsCurrencyDollar, BsCalendar, BsPeople } from 'react-icons/bs';
+import { BsPlus, BsGrid, BsList, BsKanban, BsClock, BsCurrencyDollar, BsCalendar, BsPeople, BsX } from 'react-icons/bs';
+import { toast } from 'react-toastify';
 
 // Redux imports
 import {
@@ -47,6 +48,14 @@ const ProjectManagementPage = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [showProjectModal, setShowProjectModal] = useState(false);
   const [showClientModal, setShowClientModal] = useState(false);
+  const [clientForm, setClientForm] = useState({
+    name: '',
+    company: '',
+    contactEmail: '',
+    phone: '',
+    address: '',
+    notes: ''
+  });
 
   const projectsState = useSelector((state) => state.projects);
   const projectsArray = Array.isArray(projectsState) ? projectsState : projectsState.projects || [];
@@ -139,13 +148,36 @@ const ProjectManagementPage = () => {
     }
   };
 
-  const handleCreateClient = () => {
-    setShowClientModal(true);
-  };
 
   const handleCloseModals = () => {
     setShowProjectModal(false);
     setShowClientModal(false);
+  };
+
+  const handleClientFormChange = (field, value) => {
+    setClientForm(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleCreateClient = async (e) => {
+    e.preventDefault();
+    try {
+      await dispatch(createClient(clientForm)).unwrap();
+      toast.success('Client created successfully');
+      setShowClientModal(false);
+      // Clear the form
+      setClientForm({
+        name: '',
+        company: '',
+        contactEmail: '',
+        phone: '',
+        address: '',
+        notes: ''
+      });
+      // Refresh the client list
+      dispatch(fetchClients());
+    } catch (error) {
+      toast.error('Failed to create client: ' + error.message);
+    }
   };
 
   const handleFilterChange = (newFilters) => {
@@ -338,7 +370,7 @@ const ProjectManagementPage = () => {
             </div>
             <div className="flex items-center space-x-4">
               <button
-                onClick={handleCreateClient}
+                onClick={() => setShowClientModal(true)}
                 className="px-4 py-2 bg-[#0015AA] text-white rounded-lg hover:bg-[#003366] transition-colors flex items-center"
               >
                 <BsPeople className="mr-2" />
@@ -540,25 +572,134 @@ const ProjectManagementPage = () => {
 
         {showClientModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
-              <div className="p-6">
-                <h2 className="text-xl font-bold text-[#0015AA] mb-4">Add New Client</h2>
-                <p className="text-gray-600 mb-6">Client creation form would go here.</p>
-                <div className="flex justify-end space-x-3">
+            <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="flex items-center justify-between p-6 border-b border-gray-200">
+                <h2 className="text-xl font-bold text-[#0015AA]">Add New Client</h2>
+                <button
+                  onClick={() => {
+                    setShowClientModal(false);
+                    setClientForm({
+                      name: '',
+                      company: '',
+                      contactEmail: '',
+                      phone: '',
+                      address: '',
+                      notes: ''
+                    });
+                  }}
+                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                >
+                  <BsX className="text-gray-500" size={24} />
+                </button>
+              </div>
+
+              <form onSubmit={handleCreateClient} className="p-6 space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Basic Information */}
+                  <div className="md:col-span-2">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Basic Information</h3>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Client Name *</label>
+                    <input
+                      type="text"
+                      required
+                      value={clientForm.name}
+                      onChange={(e) => handleClientFormChange('name', e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0015AA] focus:border-transparent"
+                      placeholder="Enter client name"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Company</label>
+                    <input
+                      type="text"
+                      value={clientForm.company}
+                      onChange={(e) => handleClientFormChange('company', e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0015AA] focus:border-transparent"
+                      placeholder="Enter company name"
+                    />
+                  </div>
+
+                  {/* Contact Information */}
+                  <div className="md:col-span-2">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Contact Information</h3>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Email *</label>
+                    <input
+                      type="email"
+                      required
+                      value={clientForm.contactEmail}
+                      onChange={(e) => handleClientFormChange('contactEmail', e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0015AA] focus:border-transparent"
+                      placeholder="Enter email address"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
+                    <input
+                      type="tel"
+                      value={clientForm.phone}
+                      onChange={(e) => handleClientFormChange('phone', e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0015AA] focus:border-transparent"
+                      placeholder="Enter phone number"
+                    />
+                  </div>
+
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Address</label>
+                    <textarea
+                      value={clientForm.address}
+                      onChange={(e) => handleClientFormChange('address', e.target.value)}
+                      rows={3}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0015AA] focus:border-transparent"
+                      placeholder="Enter full address"
+                    />
+                  </div>
+
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Notes</label>
+                    <textarea
+                      value={clientForm.notes}
+                      onChange={(e) => handleClientFormChange('notes', e.target.value)}
+                      rows={3}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0015AA] focus:border-transparent"
+                      placeholder="Enter notes about the client"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex justify-end space-x-3 pt-6 border-t border-gray-200">
                   <button
-                    onClick={handleCloseModals}
-                    className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg"
+                    type="button"
+                    onClick={() => {
+                      setShowClientModal(false);
+                      setClientForm({
+                        name: '',
+                        company: '',
+                        contactEmail: '',
+                        phone: '',
+                        address: '',
+                        notes: ''
+                      });
+                    }}
+                    className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
                   >
                     Cancel
                   </button>
                   <button
-                    onClick={handleCloseModals}
-                    className="px-4 py-2 bg-[#0015AA] text-white rounded-lg hover:bg-[#003366]"
+                    type="submit"
+                    className="px-6 py-2 bg-[#0015AA] text-white rounded-lg hover:bg-[#003366] transition-colors font-semibold"
                   >
                     Create Client
                   </button>
                 </div>
-              </div>
+              </form>
             </div>
           </div>
         )}
