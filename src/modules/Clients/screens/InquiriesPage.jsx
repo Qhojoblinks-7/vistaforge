@@ -11,6 +11,7 @@ const InquiriesPage = () => {
 
   const [filter, setFilter] = useState('all'); // 'all', 'NEW', 'CONTACTED', 'WON', 'LOST', 'ON_HOLD'
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
 
   useEffect(() => {
     dispatch(fetchInquiries());
@@ -112,13 +113,13 @@ const InquiriesPage = () => {
                 </div>
               )}
 
-              {/* Filter Icon */}
+              {/* Filter Button */}
               <button
-                onClick={() => setFilter(filter === 'all' ? 'NEW' : 'all')}
-                className="flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-gray-200 rounded-xl px-4 py-3 text-gray-700 hover:text-[#0015AA] hover:bg-white hover:border-[#0015AA]/30 transition-all duration-200 shadow-md hover:shadow-lg"
+                onClick={() => setShowFilters(!showFilters)}
+                className="flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-gray-200 rounded-xl px-4 py-3 text-gray-700 hover:text-[#0015AA] hover:bg-white hover:border-[#0015AA]/30 transition-all duration-200 shadow-md hover:shadow-lg md:px-4 md:py-3 md:gap-2 px-3 py-2 gap-1"
               >
-                <BsFilter className="w-5 h-5" />
-                <span className="font-medium capitalize">
+                <BsFilter className="w-5 h-5 md:w-5 md:h-5 w-4 h-4" />
+                <span className="font-medium capitalize hidden md:inline">
                   {filter === 'all' ? 'All' : filter.replace('_', ' ').toLowerCase()}
                 </span>
               </button>
@@ -126,31 +127,46 @@ const InquiriesPage = () => {
           </div>
         </div>
 
-        {/* Hidden Filter Tabs - Now controlled by the icon */}
-        <div className="hidden">
-          <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg w-fit">
-            {[
-              { key: 'all', label: 'All', count: inquiries.length },
-              { key: 'NEW', label: 'New', count: inquiries.filter(i => i.status === 'NEW').length },
-              { key: 'CONTACTED', label: 'Contacted', count: inquiries.filter(i => i.status === 'CONTACTED').length },
-              { key: 'WON', label: 'Won', count: inquiries.filter(i => i.status === 'WON').length },
-              { key: 'LOST', label: 'Lost', count: inquiries.filter(i => i.status === 'LOST').length },
-              { key: 'ON_HOLD', label: 'On Hold', count: inquiries.filter(i => i.status === 'ON_HOLD').length },
-            ].map(({ key, label, count }) => (
+        {/* Filter Panel */}
+        {showFilters && (
+          <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-6 mb-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-[#0015AA]">Filter Inquiries</h3>
               <button
-                key={key}
-                onClick={() => setFilter(key)}
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                  filter === key
-                    ? 'bg-white text-[#0015AA] shadow-sm'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
+                onClick={() => setShowFilters(false)}
+                className="text-gray-400 hover:text-gray-600"
               >
-                {label} ({count})
+                ✕
               </button>
-            ))}
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+              {[
+                { key: 'all', label: 'All', count: inquiries.length },
+                { key: 'NEW', label: 'New', count: inquiries.filter(i => i.status === 'NEW').length },
+                { key: 'CONTACTED', label: 'Contacted', count: inquiries.filter(i => i.status === 'CONTACTED').length },
+                { key: 'WON', label: 'Won', count: inquiries.filter(i => i.status === 'WON').length },
+                { key: 'LOST', label: 'Lost', count: inquiries.filter(i => i.status === 'LOST').length },
+                { key: 'ON_HOLD', label: 'On Hold', count: inquiries.filter(i => i.status === 'ON_HOLD').length },
+              ].map(({ key, label, count }) => (
+                <button
+                  key={key}
+                  onClick={() => {
+                    setFilter(key);
+                    setShowFilters(false);
+                  }}
+                  className={`px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    filter === key
+                      ? 'bg-[#0015AA] text-white shadow-md'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  <div className="font-semibold">{label}</div>
+                  <div className="text-xs opacity-75">({count})</div>
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

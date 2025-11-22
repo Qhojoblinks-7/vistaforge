@@ -156,12 +156,9 @@ class GraphQLService {
                         title
                         description
                         status
-                        projectPhase
                         budget
                         startDate
                         endDate
-                        isActive
-                        designTools
                         createdAt
                         updatedAt
                         client {

@@ -123,8 +123,8 @@ const DataTable = ({
         </div>
       )}
 
-      {/* Table */}
-      <div className="overflow-x-auto">
+      {/* Table - Desktop */}
+      <div className="hidden md:block overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200 text-sm md:text-base">
           <thead className="bg-gray-50">
             <tr>
@@ -207,7 +207,7 @@ const DataTable = ({
                         <button
                           key={actionIndex}
                           onClick={() => action.onClick(item)}
-                          className={`p-2 rounded-md transition-colors ${
+                          className={`p-2 rounded-md transition-colors md:px-3 md:py-2 ${
                             action.variant === 'danger'
                               ? 'text-red-600 hover:bg-red-50'
                               : action.variant === 'warning'
@@ -216,7 +216,11 @@ const DataTable = ({
                           }`}
                           title={action.label}
                         >
-                          {action.icon}
+                          <span className="md:hidden">{action.icon}</span>
+                          <span className="hidden md:flex items-center gap-1">
+                            {action.icon}
+                            <span className="text-xs">{action.label}</span>
+                          </span>
                         </button>
                       ))}
                     </div>
@@ -226,6 +230,78 @@ const DataTable = ({
             ))}
           </tbody>
         </table>
+      </div>
+
+      {/* Mobile Card View */}
+      <div className="md:hidden">
+        {loading && (
+          <div className="px-6 py-12 text-center">
+            <div className="flex items-center justify-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#0015AA]"></div>
+              <span className="ml-3 text-gray-600">Loading...</span>
+            </div>
+          </div>
+        )}
+
+        {error && (
+          <div className="px-6 py-12 text-center">
+            <div className="text-red-600">{error}</div>
+          </div>
+        )}
+
+        {!loading && !error && sortedData.map((item, index) => (
+          <div key={item.id || index} className="border-b border-gray-200 p-4 hover:bg-gray-50 transition-colors">
+            {selectable && (
+              <div className="flex items-center mb-3">
+                <input
+                  type="checkbox"
+                  checked={selectedItems.includes(item.id)}
+                  onChange={() => handleSelectItem(item.id)}
+                  className="form-checkbox h-4 w-4 text-[#0015AA] rounded mr-3"
+                />
+                <span className="text-sm text-gray-600">Select</span>
+              </div>
+            )}
+
+            <div className="space-y-2">
+              {columns.map((column) => (
+                <div key={column.key} className="flex justify-between items-center py-1">
+                  <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    {column.header}:
+                  </span>
+                  <span className="text-sm text-gray-900 text-right flex-1 ml-2">
+                    {column.render ? column.render(item[column.key], item) : item[column.key]}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            {actions.length > 0 && (
+              <div className="flex justify-end space-x-2 mt-3 pt-3 border-t border-gray-100">
+                {actions.map((action, actionIndex) => (
+                  <button
+                    key={actionIndex}
+                    onClick={() => action.onClick(item)}
+                    className={`p-2 rounded-md transition-colors md:px-3 md:py-2 ${
+                      action.variant === 'danger'
+                        ? 'text-red-600 hover:bg-red-50'
+                        : action.variant === 'warning'
+                        ? 'text-yellow-600 hover:bg-yellow-50'
+                        : 'text-gray-600 hover:bg-gray-50'
+                    }`}
+                    title={action.label}
+                  >
+                    <span className="md:hidden">{action.icon}</span>
+                    <span className="hidden md:flex items-center gap-1">
+                      {action.icon}
+                      <span className="text-xs">{action.label}</span>
+                    </span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
       </div>
 
       {/* Empty State */}
