@@ -170,6 +170,17 @@ if ENVIRONMENT == 'production':
     ]
     # Allow credentials for GraphQL authentication
     CORS_ALLOW_CREDENTIALS = True
+
+# Allow a single FRONTEND_URL from environment for quick deploys (e.g. Vercel)
+# This ensures the deployed frontend origin is accepted in both dev and prod.
+FRONTEND_URL = os.getenv('FRONTEND_URL') or os.getenv('RENDER_FRONTEND_URL')
+if FRONTEND_URL:
+    try:
+        if FRONTEND_URL not in CORS_ALLOWED_ORIGINS:
+            CORS_ALLOWED_ORIGINS.append(FRONTEND_URL)
+    except NameError:
+        # CORS_ALLOWED_ORIGINS may not be defined if settings mutated; define it safely
+        CORS_ALLOWED_ORIGINS = [FRONTEND_URL]
     # Temporarily allow all origins for testing
     CORS_ALLOW_ALL_ORIGINS = True
 else:

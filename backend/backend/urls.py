@@ -33,7 +33,14 @@ urlpatterns = [
     path('admin/', admin.site.urls),  # Fallback admin URL
 
     # GraphQL API
+    # Accept both with and without trailing slash so POST requests from
+    # clients that omit the trailing slash won't trigger APPEND_SLASH redirects
+    # (which cannot preserve POST data).
     path('graphql/', jwt_cookie(csrf_exempt(GraphQLView.as_view(
+        graphiql=True,
+        schema=schema
+    )))),
+    path('graphql', jwt_cookie(csrf_exempt(GraphQLView.as_view(
         graphiql=True,
         schema=schema
     )))),
