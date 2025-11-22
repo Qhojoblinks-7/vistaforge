@@ -182,7 +182,7 @@ if FRONTEND_URL:
         # CORS_ALLOWED_ORIGINS may not be defined if settings mutated; define it safely
         CORS_ALLOWED_ORIGINS = [FRONTEND_URL]
     # Temporarily allow all origins for testing
-    CORS_ALLOW_ALL_ORIGINS = True
+    CORS_ALLOW_ALL_ORIGINS = False
 else:
     # Development CORS
     CORS_ALLOWED_ORIGINS = [
