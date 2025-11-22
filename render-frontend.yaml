@@ -8,7 +8,7 @@ services:
       - key: VITE_API_URL
         value: https://vistaforge.onrender.com/api
       - key: VITE_GRAPHQL_URL
-        value: https://vistaforge-backend.onrender.com/graphql
+        value: https://vistaforge.onrender.com/graphql
       - key: VITE_APP_NAME
         value: VistaForge
       - key: VITE_APP_ENV
@@ -18,11 +18,11 @@ services:
     routes:
       - type: redirect
         source: /api/*
-        destination: https://vistaforge-backend.onrender.com/api/:splat
+        destination: https://vistaforge.onrender.com/api/:splat
         status: 200
       - type: redirect
         source: /graphql
-        destination: https://vistaforge-backend.onrender.com/graphql
+        destination: https://vistaforge.onrender.com/graphql
         status: 200
     headers:
       - source: /assets/*
