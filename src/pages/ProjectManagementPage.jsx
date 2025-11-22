@@ -368,24 +368,24 @@ const ProjectManagementPage = () => {
               <h1 className="text-2xl font-bold text-[#0015AA]">Project Manager</h1>
               <ActiveTimerComponent />
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
               <button
                 onClick={() => setShowClientModal(true)}
-                className="px-4 py-2 bg-[#0015AA] text-white rounded-lg hover:bg-[#003366] transition-colors flex items-center"
+                className="px-4 py-2 bg-[#0015AA] text-white rounded-lg hover:bg-[#003366] transition-colors flex items-center justify-center min-h-[44px]"
               >
                 <BsPeople className="mr-2" />
                 Add Client
               </button>
               <button
                 onClick={handleCreateProject}
-                className="px-4 py-2 bg-[#FBB03B] text-[#0015AA] rounded-lg hover:bg-[#E0A030] transition-colors flex items-center font-semibold"
+                className="px-4 py-2 bg-[#FBB03B] text-[#0015AA] rounded-lg hover:bg-[#E0A030] transition-colors flex items-center justify-center font-semibold min-h-[44px]"
               >
                 <BsPlus className="mr-2" />
                 New Project
               </button>
               <button
                 onClick={handleLogout}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors min-h-[44px]"
               >
                 Logout
               </button>

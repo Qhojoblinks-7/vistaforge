@@ -46,6 +46,7 @@ const AppContent = () => {
   const { token } = useAuth();
   const location = useLocation();
   const isAuthenticated = !!token;
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Define which routes should show the sidebar (authenticated routes only)
   const authenticatedRoutes = ['/dashboard', '/projects', '/timelogs', '/clients', '/invoices', '/analytics', '/settings', '/admin', '/inquiries'];
@@ -53,9 +54,21 @@ const AppContent = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
-      {shouldShowSidebar && <Sidebar />}
-      <div className={`flex-1 ${shouldShowSidebar ? 'ml-60' : ''}`}>
+      {shouldShowSidebar && <Sidebar isOpen={sidebarOpen} onToggle={() => setSidebarOpen(!sidebarOpen)} />}
+      <div className={`flex-1 ${shouldShowSidebar ? 'md:ml-60' : ''}`}>
         {!shouldShowSidebar && <Header />}
+        {shouldShowSidebar && (
+          <div className="md:hidden bg-white shadow-sm border-b border-gray-200 px-4 py-3 flex items-center justify-between">
+            <button
+              onClick={() => setSidebarOpen(true)}
+              className="p-2 rounded-md text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+            >
+              <BsList size={20} />
+            </button>
+            <h1 className="text-lg font-semibold text-gray-900">VistaForge</h1>
+            <div className="w-8"></div> {/* Spacer for centering */}
+          </div>
+        )}
         <main>
           <Routes>
             {/* Public Routes */}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import {
@@ -10,7 +10,8 @@ import {
   BsBarChart,
   BsGear,
   BsBoxArrowRight,
-  BsEnvelope
+  BsEnvelope,
+  BsList
 } from 'react-icons/bs';
 import { useAuth } from '../../context/AuthContext';
 import { useSelector } from 'react-redux';
@@ -18,7 +19,7 @@ import ActiveTimerComponent from '../../modules/Projects/components/ActiveTimerC
 
 // Sidebar should only be rendered for authenticated users
 // This component enforces strict authentication requirements
-const Sidebar = () => {
+const Sidebar = ({ isOpen, onToggle }) => {
   const { token, user } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
@@ -70,7 +71,9 @@ const Sidebar = () => {
   };
 
   return (
-    <aside className="fixed left-0 top-0 h-full w-60 bg-gradient-to-b from-[#0015AA] to-[#003366] border-r border-white/20 shadow-2xl flex flex-col backdrop-blur-sm">
+    <aside className={`fixed left-0 top-0 h-full w-60 bg-gradient-to-b from-[#0015AA] to-[#003366] border-r border-white/20 shadow-2xl flex flex-col backdrop-blur-sm transition-transform duration-300 ease-in-out z-50 ${
+      isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
+    }`}>
       {/* Logo/Branding */}
       <div className="text-xl font-bold mb-8 text-center py-6 border-b border-white/20">
         <Link to="/dashboard" className="text-white hover:text-[#FBB03B] transition-colors drop-shadow-lg">
@@ -97,6 +100,7 @@ const Sidebar = () => {
                   <Link
                     key={itemIndex}
                     to={item.path}
+                    onClick={() => onToggle && onToggle()}
                     className={`flex items-center px-3 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 ${
                       isActive(item.path)
                         ? 'bg-white/20 backdrop-blur-sm text-white shadow-lg border border-white/30'
@@ -136,6 +140,7 @@ const Sidebar = () => {
             <Link
               key={index}
               to={item.path}
+              onClick={() => onToggle && onToggle()}
               className={`flex items-center px-3 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 mb-2 ${
                 isActive(item.path)
                   ? 'bg-white/20 backdrop-blur-sm text-white shadow-lg border border-white/30'

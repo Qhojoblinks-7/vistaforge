@@ -125,7 +125,7 @@ const DataTable = ({
 
       {/* Table */}
       <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
+        <table className="min-w-full divide-y divide-gray-200 text-sm md:text-base">
           <thead className="bg-gray-50">
             <tr>
               {selectable && (
@@ -141,7 +141,7 @@ const DataTable = ({
               {columns.map((column) => (
                 <th
                   key={column.key}
-                  className={`px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${
+                  className={`px-3 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${
                     column.sortable ? 'cursor-pointer hover:bg-gray-100 transition-colors' : ''
                   }`}
                   onClick={() => column.sortable && handleSort(column.key)}
