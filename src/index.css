@@ -2,6 +2,46 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Mobile accessibility improvements */
+@media (max-width: 768px) {
+  /* Increase font sizes for mobile accessibility */
+  body {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  h1 {
+    font-size: 1.75rem !important; /* 28px */
+    line-height: 1.3;
+  }
+
+  h2 {
+    font-size: 1.5rem !important; /* 24px */
+    line-height: 1.4;
+  }
+
+  h3 {
+    font-size: 1.25rem !important; /* 20px */
+    line-height: 1.4;
+  }
+
+  p, span, div {
+    font-size: 1rem !important; /* 16px minimum */
+  }
+
+  /* Ensure buttons are at least 44px for touch targets */
+  button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Improve input accessibility */
+  input, textarea, select {
+    font-size: 16px !important; /* Prevent zoom on iOS */
+    min-height: 44px;
+  }
+}
+
 /* Custom utility classes for Freespec */
 .app-container {
   @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;

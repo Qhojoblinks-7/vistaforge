@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useDispatch, useSelector } from 'react-redux';
 import { BsPeople, BsPlus, BsEnvelope, BsPhone, BsBuilding, BsSearch, BsFilter, BsThreeDotsVertical, BsEye, BsPencil, BsTrash, BsFolderPlus, BsX } from 'react-icons/bs';
+import SearchFilterBar from '../components/common/SearchFilterBar';
 import { fetchClients, setFilters, clearFilters, deleteClient, createClient } from '../modules/Clients/services/clientsSlice';
 import { toast } from 'react-toastify';
 
@@ -267,59 +268,40 @@ const ClientsPage = () => {
         </div>
 
         {/* Search and Filters */}
-        <div className="mb-6 bg-white rounded-lg shadow-lg border border-gray-100 p-4 sm:p-6">
-          <div className="flex flex-col space-y-4">
-            <form onSubmit={handleSearch} className="w-full">
-              <div className="relative">
-                <BsSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Search clients..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0015AA] focus:border-transparent min-h-[44px]"
-                />
-              </div>
-            </form>
-            <div className="flex flex-col sm:flex-row gap-2 sm:gap-2">
+        <SearchFilterBar
+          searchTerm={searchTerm}
+          onSearchChange={setSearchTerm}
+          onSearchSubmit={handleSearch}
+          showFilters={showFilters}
+          onToggleFilters={() => setShowFilters(!showFilters)}
+          filterButtonText="Status Filters"
+          placeholder="Search clients..."
+        >
+          {/* Clear Filters Button */}
+          <button
+            onClick={() => dispatch(clearFilters())}
+            className="px-4 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all duration-200 min-h-[44px] font-medium"
+          >
+            Clear Filters
+          </button>
+
+          {/* Status Filter Buttons */}
+          <div className="flex flex-wrap gap-2">
+            {['ACTIVE', 'INACTIVE', 'ARCHIVED'].map((status) => (
               <button
-                onClick={() => setShowFilters(!showFilters)}
-                className={`px-4 py-3 rounded-lg border transition-all duration-200 flex items-center justify-center min-h-[44px] font-medium ${
-                  showFilters ? 'bg-[#0015AA] text-white border-[#0015AA]' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                key={status}
+                onClick={() => handleStatusFilter(status)}
+                className={`px-3 py-2 rounded-full text-sm font-medium transition-all duration-200 min-h-[44px] ${
+                  filters.status === status
+                    ? 'bg-[#0015AA] text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
-                <BsFilter className="mr-2" />
-                Filters
+                {status}
               </button>
-              <button
-                onClick={() => dispatch(clearFilters())}
-                className="px-4 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all duration-200 min-h-[44px] font-medium"
-              >
-                Clear
-              </button>
-            </div>
+            ))}
           </div>
-
-          {showFilters && (
-            <div className="mt-4 pt-4 border-t border-gray-200">
-              <div className="flex flex-wrap gap-2">
-                {['ACTIVE', 'INACTIVE', 'ARCHIVED'].map((status) => (
-                  <button
-                    key={status}
-                    onClick={() => handleStatusFilter(status)}
-                    className={`px-3 py-1 rounded-full text-sm font-medium transition-all duration-200 ${
-                      filters.status === status
-                        ? 'bg-[#0015AA] text-white'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
-                  >
-                    {status}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
+        </SearchFilterBar>
 
         {/* Loading State */}
         {loading && (
