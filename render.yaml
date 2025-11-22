@@ -10,7 +10,7 @@ services:
       - key: SECRET_KEY
         generateValue: true
       - key: EXCLUSIVE_ADMIN_USERNAME
-        value: admin
+        value: Vi$taforge
       - key: FRONTEND_URL
         value: https://vistaforge.vercel.app
       - key: ALLOWED_HOSTS
