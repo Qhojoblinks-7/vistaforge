@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { X, FileText, DollarSign, Clock, Calendar, User, Mail } from 'lucide-react';
-import apiClient from '../../../api/config';
+import { fetchUnbilledTimeLogs } from '../../../store/slices/timeLogsSlice';
+import { generateInvoice } from '../../../store/slices/invoicesSlice';
 import { useToast } from '../../../context/ToastContext';
 
-const InvoiceGenerator = ({ projectId, client, projectRate, onClose, onSuccess }) => {
-  const queryClient = useQueryClient();
+const InvoiceGenerator = ({ projectId, client, projectRate, onClose }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { showError, showSuccess } = useToast();
   const [dueDate, setDueDate] = useState(() => {
@@ -15,33 +16,29 @@ const InvoiceGenerator = ({ projectId, client, projectRate, onClose, onSuccess }
     return date.toISOString().split('T')[0];
   });
 
-  // Fetch unbilled time logs for this project
-  const { data: timeLogs, isLoading } = useQuery({
-    queryKey: ['unbilled-time-logs', projectId],
-    queryFn: () => apiClient.get(`/timelogs/?project_id=${projectId}&is_billed=false&is_billable=true`),
-  });
+  const { unbilledLogs, loading } = useSelector(state => state.timeLogs);
+  const { saving } = useSelector(state => state.invoices);
 
-  // Create invoice mutation
-  const createInvoiceMutation = useMutation({
-    mutationFn: (invoiceData) => apiClient.post('/invoices/generate/', invoiceData),
-    onSuccess: (data) => {
+  useEffect(() => {
+    dispatch(fetchUnbilledTimeLogs(projectId));
+  }, [dispatch, projectId]);
+
+  const handleGenerateInvoice = async () => {
+    try {
+      await dispatch(generateInvoice({
+        project_id: projectId,
+        due_date: dueDate
+      })).unwrap();
+
       showSuccess('Invoice generated successfully!', 3000);
-
-      // Invalidate queries to refresh data across the application
-      queryClient.invalidateQueries(['invoices']); // Show the new invoice
-      queryClient.invalidateQueries(['project', projectId]); // Refresh ProjectInfoPanel
-      queryClient.invalidateQueries(['timelogs']); // Update Dashboard metrics
-
-      // Navigate to invoices list page
       navigate('/invoices');
-    },
-    onError: (error) => {
+    } catch (error) {
       showError('Invoice generation failed. Please try again.', 5000);
       console.error('Invoice generation error:', error);
     }
-  });
+  };
 
-  if (isLoading) {
+  if (loading) {
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
         <div className="bg-white rounded-lg p-6 w-full max-w-2xl">
@@ -51,18 +48,8 @@ const InvoiceGenerator = ({ projectId, client, projectRate, onClose, onSuccess }
     );
   }
 
-  const unbilledLogs = timeLogs?.data || [];
-  const totalHours = unbilledLogs.reduce((sum, log) => sum + parseFloat(log.duration_hours || 0), 0);
+  const totalHours = unbilledLogs.reduce((sum, log) => sum + parseFloat(log.durationHours || 0), 0);
   const totalAmount = totalHours * parseFloat(projectRate || 0);
-
-  const handleGenerateInvoice = () => {
-    const invoiceData = {
-      project_id: projectId,
-      due_date: dueDate
-    };
-
-    createInvoiceMutation.mutate(invoiceData);
-  };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -188,12 +175,12 @@ const InvoiceGenerator = ({ projectId, client, projectRate, onClose, onSuccess }
             </button>
             <button
               onClick={handleGenerateInvoice}
-              disabled={createInvoiceMutation.isPending || unbilledLogs.length === 0}
+              disabled={saving || unbilledLogs.length === 0}
               className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 flex items-center space-x-2"
             >
               <FileText className="w-4 h-4" />
               <span>
-                {createInvoiceMutation.isPending ? 'Generating...' : 'Generate Invoice'}
+                {saving ? 'Generating...' : 'Generate Invoice'}
               </span>
             </button>
           </div>

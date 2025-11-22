@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTimer } from '../../../context/TimerContext';
-import apiClient from '../../../api/config';
+import apiService from '../../../services/api';
 
 const ActiveTimerComponent = () => {
   const { activeTimer, elapsedTime, formatTime, stopTimer } = useTimer();

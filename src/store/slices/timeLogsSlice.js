@@ -194,6 +194,46 @@ export const deleteTimeLog = createAsyncThunk(
   }
 );
 
+// Fetch unbilled time logs for invoice generation
+export const fetchUnbilledTimeLogs = createAsyncThunk(
+  'timeLogs/fetchUnbilledTimeLogs',
+  async (projectId) => {
+    const query = `
+      query GetUnbilledTimeLogs($projectId: ID!) {
+        allTimeLogs(projectId: $projectId, isBilled: false, isBillable: true) {
+          id
+          user {
+            id
+            username
+            email
+          }
+          client {
+            id
+            name
+            company
+          }
+          startTime
+          endTime
+          durationMinutes
+          description
+          taskName
+          status
+          isBillable
+          hourlyRate
+          createdAt
+          updatedAt
+          durationHours
+          totalCost
+        }
+      }
+    `;
+
+    const apiService = (await import('../../services/api')).default;
+    const result = await apiService.request(query, { projectId });
+    return result.allTimeLogs || [];
+  }
+);
+
 // Timer functionality
 export const startTimer = createAsyncThunk(
   'timeLogs/startTimer',
@@ -279,6 +319,7 @@ export const stopTimer = createAsyncThunk(
 
 const initialState = {
   timeLogs: [],
+  unbilledLogs: [],
   currentTimer: null, // { projectId, taskId, startTime, isRunning, description }
   loading: false,
   saving: false,
@@ -388,6 +429,21 @@ const timeLogsSlice = createSlice({
       .addCase(deleteTimeLog.rejected, (state, action) => {
         state.saving = false;
         state.error = action.payload || 'Failed to delete time log';
+      })
+
+      // Fetch unbilled time logs
+      .addCase(fetchUnbilledTimeLogs.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchUnbilledTimeLogs.fulfilled, (state, action) => {
+        state.loading = false;
+        // Store unbilled logs separately or use for invoice generation
+        state.unbilledLogs = action.payload;
+      })
+      .addCase(fetchUnbilledTimeLogs.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       })
 
       // Timer operations

@@ -115,23 +115,7 @@ export const fetchInvoices = createAsyncThunk(
       }
     `;
 
-    const response = await fetch('http://localhost:8000/graphql/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `JWT ${localStorage.getItem('adminToken')}`
-      },
-      body: JSON.stringify({ query })
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch invoices');
-    }
-
-    const result = await response.json();
-    if (result.errors) {
-      throw new Error(result.errors[0].message);
-    }
+    const result = await apiService.request(query, {});
 
     // Transform GraphQL response to match frontend expectations
     const transformedInvoices = result.data.allInvoices.map(invoice => ({
@@ -195,23 +179,7 @@ export const createInvoice = createAsyncThunk(
       }
     `;
 
-    const response = await fetch('http://localhost:8000/graphql/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `JWT ${localStorage.getItem('adminToken')}`
-      },
-      body: JSON.stringify({ query: mutation, variables: { input: invoiceData } })
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to create invoice');
-    }
-
-    const result = await response.json();
-    if (result.errors) {
-      throw new Error(result.errors[0].message);
-    }
+    const result = await apiService.request(mutation, { input: invoiceData });
 
     const invoice = result.data.createInvoice.invoice;
 
@@ -264,23 +232,7 @@ export const updateInvoice = createAsyncThunk(
       }
     `;
 
-    const response = await fetch('http://localhost:8000/graphql/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `JWT ${localStorage.getItem('adminToken')}`
-      },
-      body: JSON.stringify({ query: mutation, variables: { id, input: data } })
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to update invoice');
-    }
-
-    const result = await response.json();
-    if (result.errors) {
-      throw new Error(result.errors[0].message);
-    }
+    const result = await apiService.request(mutation, { id, input: data });
 
     const invoice = result.data.updateInvoice.invoice;
     return {
@@ -334,18 +286,7 @@ export const generateInvoice = createAsyncThunk(
       }
     `;
 
-    const response = await fetch('http://localhost:8000/graphql/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `JWT ${localStorage.getItem('adminToken')}`
-      },
-      body: JSON.stringify({ query: mutation, variables: { input: generationData } })
-    });
-
-    if (!response.ok) throw new Error('Failed to generate invoice');
-    const result = await response.json();
-    if (result.errors) throw new Error(result.errors[0].message);
+    const result = await apiService.request(mutation, { input: generationData });
     return result.data.createInvoice.invoice;
   }
 );
@@ -360,18 +301,7 @@ export const sendInvoice = createAsyncThunk(
       }
     `;
 
-    const response = await fetch('http://localhost:8000/graphql/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `JWT ${localStorage.getItem('adminToken')}`
-      },
-      body: JSON.stringify({ query: mutation, variables: { id, emailData: emailData || {} } })
-    });
-
-    if (!response.ok) throw new Error('Failed to send invoice');
-    const result = await response.json();
-    if (result.errors) throw new Error(result.errors[0].message);
+    const result = await apiService.request(mutation, { id, emailData: emailData || {} });
     return result.data.sendInvoice.invoice;
   }
 );
@@ -386,18 +316,7 @@ export const markInvoicePaid = createAsyncThunk(
       }
     `;
 
-    const response = await fetch('http://localhost:8000/graphql/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `JWT ${localStorage.getItem('adminToken')}`
-      },
-      body: JSON.stringify({ query: mutation, variables: { id, paymentData: paymentData || {} } })
-    });
-
-    if (!response.ok) throw new Error('Failed to mark invoice as paid');
-    const result = await response.json();
-    if (result.errors) throw new Error(result.errors[0].message);
+    const result = await apiService.request(mutation, { id, paymentData: paymentData || {} });
     return result.data.markInvoicePaid.invoice;
   }
 );
