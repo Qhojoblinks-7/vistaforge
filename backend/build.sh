@@ -11,9 +11,9 @@ echo "Starting build process..."
 pip install -r requirements.txt
 
 # Run database migrations
-python manage.py migrate --noinput
+python3 manage.py migrate --noinput
 
 # Collect static files
-python manage.py collectstatic --noinput --clear
+python3 manage.py collectstatic --noinput --clear
 
 echo "Build completed successfully!"
