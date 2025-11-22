@@ -71,9 +71,7 @@ export const deleteMilestone = createAsyncThunk(
 export const fetchProjects = createAsyncThunk(
   'portfolio/fetchProjects',
   async (params = {}) => {
-    console.log('GraphQL call: Fetching projects with params:', params);
     const response = await apiService.getProjects(params);
-    console.log('GraphQL response for projects:', response);
     return response;
   }
 );

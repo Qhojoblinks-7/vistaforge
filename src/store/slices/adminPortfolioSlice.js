@@ -38,9 +38,7 @@ export const deleteTask = createAsyncThunk(
 export const fetchMilestones = createAsyncThunk(
   'adminPortfolio/fetchMilestones',
   async (projectId = null) => {
-    console.log('Admin Portfolio Slice: Fetching milestones with projectId:', projectId);
     const response = await apiService.getMilestones(projectId);
-    console.log('Admin Portfolio Slice: Milestones response:', response);
     return response;
   }
 );
@@ -73,14 +71,9 @@ export const deleteMilestone = createAsyncThunk(
 export const fetchAdminProjects = createAsyncThunk(
   'adminPortfolio/fetchProjects',
   async (params = {}) => {
-    console.log('Admin GraphQL call: Fetching projects with params:', params);
-
     const token = localStorage.getItem('adminToken');
-    console.log('Admin Portfolio Slice - Token present:', !!token);
-    console.log('Admin Portfolio Slice - Token value:', token ? token.substring(0, 20) + '...' : 'null');
 
     if (!token) {
-      console.error('Admin Portfolio Slice - No authentication token found');
       throw new Error('Authentication required for admin operations');
     }
 
@@ -107,10 +100,7 @@ export const fetchAdminProjects = createAsyncThunk(
       }
     `;
 
-    console.log('Admin Portfolio Slice - Making request with query:', query.substring(0, 50) + '...');
-
     const result = await apiService.request(query);
-    console.log('Admin GraphQL response for projects:', result);
     return result.allManagementProjects;
   }
 );

@@ -34,7 +34,6 @@ const InvoiceGenerator = ({ projectId, client, projectRate, onClose }) => {
       navigate('/invoices');
     } catch (error) {
       showError('Invoice generation failed. Please try again.', 5000);
-      console.error('Invoice generation error:', error);
     }
   };
 

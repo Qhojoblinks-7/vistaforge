@@ -5,7 +5,7 @@ import { fetchClients } from '../../modules/Clients/services/clientsSlice';
 import { fetchProjects } from '../../modules/Projects/services/projectsSlice';
 
 // Backend-integrated invoice actions
-export const createInvoiceWithRelationships = (invoiceData) => async (dispatch, getState) => {
+export const createInvoiceWithRelationships = (invoiceData) => async (dispatc) => {
   try {
     // Create invoice - backend automatically updates client balance
     const result = await dispatch(createInvoice(invoiceData)).unwrap();
@@ -28,7 +28,7 @@ export const createInvoiceWithRelationships = (invoiceData) => async (dispatch, 
   }
 };
 
-export const updateInvoiceWithRelationships = (invoiceId, updateData) => async (dispatch, getState) => {
+export const updateInvoiceWithRelationships = (invoiceId, updateData) => async (dispatch) => {
   try {
     // Update invoice - backend handles balance adjustments
     const result = await dispatch(updateInvoice({ id: invoiceId, data: updateData })).unwrap();
@@ -51,7 +51,7 @@ export const updateInvoiceWithRelationships = (invoiceId, updateData) => async (
   }
 };
 
-export const markInvoicePaidWithRelationships = (invoiceId, paidDate = null) => async (dispatch, getState) => {
+export const markInvoicePaidWithRelationships = (invoiceId, paidDate = null) => async (dispatch) => {
   try {
     const updateData = {
       status: 'PAID',

@@ -4,9 +4,11 @@ import { useDispatch } from 'react-redux';
 import StatusBadge from './StatusBadge';
 import InvoiceGenerator from '../../Finance/components/InvoiceGenerator';
 import { updateProject, deleteProject } from '../../../store/slices/adminPortfolioSlice';
+import { useToast } from '../../../context/ToastContext';
 
 const ProjectInfoPanel = ({ project, client, timeLogs, onProjectUpdate, onProjectDelete, onEditProject }) => {
   const dispatch = useDispatch();
+  const { showError } = useToast();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [showInvoiceGenerator, setShowInvoiceGenerator] = useState(false);
 
@@ -24,7 +26,7 @@ const ProjectInfoPanel = ({ project, client, timeLogs, onProjectUpdate, onProjec
       await dispatch(updateProject({ id: project.id, data: { status: newStatus } }));
       onProjectUpdate && onProjectUpdate();
     } catch (error) {
-      console.error('Failed to update project status:', error);
+      showError('Failed to update project status. Please try again.', 5000);
     }
   };
 
@@ -33,7 +35,7 @@ const ProjectInfoPanel = ({ project, client, timeLogs, onProjectUpdate, onProjec
       await dispatch(deleteProject(project.id));
       onProjectDelete && onProjectDelete();
     } catch (error) {
-      console.error('Failed to delete project:', error);
+      showError('Failed to delete project. Please try again.', 5000);
     }
     setShowDeleteConfirm(false);
   };

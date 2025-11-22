@@ -25,7 +25,6 @@ export const createTimeLogWithRelationships = (timeLogData) => async (dispatch, 
 
     return result;
   } catch (error) {
-    console.error('Failed to create time log with relationships:', error);
     throw error;
   }
 };
@@ -46,7 +45,6 @@ export const updateTimeLogWithRelationships = (timeLogId, updateData) => async (
 
     return result;
   } catch (error) {
-    console.error('Failed to update time log with relationships:', error);
     throw error;
   }
 };
