@@ -120,11 +120,9 @@ class ClientQuery(graphene.ObjectType):
 
     @staticmethod
     def resolve_all_clients(root, info, status=None, search=None, limit=None, offset=None):
-        # TEMPORARILY DISABLE AUTH FILTERING FOR DEBUGGING
-        # if not info.context.user.is_authenticated:
-        #     return Client.objects.none()
-        # queryset = Client.objects.filter(user=info.context.user)
-        queryset = Client.objects.all()  # Show all clients for debugging
+        if not info.context.user.is_authenticated:
+            return Client.objects.none()
+        queryset = Client.objects.filter(user=info.context.user)
 
         if status:
             queryset = queryset.filter(status=status)

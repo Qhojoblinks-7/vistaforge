@@ -209,14 +209,12 @@ class ProjectQuery(graphene.ObjectType):
 
     @staticmethod
     def resolve_all_projects(root, info, status=None, client_id=None, phase=None, priority=None, is_active=None, limit=None, offset=None):
-        # TEMPORARILY DISABLE AUTH FILTERING FOR DEBUGGING
-        # Public listing: unauthenticated users should see active projects only
-        # if not info.context.user.is_authenticated:
-        #     queryset = Project.objects.filter(is_active=True)
-        # else:
-        #     # Authenticated users see their own projects (management view)
-        #     queryset = Project.objects.filter(user=info.context.user)
-        queryset = Project.objects.all()  # Show all projects for debugging
+        # Public listing: unauthenticated users see active projects only
+        if not info.context.user.is_authenticated:
+            queryset = Project.objects.filter(is_active=True)
+        else:
+            # Authenticated users see their own projects (management view)
+            queryset = Project.objects.filter(user=info.context.user)
 
         if status:
             queryset = queryset.filter(status=status)
@@ -239,12 +237,10 @@ class ProjectQuery(graphene.ObjectType):
 
     @staticmethod
     def resolve_all_management_projects(root, info, status=None, client_id=None, phase=None, priority=None, is_active=None, limit=None, offset=None):
-        # TEMPORARILY DISABLE AUTH FILTERING FOR DEBUGGING
         # Management view: authenticated users see their own projects
-        # if not info.context.user.is_authenticated:
-        #     return Project.objects.none()
-        # queryset = Project.objects.filter(user=info.context.user)
-        queryset = Project.objects.all()  # Show all projects for debugging
+        if not info.context.user.is_authenticated:
+            return Project.objects.none()
+        queryset = Project.objects.filter(user=info.context.user)
 
         if status:
             queryset = queryset.filter(status=status)

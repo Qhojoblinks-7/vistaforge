@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" fill="none">
+  <rect width="1200" height="630" fill="#0015AA"/>
+  <text x="600" y="260" font-family="system-ui, sans-serif" font-size="48" font-weight="bold" fill="white" text-anchor="middle">Pitch Deck</text>
+  <text x="600" y="330" font-family="system-ui, sans-serif" font-size="36" font-weight="bold" fill="#FBB03B" text-anchor="middle">Design Mistakes</text>
+  <text x="600" y="400" font-family="system-ui, sans-serif" font-size="20" fill="white" text-anchor="middle" opacity="0.8">That Kill Fundraising</text>
+  <path d="M300 500 L900 500" stroke="white" stroke-width="2" stroke-dasharray="10 10" opacity="0.3"/>
+  <circle cx="300" cy="500" r="12" fill="#FBB03B"/>
+  <circle cx="500" cy="500" r="12" fill="white" opacity="0.5"/>
+  <circle cx="700" cy="500" r="12" fill="white" opacity="0.5"/>
+  <circle cx="900" cy="500" r="12" fill="white" opacity="0.5"/>
+  <text x="600" y="550" font-family="system-ui, sans-serif" font-size="16" fill="white" text-anchor="middle" opacity="0.7">3 min 44 sec average read time</text>
+</svg>

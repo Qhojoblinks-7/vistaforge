@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <circle cx="100" cy="100" r="100" fill="#003366"/>
+  <circle cx="100" cy="70" r="35" fill="#FBB03B"/>
+  <ellipse cx="100" cy="165" rx="55" ry="45" fill="#FBB03B"/>
+  <text x="100" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#FBB03B" font-weight="bold">TEAM</text>
+</svg>

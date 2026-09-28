@@ -1,40 +1,65 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apiService from '../../services/api';
+import { sampleCaseStudies, getCaseStudyBySlug } from '../../data/sampleCaseStudies';
 
 // Async thunks for public GraphQL calls
 export const fetchPublicProjects = createAsyncThunk(
   'publicPortfolio/fetchProjects',
-  async (params = {}) => {
+  async (params = {}, { rejectWithValue }) => {
     console.log('Public GraphQL call: Fetching projects with params:', params);
-    // Use apiService.getPublicProjects for public access
-    const result = await apiService.getPublicProjects();
-    console.log('Public GraphQL response for projects:', result);
-    // Ensure we always return an array
-    return Array.isArray(result) ? result : [];
+    try {
+      // Use apiService.getPublicProjects for public access
+      const result = await apiService.getPublicProjects();
+      console.log('Public GraphQL response for projects:', result);
+      // Ensure we always return an array
+      return Array.isArray(result) ? result : [];
+    } catch (error) {
+      // Fallback to sample data if GraphQL fails (development)
+      console.warn('GraphQL fetch failed, using sample data:', error.message);
+      return sampleCaseStudies;
+    }
   }
 );
 
 export const fetchPublicProjectBySlug = createAsyncThunk(
   'publicPortfolio/fetchProjectBySlug',
-  async (slug) => {
-    const response = await apiService.getProject(slug);
-    return response;
+  async (slug, { rejectWithValue }) => {
+    try {
+      const response = await apiService.getProject(slug);
+      return response;
+    } catch (error) {
+      // Fallback to sample data
+      console.warn('GraphQL fetch failed for slug, using sample data:', error.message);
+      const project = getCaseStudyBySlug(slug);
+      if (project) return project;
+      throw error;
+    }
   }
 );
 
 export const fetchFeaturedProjects = createAsyncThunk(
   'publicPortfolio/fetchFeaturedProjects',
-  async () => {
-    const response = await apiService.getFeaturedProjects();
-    return response;
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await apiService.getFeaturedProjects();
+      return response;
+    } catch (error) {
+      console.warn('GraphQL fetch failed, using sample data:', error.message);
+      return sampleCaseStudies.slice(0, 3);
+    }
   }
 );
 
 export const fetchDesignProjects = createAsyncThunk(
   'publicPortfolio/fetchDesignProjects',
-  async () => {
-    const response = await apiService.getDesignProjects();
-    return response;
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await apiService.getDesignProjects();
+      return response;
+    } catch (error) {
+      console.warn('GraphQL fetch failed, using sample data:', error.message);
+      return sampleCaseStudies.filter(p => p.isDesignProject);
+    }
   }
 );
 

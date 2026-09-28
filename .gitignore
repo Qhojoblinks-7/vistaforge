@@ -45,3 +45,11 @@ backend/db.sqlite3
 
 # Collected build output
 backend/staticfiles/
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/

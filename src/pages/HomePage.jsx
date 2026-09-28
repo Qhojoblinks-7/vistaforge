@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BsPen, BsStack, BsLaptop, BsPrinter, BsBarChart, BsPhone } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import heroImage from '../assets/hero2.png';
@@ -6,6 +6,9 @@ import hero3 from '../assets/hero3.jpeg';
 import '../styles/HeroAnimation.css'
 import Footer from '../components/Footer';
 import SEO from '../components/SEO';
+import ProjectStarterWizard from '../components/ProjectStarterWizard';
+import OptimizedImage from '../components/OptimizedImage';
+import Testimonials from '../components/Testimonials';
 
 // Reusable component for service cards
 const ServiceCard = ({ icon: Icon, title, description }) => (
@@ -271,6 +274,16 @@ const HomePage = () => {
     ]
   };
 
+  const [showWizard, setShowWizard] = useState(false);
+
+  const handleWizardComplete = (data) => {
+    console.log('Project Starter Data:', data);
+    // Store in localStorage for contact form pre-fill
+    localStorage.setItem('projectStarterData', JSON.stringify(data));
+    setShowWizard(false);
+    // Could redirect to contact page with pre-filled data or show success toast
+  };
+
   return (
     <>
       <SEO
@@ -302,12 +315,12 @@ const HomePage = () => {
               From strategic vision to stunning visuals, we craft brands that connect, resonate, and grow. Let’s create something lasting.
             </p>
             <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center md:justify-start">
-              <Link
-                to="/contact"
+              <button
+                onClick={() => setShowWizard(true)}
                 className="px-6 sm:px-8 py-3 bg-[#FBB03B] text-white font-semibold rounded-md hover:bg-opacity-90 transition-colors focus:outline-none focus:ring-2 focus:ring-[#FBB03B] focus:ring-offset-2 focus:ring-offset-[#0015AA] text-sm sm:text-base text-center"
               >
                 Start My Brand Journey
-              </Link>
+              </button>
               <Link
                 to="/portfolio"
                 className="px-6 sm:px-8 py-3 text-white font-semibold rounded-md border-2 border-white hover:bg-white hover:text-[#0015AA] transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#0015AA] text-sm sm:text-base text-center"
@@ -318,10 +331,13 @@ const HomePage = () => {
           </div>
           {/* Right Side: Image */}
           <div className="md:w-1/2">
-            <img
+            <OptimizedImage
               src={heroImage}
               alt="A team of brand strategists and designers collaborating on a new project."
-              className="w-full h-auto rounded-xl  blend-left"
+              className="w-full h-auto rounded-xl blend-left block"
+              wrapperClassName="block"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              eager
             />
           </div>
         </div>
@@ -332,10 +348,12 @@ const HomePage = () => {
         <div className="container mx-auto flex flex-col md:flex-row items-center justify-center gap-12">
           {/* Left Side: Image */}
           <div className="md:w-1/2">
-            <img 
+            <OptimizedImage
               src={hero3}
-              alt="A creative team discussing a brand strategy plan in an office setting." 
-              className="rounded-xl shadow-lg" 
+              alt="A creative team discussing a brand strategy plan in an office setting."
+              className="w-full h-auto rounded-xl shadow-lg block"
+              wrapperClassName="block"
+              sizes="(max-width: 768px) 100vw, 50vw"
             />
           </div>
           {/* Right Side: Text and Stats */}
@@ -390,6 +408,35 @@ const HomePage = () => {
             title="Digital Assets"
             description="Design social media templates, email headers, and other digital assets to maintain brand consistency online."
           />
+        </div>
+      </section>
+
+      {/* Trusted By / Client Logos */}
+      <section className="bg-white py-16 px-4 sm:px-6 lg:px-8 border-t border-gray-100 border-b border-gray-100">
+        <div className="container mx-auto">
+          <p className="text-center text-sm font-medium text-gray-500 uppercase tracking-wider mb-8">Trusted by innovative teams</p>
+          <div className="flex flex-wrap items-center justify-center gap-6 md:gap-10 opacity-60 hover:opacity-100 transition-opacity duration-300">
+            <img src="/client-techstart.svg" alt="TechStart Ghana" className="h-10 w-auto grayscale hover:grayscale-0 transition-all duration-300" />
+            <img src="/client-agritech.svg" alt="AgriTech Nigeria" className="h-10 w-auto grayscale hover:grayscale-0 transition-all duration-300" />
+            <img src="/client-finserve.svg" alt="FinServe Kenya" className="h-10 w-auto grayscale hover:grayscale-0 transition-all duration-300" />
+            <img src="/client-healthplus.svg" alt="HealthPlus South Africa" className="h-10 w-auto grayscale hover:grayscale-0 transition-all duration-300" />
+            <img src="/client-edutech.svg" alt="EduTech Rwanda" className="h-10 w-auto grayscale hover:grayscale-0 transition-all duration-300" />
+            <img src="/client-ecobuild.svg" alt="EcoBuild Ghana" className="h-10 w-auto grayscale hover:grayscale-0 transition-all duration-300" />
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="bg-gray-50 py-20 px-4 sm:px-6 lg:px-8">
+        <div className="container mx-auto">
+          <div className="text-center mb-12">
+            <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider">What Our Clients Say</p>
+            <h2 className="text-4xl font-bold text-[#0015AA] mt-2">Results That Speak for Themselves</h2>
+            <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+              Don't just take our word for it. Here's what founders and leaders across Africa say about working with VistaForge.
+            </p>
+          </div>
+          <Testimonials variant="carousel" maxItems={3} />
         </div>
       </section>
 
@@ -490,21 +537,27 @@ const HomePage = () => {
           </svg>
         </div>
 
-        <div className="container mx-auto relative z-10">
+<div className="container mx-auto relative z-10">
           <h2 className="text-4xl font-bold">Ready to Transform Your Brand?</h2>
           <p className="mt-4 text-xl max-w-2xl mx-auto">
-            Let's build something remarkable together. We’re excited to hear about your vision.
+            Let's build something remarkable together. We're excited to hear about your vision.
           </p>
-          <Link
-            to="/contact"
+          <button
+            onClick={() => setShowWizard(true)}
             className="mt-8 inline-block bg-[#FBB03B] text-[#0015AA] text-lg font-bold py-4 px-12 rounded-full shadow-lg transition-transform transform hover:scale-105"
           >
             Get a Quote
-          </Link>
+          </button>
         </div>
       </section>
 
       <Footer />
+
+      <ProjectStarterWizard
+        isOpen={showWizard}
+        onClose={() => setShowWizard(false)}
+        onComplete={handleWizardComplete}
+      />
     </main>
     </>
   );

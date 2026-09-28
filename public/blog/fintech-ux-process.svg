@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" fill="none">
+  <rect width="1200" height="630" fill="#0015AA"/>
+  <text x="600" y="260" font-family="system-ui, sans-serif" font-size="48" font-weight="bold" fill="#FBB03B" text-anchor="middle">FinTech</text>
+  <text x="600" y="330" font-family="system-ui, sans-serif" font-size="36" font-weight="bold" fill="white" text-anchor="middle">UX Design Process</text>
+  <text x="600" y="400" font-family="system-ui, sans-serif" font-size="20" fill="white" text-anchor="middle" opacity="0.8">Research → Handoff</text>
+  <rect x="200" y="450" width="200" height="100" rx="10" fill="#FBB03B" opacity="0.2"/>
+  <text x="300" y="515" font-family="system-ui, sans-serif" font-size="16" fill="#FBB03B" text-anchor="middle">6-Week Process</text>
+  <rect x="500" y="450" width="200" height="100" rx="10" fill="#FBB03B" opacity="0.2"/>
+  <text x="600" y="515" font-family="system-ui, sans-serif" font-size="16" fill="#FBB03B" text-anchor="middle">Usability Testing</text>
+  <rect x="800" y="450" width="200" height="100" rx="10" fill="#FBB03B" opacity="0.2"/>
+  <text x="900" y="515" font-family="system-ui, sans-serif" font-size="16" fill="#FBB03B" text-anchor="middle">Dev Handoff</text>
+</svg>

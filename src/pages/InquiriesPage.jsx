@@ -211,8 +211,8 @@ const InquiriesPage = () => {
     { icon: <BsTrash />, label: 'Delete', onClick: (inquiry) => handleDeleteInquiry(inquiry.id), variant: 'danger' }
   ];
 
-  const bulkActions = [
-  return (
+  return 
+  (
     <PageLayout
       title="Inquiries"
       description="Manage client inquiries and leads"

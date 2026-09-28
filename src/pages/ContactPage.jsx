@@ -1,15 +1,18 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useSpring, animated } from 'react-spring';
 import { BsArrowRight, BsEnvelope, BsPhone, BsPinMap, BsCheckCircle, BsXCircle } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { submitPublicInquiry } from '../store/slices/inquiriesSlice';
 import Footer from '../components/Footer';
+import ProjectStarterWizard from '../components/ProjectStarterWizard';
+import { trackConversion } from '../utils/analytics';
 
 const ContactPage = () => {
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.inquiries);
   const [success, setSuccess] = useState(false);
+  const [showWizard, setShowWizard] = useState(false);
 
   // Spring animations for the form fields
   const formSpring = useSpring({
@@ -17,6 +20,26 @@ const ContactPage = () => {
     to: { opacity: 1, y: 0 },
     delay: 200,
   });
+
+  // Load wizard data from localStorage on mount
+  useEffect(() => {
+    const savedData = localStorage.getItem('projectStarterData');
+    if (savedData) {
+      try {
+        const data = JSON.parse(savedData);
+        setFormData(prev => ({
+          ...prev,
+          project_type: data.service || '',
+          budget_range: data.budget || '',
+          message: data.details ? `Project Details:\n${data.details}\n\nTimeline: ${data.timeline || 'Not specified'}` : '',
+        }));
+        // Clear after use
+        localStorage.removeItem('projectStarterData');
+      } catch (e) {
+        console.error('Failed to parse wizard data', e);
+      }
+    }
+  }, []);
 
   // State to manage form data and submission status
   const [formData, setFormData] = useState({
@@ -26,6 +49,7 @@ const ContactPage = () => {
     message: '',
     project_type: '',
     budget_range: '',
+    website: '',
   });
 
   const formRef = useRef(null);
@@ -40,6 +64,14 @@ const ContactPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Honeypot check - if filled, it's likely a bot
+    if (formData.website) {
+      // Silently pretend success but don't actually submit
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 5000);
+      return;
+    }
 
     // Validate required fields
     if (!formData.name || !formData.email) {
@@ -60,6 +92,8 @@ const ContactPage = () => {
 
     try {
       await dispatch(submitPublicInquiry(apiData)).unwrap();
+      trackConversion.contactFormSuccess();
+      trackConversion.contactFormSubmitted(formData.project_type);
       setSuccess(true);
       // Clear form on success
       setFormData({
@@ -69,6 +103,7 @@ const ContactPage = () => {
         message: '',
         project_type: '',
         budget_range: '',
+        website: '',
       });
       // Clear success message after 5 seconds
       setTimeout(() => setSuccess(false), 5000);
@@ -90,6 +125,15 @@ const ContactPage = () => {
 
   const scrollToForm = () => {
     formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const handleWizardComplete = (data) => {
+    console.log('Project Starter Data:', data);
+    // Store in localStorage for contact form pre-fill (in case of page refresh)
+    localStorage.setItem('projectStarterData', JSON.stringify(data));
+    setShowWizard(false);
+    // Scroll to form after wizard completes
+    setTimeout(() => scrollToForm(), 300);
   };
 
   return (
@@ -317,6 +361,21 @@ const ContactPage = () => {
                   className="mt-1 block w-full border-b-2 border-gray-300 bg-transparent py-2 focus:border-[#FBB03B] focus:outline-none transition-colors"
                 ></textarea>
               </div>
+              
+              {/* Honeypot spam protection - hidden from users but visible to bots */}
+              <div style={{ display: 'none' }} aria-hidden="true">
+                <label htmlFor="website">Website</label>
+                <input
+                  type="text"
+                  id="website"
+                  name="website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={formData.website || ''}
+                  onChange={handleChange}
+                />
+              </div>
+              
               <div className="flex justify-center mt-8">
                 <button
                   type="submit"
@@ -377,20 +436,34 @@ const ContactPage = () => {
           </svg>
         </div>
 
-        <div className="container mx-auto relative z-10">
+<div className="container mx-auto relative z-10">
           <h2 className="text-4xl sm:text-5xl font-bold font-montserrat">
-            Your brand’s transformation starts here. Let’s make it happen.
+            Your brand's transformation starts here. Let's make it happen.
           </h2>
-          <button
-            onClick={scrollToForm}
-            className="mt-8 inline-block bg-[#FBB03B] text-[#0015AA] text-lg font-bold py-4 px-12 rounded-full shadow-lg transition-transform transform hover:scale-105"
-          >
-            Start Your Project
-          </button>
+          <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+            <button
+              onClick={scrollToForm}
+              className="inline-block bg-[#FBB03B] text-[#0015AA] text-lg font-bold py-4 px-12 rounded-full shadow-lg transition-transform transform hover:scale-105"
+            >
+              Start Your Project
+            </button>
+            <button
+              onClick={() => setShowWizard(true)}
+              className="inline-block bg-white text-[#0015AA] text-lg font-bold py-4 px-12 rounded-full shadow-lg border-2 border-[#0015AA] transition-transform transform hover:scale-105 hover:bg-gray-50"
+            >
+              Get a Custom Quote
+            </button>
+          </div>
         </div>
       </section>
 
       <Footer />
+
+      <ProjectStarterWizard
+        isOpen={showWizard}
+        onClose={() => setShowWizard(false)}
+        onComplete={handleWizardComplete}
+      />
     </main>
   );
 };

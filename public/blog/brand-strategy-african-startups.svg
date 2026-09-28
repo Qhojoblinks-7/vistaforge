@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" fill="none">
+  <rect width="1200" height="630" fill="#0015AA"/>
+  <text x="600" y="280" font-family="system-ui, sans-serif" font-size="48" font-weight="bold" fill="white" text-anchor="middle">Brand Strategy</text>
+  <text x="600" y="350" font-family="system-ui, sans-serif" font-size="24" fill="#FBB03B" text-anchor="middle">For African Startups</text>
+  <circle cx="600" cy="450" r="60" fill="#FBB03B" opacity="0.2"/>
+  <path d="M570 450 L600 420 L630 450" stroke="#FBB03B" stroke-width="4" fill="none"/>
+</svg>

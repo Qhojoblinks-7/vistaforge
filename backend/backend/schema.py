@@ -103,11 +103,9 @@ class Query(ProjectQuery, InquiryQuery, AdminDashboardQuery, InvoiceQuery, Clien
 
     @staticmethod
     def resolve_all_management_projects(root, info, status=None, client_id=None, phase=None, priority=None, is_active=None, limit=None, offset=None):
-        # TEMPORARILY DISABLE AUTH FILTERING FOR DEBUGGING
-        # if not info.context.user.is_authenticated:
-        #     return Project.objects.none()
-        # queryset = Project.objects.filter(user=info.context.user)
-        queryset = Project.objects.all()  # Show all projects for debugging
+        if not info.context.user.is_authenticated:
+            return Project.objects.none()
+        queryset = Project.objects.filter(user=info.context.user)
 
         if status:
             queryset = queryset.filter(status=status)

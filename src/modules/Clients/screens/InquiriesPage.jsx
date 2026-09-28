@@ -128,31 +128,6 @@ const InquiriesPage = () => {
             </div>
           </div>
         </div>
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-4xl font-bold text-[#0015AA] mb-2">Inquiries</h1>
-              <p className="text-gray-700 text-lg font-medium">Manage your business leads and convert them into clients</p>
-            </div>
-            <div className="flex items-center gap-4">
-              {newInquiryCount > 0 && (
-                <div className="bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
-                  {newInquiryCount} new
-                </div>
-              )}
-
-              {/* Filter Button */}
-              <button
-                onClick={() => setShowFilters(!showFilters)}
-                className="flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-gray-200 rounded-xl px-4 py-3 text-gray-700 hover:text-[#0015AA] hover:bg-white hover:border-[#0015AA]/30 transition-all duration-200 shadow-md hover:shadow-lg md:px-4 md:py-3 md:gap-2 px-3 py-2 gap-1"
-              >
-                <BsFilter className="w-5 h-5 md:w-5 md:h-5 w-4 h-4" />
-                <span className="font-medium capitalize hidden md:inline">
-                  {filter === 'all' ? 'All' : filter.replace('_', ' ').toLowerCase()}
-                </span>
-              </button>
-            </div>
-          </div>
-        </div>
 
         {/* Filter Panel */}
         {showFilters && (

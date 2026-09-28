@@ -8,6 +8,7 @@ import DesignProjectCard from '../components/DesignProjectCard';
 import { fetchPublicProjects } from '../store/slices/publicPortfolioSlice';
 import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
+import OptimizedImage from '../components/OptimizedImage';
 
 // Projects are fetched from the server via GraphQL. The previous static `PROJECTS` constant
 // was removed so the UI uses the server as the single source of truth.
@@ -166,10 +167,12 @@ const PortfolioPage = () => {
                                         {sourceProjects[activeProjectIndex]?.clientType}
                                     </p>
                                 </div>
-                                <img
+                                <OptimizedImage
                                     src={sourceProjects[activeProjectIndex]?.logo}
                                     alt={`${sourceProjects[activeProjectIndex]?.name || sourceProjects[activeProjectIndex]?.title} Logo`}
                                     className="rounded-full object-cover shadow-md transition-transform duration-300 ml-4 w-20 h-20"
+                                    widths={[80, 160]}
+                                    sizes="80px"
                                 />
                             </div>
                         </div>
@@ -360,10 +363,12 @@ const PortfolioPage = () => {
                             {Object.keys(sourceProjects[activeProjectIndex]?.caseStudy?.visuals || {}).map((key, i) => (
                                 <div key={i}>
                                     <h6 className="font-bold text-gray-800 text-sm mb-2 capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}</h6>
-                                    <img
+                                    <OptimizedImage
                                         src={sourceProjects[activeProjectIndex].caseStudy.visuals[key]}
                                         alt={`${sourceProjects[activeProjectIndex]?.name || sourceProjects[activeProjectIndex]?.title} ${key.replace(/([A-Z])/g, ' $1').trim()}`}
                                         className="w-full h-auto rounded-lg object-cover shadow-md"
+                                        widths={[400, 800, 1200, 1600]}
+                                        sizes="(max-width: 768px) 100vw, 50vw"
                                     />
                                 </div>
                             ))}
@@ -435,10 +440,12 @@ const PortfolioPage = () => {
                                                     {project.clientType}
                                                 </p>
                                             </div>
-                                            <img
+                                            <OptimizedImage
                                                 src={project.logo}
                                                 alt={`${project.name || project.title} Logo`}
                                                 className="rounded-full object-cover shadow-md transition-transform duration-300 ml-4 w-12 h-12"
+                                                widths={[48, 96]}
+                                                sizes="48px"
                                             />
                                         </div>
 
@@ -542,10 +549,12 @@ const PortfolioPage = () => {
                                         {Object.keys(sourceProjects[activeProjectIndex]?.caseStudy?.visuals || {}).map((key, i) => (
                                             <div key={i}>
                                                 <h4 className="font-bold text-gray-800 mb-2 capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}</h4>
-                                                <img
+                                                <OptimizedImage
                                                     src={sourceProjects[activeProjectIndex].caseStudy.visuals[key]}
                                                     alt={`${sourceProjects[activeProjectIndex]?.name || sourceProjects[activeProjectIndex]?.title} ${key.replace(/([A-Z])/g, ' $1').trim()}`}
                                                     className="w-full h-auto rounded-lg shadow-md"
+                                                    widths={[400, 800, 1200, 1600]}
+                                                    sizes="(max-width: 768px) 100vw, 50vw"
                                                 />
                                             </div>
                                         ))}

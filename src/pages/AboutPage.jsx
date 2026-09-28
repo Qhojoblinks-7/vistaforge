@@ -8,16 +8,14 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import Footer from '../components/Footer';
 import SEO from '../components/SEO';
+import OptimizedImage from '../components/OptimizedImage';
 
-// You will need to add a team member image to your project
-// Example: import amaBoatengImage from './assets/ama-boateng.webp';
-
-// Dummy team members for placeholder
+// Team members with individual placeholder images
 const TEAM_MEMBERS = [
-  { name: "Ama Boateng", role: "Co-Founder & Lead Strategist", tagline: "Visionary architect of brand narratives.", image: 'path/to/ama-boateng.webp' },
-  { name: "Kofi Mensah", role: "Co-Founder & Creative Director", tagline: "Bringing ideas to life with stunning visuals.", image: 'path/to/kofi-mensah.webp' },
-  { name: "Adwoa Nsiah", role: "Lead UI/UX Designer", tagline: "Crafting intuitive and delightful user experiences.", image: 'path/to/adwoa-nsiah.webp' },
-  { name: "Kwame Nkrumah", role: "Web Development Lead", tagline: "Building robust and scalable digital platforms.", image: 'path/to/kwame-nkrumah.webp' },
+  { name: "Ama Boateng", role: "Co-Founder & Lead Strategist", tagline: "Visionary architect of brand narratives.", image: "/team-ama.svg" },
+  { name: "Kofi Mensah", role: "Co-Founder & Creative Director", tagline: "Bringing ideas to life with stunning visuals.", image: "/team-kofi.svg" },
+  { name: "Adwoa Nsiah", role: "Lead UI/UX Designer", tagline: "Crafting intuitive and delightful user experiences.", image: "/team-adwoa.svg" },
+  { name: "Kwame Nkrumah", role: "Web Development Lead", tagline: "Building robust and scalable digital platforms.", image: "/team-kwame.svg" },
 ];
 
 const AboutUsPage = () => {
@@ -305,11 +303,13 @@ const AboutUsPage = () => {
               {TEAM_MEMBERS.map((member, index) => (
                 <div key={index} className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
                   {/* Lazy-loaded image */}
-                  <LazyLoadImage
+                  <OptimizedImage
                     src={member.image}
                     alt={member.name}
                     className="w-24 h-24 rounded-full mx-auto object-cover mb-4"
-                    effect="blur" // Adds a blur effect while loading
+                    widths={[100, 200, 300]}
+                    sizes="96px"
+                    effect="blur"
                   />
                   <h3 className="text-xl font-semibold font-montserrat text-[#0015AA]">{member.name}</h3>
                   <p className="text-md text-[#FBB03B] mt-1">{member.role}</p>
@@ -360,10 +360,12 @@ const AboutUsPage = () => {
             {TEAM_MEMBERS.map((member, index) => (
               <div key={index} className="bg-gray-50 p-4 rounded-lg shadow-sm">
                 {/* Lazy-loaded image */}
-                <LazyLoadImage
+                <OptimizedImage
                   src={member.image}
                   alt={member.name}
                   className="w-16 h-16 rounded-full mx-auto object-cover mb-2"
+                  widths={[64, 128, 192]}
+                  sizes="64px"
                   effect="blur"
                 />
                 <h3 className="text-md font-semibold text-[#0015AA]">{member.name}</h3>

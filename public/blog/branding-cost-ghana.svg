@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" fill="none">
+  <rect width="1200" height="630" fill="#FBB03B"/>
+  <text x="600" y="280" font-family="system-ui, sans-serif" font-size="48" font-weight="bold" fill="#0015AA" text-anchor="middle">Branding Cost</text>
+  <text x="600" y="350" font-family="system-ui, sans-serif" font-size="24" fill="#0015AA" text-anchor="middle">Ghana 2024 Guide</text>
+  <rect x="500" y="400" width="200" height="100" rx="10" fill="#0015AA" opacity="0.2"/>
+  <text x="600" y="465" font-family="system-ui, sans-serif" font-size="32" font-weight="bold" fill="#0015AA" text-anchor="middle">₵600–₵18K</text>
+</svg>

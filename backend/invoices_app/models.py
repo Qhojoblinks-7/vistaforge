@@ -153,27 +153,26 @@ class Invoice(models.Model):
         # Auto-calculate total
         self.total = self.subtotal + self.tax - self.discount
 
-        # Auto-update client total revenue when invoice becomes paid
-        if old_status != 'PAID' and self.status == 'PAID':
-            if not self.paid_date:
-                self.paid_date = self.issue_date  # Use issue date if no paid date set
-            self.client.total_revenue += self.total
-            self.client.save()
+        # Stamp the paid date when transitioning into PAID
+        if old_status != 'PAID' and self.status == 'PAID' and not self.paid_date:
+            self.paid_date = self.issue_date  # Use issue date if no paid date set
 
-        # Update client's outstanding balance
-        self.update_client_balance()
-
+        # Persist the invoice BEFORE recomputing client totals. Client.save()
+        # recalculates from the database, so it must observe this invoice's
+        # new status; recomputing earlier leaves revenue/balance stale.
         super().save(*args, **kwargs)
 
-    def update_client_balance(self):
-        """Update client's outstanding balance based on invoice status."""
-        if self.status in ['SENT', 'OVERDUE']:
-            # Add to outstanding balance
-            self.client.outstanding_balance += self.total
-        elif self.status == 'PAID':
-            # Subtract from outstanding balance
-            self.client.outstanding_balance -= self.total
+        # Re-read the client so the recalculation is based on current state
+        # and cannot double-apply across repeated saves.
+        self.client.refresh_from_db()
+        self.client.save()
 
+    def update_client_balance(self):
+        """Recalculate the client's outstanding balance from invoice states.
+
+        Client.save() recomputes this from the database, so this is a
+        compatibility wrapper that performs a recalculation.
+        """
         self.client.save()
 
     @property

@@ -87,11 +87,9 @@ class TimeLogQuery(graphene.ObjectType):
 
     @staticmethod
     def resolve_all_time_logs(root, info, status=None, client_id=None, project_id=None, task_id=None, date_from=None, date_to=None, limit=None, offset=None):
-        # TEMPORARILY DISABLE AUTH FILTERING FOR DEBUGGING
-        # if not info.context.user.is_authenticated:
-        #     return TimeLog.objects.none()
-        # queryset = TimeLog.objects.filter(user=info.context.user)
-        queryset = TimeLog.objects.all()
+        if not info.context.user.is_authenticated:
+            return TimeLog.objects.none()
+        queryset = TimeLog.objects.filter(user=info.context.user)
 
         if status:
             queryset = queryset.filter(status=status)

@@ -1,0 +1,17 @@
+# VistaForge robots.txt
+User-agent: *
+Allow: /
+
+# Disallow admin and dashboard routes
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /projects/
+Disallow: /timelogs/
+Disallow: /clients/
+Disallow: /invoices/
+Disallow: /analytics/
+Disallow: /settings/
+Disallow: /inquiries/
+
+# Sitemap
+Sitemap: https://vistaforge.com/sitemap.xml

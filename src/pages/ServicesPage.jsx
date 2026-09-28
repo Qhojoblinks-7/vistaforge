@@ -6,6 +6,9 @@ import aboutImage from '../assets/hero3.jpeg';
 import '../styles/ServicesPage.css';
 import Footer from '../components/Footer';
 import SEO from '../components/SEO';
+import PackagedServices from '../components/PackagedServices';
+import Testimonials from '../components/Testimonials';
+import { AGGREGATE_RATING } from '../data/testimonials';
 
 const ServicesPage = () => {
   const serviceSpring = useSpring({
@@ -354,6 +357,9 @@ const ServicesPage = () => {
     ]
   };
 
+  // Add aggregate rating to structured data
+  servicesStructuredData["@graph"].push(AGGREGATE_RATING);
+
   return (
     <>
       <SEO
@@ -602,6 +608,8 @@ const ServicesPage = () => {
         </animated.div>
       </section>
 
+      <PackagedServices />
+
 
       {/* NEW SECTION: About Us / Our Approach */}
       <section className="bg-white py-20 px-4 sm:px-6 lg:px-8">
@@ -647,6 +655,21 @@ const ServicesPage = () => {
           </div>
         </div>
       </section>
+
+      {/* Testimonials Section */}
+      <section className="bg-gray-50 py-20 px-4 sm:px-6 lg:px-8">
+        <div className="container mx-auto">
+          <div className="text-center mb-12">
+            <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider">Trusted by Clients</p>
+            <h2 className="text-4xl font-bold text-[#0015AA] mt-2">See What Our Clients Achieve</h2>
+            <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+              Real results from African startups and businesses we've partnered with.
+            </p>
+          </div>
+          <Testimonials variant="grid" maxItems={6} />
+        </div>
+      </section>
+
       {/* Call to Action Section */}
       <section className="relative bg-[#0015AA] text-white py-20 px-4 sm:px-6 lg:px-8 text-center overflow-hidden">
         {/* Background Designs */}

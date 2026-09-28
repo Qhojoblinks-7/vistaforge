@@ -1,9 +1,56 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import sitemapPlugin from 'vite-plugin-sitemap'
+import imageminPlugin from 'vite-plugin-imagemin'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    sitemapPlugin({
+      hostname: 'https://vistaforge.com',
+      routes: [
+        '/',
+        '/about',
+        '/services',
+        '/portfolio',
+        '/contact',
+        '/admin/login',
+      ],
+      exclude: ['/admin', '/dashboard', '/projects', '/timelogs', '/clients', '/invoices', '/analytics', '/settings', '/inquiries'],
+      changefreq: 'weekly',
+      priority: 0.8,
+      lastmod: new Date().toISOString(),
+      robots: [
+        { userAgent: '*', allow: '/' },
+        { userAgent: '*', disallow: '/admin/' },
+        { userAgent: '*', disallow: '/dashboard/' },
+        { userAgent: '*', disallow: '/projects/' },
+        { userAgent: '*', disallow: '/timelogs/' },
+        { userAgent: '*', disallow: '/clients/' },
+        { userAgent: '*', disallow: '/invoices/' },
+        { userAgent: '*', disallow: '/analytics/' },
+        { userAgent: '*', disallow: '/settings/' },
+        { userAgent: '*', disallow: '/inquiries/' },
+      ],
+    }),
+    imageminPlugin({
+      gifsicle: { optimizationLevel: 7, interlaced: false },
+      optipng: { optimizationLevel: 7 },
+      mozjpeg: { quality: 80 },
+      pngquant: { quality: [0.8, 0.9], speed: 4 },
+      svgo: {
+        plugins: [
+          { name: 'removeViewBox', active: false },
+          { name: 'removeEmptyAttrs', active: false },
+        ],
+      },
+      // webp/avif are intentionally NOT re-compressed here. sharp already
+      // emits optimized .webp/.avif variants during `npm run images`; running
+      // imagemin over them as well is redundant and made builds exceed 10
+      // minutes.
+    }),
+  ],
   server: {
     host: true,
     port: 3000,

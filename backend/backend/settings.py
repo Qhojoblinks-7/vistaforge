@@ -12,7 +12,9 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 import os
 from pathlib import Path
+
 import dj_database_url
+from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,7 +22,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Environment-based settings
 ENVIRONMENT = os.getenv('ENVIRONMENT', 'development')
 DEBUG = ENVIRONMENT != 'production'
-SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-l9!*66neoz$ldsv*pzi546yqp5zqp6+hr9v(1)1pvs_k%(lxjp')
+SECRET_KEY = os.getenv('SECRET_KEY')
+if not SECRET_KEY:
+    if ENVIRONMENT == 'production':
+        raise ImproperlyConfigured(
+            'SECRET_KEY must be set in the environment when ENVIRONMENT=production. '
+            'Generate one with: python -c "from django.core.management.utils import '
+            'get_random_secret_key as k; print(k())"'
+        )
+    # Development-only fallback. Never reuse this value in production.
+    SECRET_KEY = 'django-insecure-dev-only-do-not-use-in-production'
 
 # ALLOWED_HOSTS configuration
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
@@ -42,7 +53,6 @@ INSTALLED_APPS = [
     "graphql_jwt.refresh_token.apps.RefreshTokenConfig",
     "admin_security",
     "admin_dashboard",
-    "api",
     "inquiries",
     "invoices_app",
     "clients_app",
