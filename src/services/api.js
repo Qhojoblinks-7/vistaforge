@@ -1,5 +1,7 @@
- // GraphQL API service for communicating with Django backend
-const GRAPHQL_URL = import.meta.env.VITE_GRAPHQL_URL || 'https://vistaforge.onrender.com/graphql/';
+  // GraphQL API service for communicating with Django backend
+  // Resolved in one place so dev and production cannot drift apart.
+  import { GRAPHQL_URL } from '../api/config';
+
 
 class GraphQLService {
     constructor() {

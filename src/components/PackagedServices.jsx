@@ -21,7 +21,7 @@ const PACKAGES = [
     color: '#0015AA',
     bgColor: 'bg-[#0015AA]/5',
     borderColor: 'border-[#0015AA]',
-    price: { ghs: 'â‚µ8,500', usd: '$550', eur: 'â‚¬500' },
+    price: { ghs: '₵8,500', usd: '$550', eur: '€500' },
     timeline: '6 weeks',
     idealFor: 'Pre-seed startups, founders raising first round',
     includes: [
@@ -52,7 +52,7 @@ const PACKAGES = [
     color: '#FBB03B',
     bgColor: 'bg-[#FBB03B]/10',
     borderColor: 'border-[#FBB03B]',
-    price: { ghs: 'â‚µ18,000', usd: '$1,150', eur: 'â‚¬1,050' },
+    price: { ghs: '₵18,000', usd: '$1,150', eur: '€1,050' },
     timeline: '8-10 weeks',
     idealFor: 'Growth-stage companies, Series A-B, expanding teams',
     includes: [
@@ -86,7 +86,7 @@ const PACKAGES = [
     color: '#00A86B',
     bgColor: 'bg-[#00A86B]/5',
     borderColor: 'border-[#00A86B]',
-    price: { ghs: 'â‚µ12,000', usd: '$770', eur: 'â‚¬700' },
+    price: { ghs: '₵12,000', usd: '$770', eur: '€700' },
     timeline: '6-8 weeks',
     idealFor: 'SaaS founders, FinTech, HealthTech, EdTech teams',
     includes: [
@@ -240,7 +240,7 @@ const PackagedServices = () => {
             Clear Scope. Fixed Price. No Surprises.
           </h2>
           <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-            Choose the package that matches your stage. Each includes everything you need â€” no hidden fees, no scope creep.
+            Choose the package that matches your stage. Each includes everything you need — no hidden fees, no scope creep.
           </p>
         </div>
       </div>
@@ -369,7 +369,7 @@ const PackagedServices = () => {
 
       <div className="mx-auto w-full max-w-[1800px] px-4 sm:px-6 lg:px-8">
         <div className="mt-10 text-center">
-          <p className="text-gray-600 mb-4">Need something custom? We also offer Ã  la carte services.</p>
+          <p className="text-gray-600 mb-4">Need something custom? We also offer à la carte services.</p>
           <a
             href="/contact"
             className="inline-block bg-[#0015AA] text-white font-bold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"

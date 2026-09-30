@@ -75,7 +75,7 @@ const PortfolioPage = () => {
                     Our Portfolio
                 </h1>
                 <p className="mt-6 text-lg max-w-3xl mx-auto">
-                    Every brand has its own story. Hereâ€™s how weâ€™ve helped businessesâ€”from startups to corporatesâ€”craft stronger identities and digital presences.
+                    Every brand has its own story. Here’s how we’ve helped businesses—from startups to corporates—craft stronger identities and digital presences.
                 </p>
             </div>
         </section>
@@ -317,7 +317,7 @@ const PortfolioPage = () => {
                                                 <h6 className="font-semibold text-gray-700 mb-2">Discovery Phase</h6>
                                                 <ul className="text-sm text-gray-600 space-y-1">
                                                     {sourceProjects[activeProjectIndex].caseStudy.process.researchMethods.discoveryPhase.map((item, idx) => (
-                                                        <li key={idx}>â€¢ {item}</li>
+                                                        <li key={idx}>• {item}</li>
                                                     ))}
                                                 </ul>
                                             </div>
@@ -327,7 +327,7 @@ const PortfolioPage = () => {
                                                 <h6 className="font-semibold text-gray-700 mb-2">Design Iterations</h6>
                                                 <ul className="text-sm text-gray-600 space-y-1">
                                                     {sourceProjects[activeProjectIndex].caseStudy.process.researchMethods.designIterations.map((item, idx) => (
-                                                        <li key={idx}>â€¢ {item}</li>
+                                                        <li key={idx}>• {item}</li>
                                                     ))}
                                                 </ul>
                                             </div>
@@ -349,7 +349,7 @@ const PortfolioPage = () => {
                                                 <h6 className="font-semibold text-gray-700 mb-2">Frontend Stack</h6>
                                                 <ul className="text-sm text-gray-600 space-y-1">
                                                     {sourceProjects[activeProjectIndex].caseStudy.process.technicalImplementation.frontendStack.map((item, idx) => (
-                                                        <li key={idx}>â€¢ {item}</li>
+                                                        <li key={idx}>• {item}</li>
                                                     ))}
                                                 </ul>
                                             </div>
@@ -359,7 +359,7 @@ const PortfolioPage = () => {
                                                 <h6 className="font-semibold text-gray-700 mb-2">Development Tools</h6>
                                                 <ul className="text-sm text-gray-600 space-y-1">
                                                     {sourceProjects[activeProjectIndex].caseStudy.process.technicalImplementation.developmentTools.map((item, idx) => (
-                                                        <li key={idx}>â€¢ {item}</li>
+                                                        <li key={idx}>• {item}</li>
                                                     ))}
                                                 </ul>
                                             </div>
@@ -541,7 +541,7 @@ const PortfolioPage = () => {
                 <div className="container mx-auto relative z-10">
                     <h2 className="text-4xl font-bold">Inspired by our work?</h2>
                     <p className="mt-4 text-xl max-w-2xl mx-auto">
-                        Letâ€™s make your brand the next success story.
+                        Let’s make your brand the next success story.
                     </p>
                     <Link
                         to="/contact"
@@ -560,13 +560,13 @@ const PortfolioPage = () => {
                             <div className="flex justify-between items-start mb-6">
                                 <div>
                                     <h2 className="text-3xl font-bold text-[#0015AA]">{sourceProjects[activeProjectIndex]?.name || sourceProjects[activeProjectIndex]?.title}</h2>
-                                    <p className="text-lg text-gray-600 mt-2">{sourceProjects[activeProjectIndex]?.clientType} â€¢ {sourceProjects[activeProjectIndex]?.industry}</p>
+                                    <p className="text-lg text-gray-600 mt-2">{sourceProjects[activeProjectIndex]?.clientType} • {sourceProjects[activeProjectIndex]?.industry}</p>
                                 </div>
                                 <button
                                     onClick={() => setIsModalOpen(false)}
                                     className="text-gray-400 hover:text-gray-600 text-2xl"
                                 >
-                                    Ã—
+                                    ×
                                 </button>
                             </div>
 
@@ -580,15 +580,15 @@ const PortfolioPage = () => {
                                     <h3 className="text-xl font-bold text-[#0015AA] mb-4">The Journey</h3>
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                         <div className="p-6 bg-gray-50 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-                                            <h4 className="font-bold text-gray-800 mb-2">ðŸ§­ Starting Point</h4>
+                                            <h4 className="font-bold text-gray-800 mb-2">🧭 Starting Point</h4>
                                             <p className="text-sm text-gray-600">{sourceProjects[activeProjectIndex]?.caseStudy?.startingPoint}</p>
                                         </div>
                                         <div className="p-6 bg-gray-50 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-                                            <h4 className="font-bold text-gray-800 mb-2">âœ¨ The Transformation</h4>
+                                            <h4 className="font-bold text-gray-800 mb-2">✨ The Transformation</h4>
                                             <p className="text-sm text-gray-600">{sourceProjects[activeProjectIndex]?.caseStudy?.theTransformation}</p>
                                         </div>
                                         <div className="p-6 bg-gray-50 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-                                            <h4 className="font-bold text-gray-800 mb-2">ðŸš€ Journey's End</h4>
+                                            <h4 className="font-bold text-gray-800 mb-2">🚀 Journey's End</h4>
                                             <p className="text-sm text-gray-600">{sourceProjects[activeProjectIndex]?.caseStudy?.journeyEnd}</p>
                                         </div>
                                     </div>

@@ -224,7 +224,7 @@ const BlogPostPage = ({ match }) => {
                   {post.author.name} leads {post.author.role.toLowerCase()} at VistaForge, helping African startups build brands that convert.
                 </p>
                 <Link to="/about#team" className="inline-block mt-3 text-sm font-bold text-[#0015AA] hover:underline">
-                  View Profile â†’
+                  View Profile →
                 </Link>
               </div>
             </div>

@@ -168,44 +168,58 @@ MEDIA_ROOT = BASE_DIR / "media"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # CORS settings
-if ENVIRONMENT == 'production':
-    # Production CORS - allow your frontend domain
-    CORS_ALLOWED_ORIGINS = [
-        os.getenv('FRONTEND_URL', 'https://your-frontend-domain.com'),
-        'https://vistaforge.onrender.com',
-        'https://vistaforge.vercel.app',
-        'https://vistaforge-ohporms9e-qhojoblinks-7s-projects.vercel.app',
-        'https://vistaforge-h0lgzukx9-qhojoblinks-7s-projects.vercel.app',
-        'https://vistaforge-git-main-qhojoblinks-7s-projects.vercel.app',
-    ]
-    # Allow credentials for GraphQL authentication
-    CORS_ALLOW_CREDENTIALS = True
+# The frontend runs on its own origin (Vite dev server, Vercel, Render static
+# site) and calls this API directly, so every origin it is served from has to be
+# listed here. A browser cannot bypass CORS, so a missing origin shows up as a
+# failed preflight instead of a readable error.
+LOCAL_DEV_ORIGINS = [
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "http://localhost:3002",
+    "http://localhost:5173",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:3001",
+    "http://127.0.0.1:3002",
+    "http://127.0.0.1:5173",
+]
 
-# Allow a single FRONTEND_URL from environment for quick deploys (e.g. Vercel)
-# This ensures the deployed frontend origin is accepted in both dev and prod.
+DEPLOYED_ORIGINS = [
+    'https://vistaforge.onrender.com',
+    'https://vistaforge.vercel.app',
+    'https://vistaforge-ohporms9e-qhojoblinks-7s-projects.vercel.app',
+    'https://vistaforge-h0lgzukx9-qhojoblinks-7s-projects.vercel.app',
+    'https://vistaforge-git-main-qhojoblinks-7s-projects.vercel.app',
+]
+
+# Allows a single FRONTEND_URL from the environment for quick deploys (e.g. Vercel)
 FRONTEND_URL = os.getenv('FRONTEND_URL') or os.getenv('RENDER_FRONTEND_URL')
 if FRONTEND_URL:
-    try:
-        if FRONTEND_URL not in CORS_ALLOWED_ORIGINS:
-            CORS_ALLOWED_ORIGINS.append(FRONTEND_URL)
-    except NameError:
-        # CORS_ALLOWED_ORIGINS may not be defined if settings mutated; define it safely
-        CORS_ALLOWED_ORIGINS = [FRONTEND_URL]
-    # Temporarily allow all origins for testing
-    CORS_ALLOW_ALL_ORIGINS = False
-else:
-    # Development CORS
-    CORS_ALLOWED_ORIGINS = [
-        "http://localhost:3000",
-        "http://localhost:3001",
-        "http://localhost:3002",
-        "http://localhost:5173",
-        "http://127.0.0.1:3001",
-        "http://127.0.0.1:3000",
-        "http://127.0.0.1:3002",
-        "http://127.0.0.1:5173",
+    DEPLOYED_ORIGINS.append(FRONTEND_URL)
+
+# Comma-separated extra origins, e.g. a preview deployment or a staging frontend.
+EXTRA_CORS_ORIGINS = [
+    origin.strip()
+    for origin in os.getenv('CORS_EXTRA_ORIGINS', '').split(',')
+    if origin.strip()
+]
+
+# Local origins stay allowed in production on purpose: a remote page cannot
+# forge an Origin of http://localhost:3000, so this only lets a developer run
+# the frontend locally against the deployed API. Set CORS_ALLOW_LOCALHOST=false
+# to lock that down.
+allow_localhost = os.getenv('CORS_ALLOW_LOCALHOST', 'true').strip().lower() == 'true'
+
+CORS_ALLOWED_ORIGINS = list(dict.fromkeys(
+    origin.rstrip('/')
+    for origin in [
+        *DEPLOYED_ORIGINS,
+        *(LOCAL_DEV_ORIGINS if allow_localhost else []),
+        *EXTRA_CORS_ORIGINS,
     ]
-    CORS_ALLOW_CREDENTIALS = True
+))
+CORS_ALLOW_ALL_ORIGINS = False
+# Allow credentials for GraphQL authentication
+CORS_ALLOW_CREDENTIALS = True
 
 # Ensure Authorization header is allowed in CORS preflight
 from corsheaders.defaults import default_headers

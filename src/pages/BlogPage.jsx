@@ -97,7 +97,7 @@ const BlogPage = () => {
               Insights That Drive Growth.
             </h1>
             <p className="mt-6 text-lg max-w-3xl mx-auto text-gray-200">
-              Strategy, design, and digital expertise for founders building brands that last. No fluff â€” just actionable insights from our work with African startups.
+              Strategy, design, and digital expertise for founders building brands that last. No fluff — just actionable insights from our work with African startups.
             </p>
           </div>
         </section>
@@ -252,7 +252,7 @@ const BlogPage = () => {
               <div className="bg-[#0015AA] text-white rounded-2xl p-8 md:p-12">
                 <h3 className="text-3xl font-bold mb-4">Get Insights Delivered Weekly</h3>
                 <p className="text-gray-200 mb-6 max-w-md mx-auto">
-                  No spam. Just one actionable article on brand, design, or growth â€” every Tuesday.
+                  No spam. Just one actionable article on brand, design, or growth — every Tuesday.
                 </p>
                 <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto" onSubmit={(e) => e.preventDefault()}>
                   <input

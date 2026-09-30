@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HelmetProvider } from 'react-helmet-async';
 import { Provider } from 'react-redux';
@@ -40,21 +40,48 @@ import InquiriesPage from './modules/Clients/screens/InquiriesPage';
 
 const queryClient = new QueryClient();
 
-// A simple wrapper to protect routes
+const AuthLoadingScreen = () => (
+  <div className="flex min-h-screen items-center justify-center bg-gray-50">
+    <div
+      role="status"
+      aria-label="Restoring your session"
+      className="h-10 w-10 animate-spin rounded-full border-4 border-gray-200 border-t-[#0015AA]"
+    />
+  </div>
+);
+
+// A token in localStorage is not proof of a valid session: it may have expired
+// while the tab was closed. AuthContext rehydrates the user on mount, so hold
+// the route until that settles instead of rendering the shell and then
+// bouncing the admin back to the login screen.
 const ProtectedRoute = ({ children }) => {
-  const { token } = useAuth();
+  const { token, loading } = useAuth();
+  if (loading) return <AuthLoadingScreen />;
   return token ? children : <Navigate to="/admin/login" replace />;
 };
 
+// The public site and the admin area share nothing but the providers above.
+// Header lives inside PublicLayout rather than being conditionally rendered
+// against a route prefix list, so an admin page cannot accidentally inherit
+// the marketing nav by forgetting to register its path somewhere.
+const PublicLayout = () => (
+  <>
+    <Header />
+    <main>
+      <Outlet />
+    </main>
+  </>
+);
+
+const AdminLayout = () => (
+  <ProtectedRoute>
+    <DashboardLayout>
+      <Outlet />
+    </DashboardLayout>
+  </ProtectedRoute>
+);
+
 function App() {
-  const { token } = useAuth();
-  const location = useLocation();
-  const isAuthenticated = !!token;
-
-  // Define which routes should show the sidebar (authenticated routes only)
-  const authenticatedRoutes = ['/dashboard', '/projects', '/timelogs', '/clients', '/invoices', '/analytics', '/settings', '/admin', '/inquiries'];
-  const shouldShowSidebar = isAuthenticated && authenticatedRoutes.some(route => location.pathname.startsWith(route));
-
   return (
     <HelmetProvider>
       <Provider store={store}>
@@ -63,10 +90,9 @@ function App() {
             <TimerProvider>
               <ToastProvider>
                 <div className="min-h-screen bg-gray-50">
-                  {!shouldShowSidebar && <Header />}
-                  <main>
-                    <Routes>
-                      {/* Public Routes */}
+                  <Routes>
+                    {/* Public Routes */}
+                    <Route element={<PublicLayout />}>
                       <Route path="/" element={<HomePage />} />
                       <Route path="/about" element={<AboutPage />} />
                       <Route path="/services" element={<ServicesPage />} />
@@ -77,27 +103,27 @@ function App() {
                       <Route path="/blog" element={<BlogPage />} />
                       <Route path="/blog/:slug" element={<BlogPostPage />} />
                       <Route path="/faq" element={<FAQPage />} />
-
-                      {/* Auth Routes */}
-                      <Route path="/admin/login" element={<LoginPage />} />
-                      <Route path="/admin" element={<Navigate to="/admin/login" />} />
-
-                      {/* Protected Routes with Dashboard Layout */}
-                      <Route path="/dashboard" element={<ProtectedRoute><DashboardLayout><ProjectsListPage /></DashboardLayout></ProtectedRoute>} />
-                      <Route path="/projects/:id" element={<ProtectedRoute><DashboardLayout><ProjectDetailView /></DashboardLayout></ProtectedRoute>} />
-                      <Route path="/timelogs" element={<ProtectedRoute><DashboardLayout><TimeLogsPage /></DashboardLayout></ProtectedRoute>} />
-                      <Route path="/clients" element={<ProtectedRoute><DashboardLayout><ClientsPage /></DashboardLayout></ProtectedRoute>} />
-                      <Route path="/inquiries" element={<ProtectedRoute><DashboardLayout><InquiriesPage /></DashboardLayout></ProtectedRoute>} />
-                      <Route path="/invoices" element={<ProtectedRoute><DashboardLayout><InvoicesPage /></DashboardLayout></ProtectedRoute>} />
-                      <Route path="/analytics" element={<ProtectedRoute><DashboardLayout><AnalyticsPage /></DashboardLayout></ProtectedRoute>} />
-                      <Route path="/settings" element={<ProtectedRoute><DashboardLayout><SettingsPage /></DashboardLayout></ProtectedRoute>} />
-
-                      {/* Admin Routes */}
-                      <Route path="/admin/projects" element={<ProtectedRoute><DashboardLayout><ProjectManagementPage /></DashboardLayout></ProtectedRoute>} />
-
                       <Route path="*" element={<NotFoundPage />} />
-                    </Routes>
-                  </main>
+                    </Route>
+
+                    {/* Auth Routes - intentionally outside both layouts: the login
+                        screen is a focused full-page form with no site chrome. */}
+                    <Route path="/admin/login" element={<LoginPage />} />
+                    <Route path="/admin" element={<Navigate to="/admin/login" />} />
+
+                    {/* Admin Routes */}
+                    <Route element={<AdminLayout />}>
+                      <Route path="/dashboard" element={<ProjectsListPage />} />
+                      <Route path="/admin/projects" element={<ProjectManagementPage />} />
+                      <Route path="/projects/:id" element={<ProjectDetailView />} />
+                      <Route path="/timelogs" element={<TimeLogsPage />} />
+                      <Route path="/clients" element={<ClientsPage />} />
+                      <Route path="/inquiries" element={<InquiriesPage />} />
+                      <Route path="/invoices" element={<InvoicesPage />} />
+                      <Route path="/analytics" element={<AnalyticsPage />} />
+                      <Route path="/settings" element={<SettingsPage />} />
+                    </Route>
+                  </Routes>
                 </div>
               </ToastProvider>
             </TimerProvider>

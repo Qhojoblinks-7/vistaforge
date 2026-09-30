@@ -220,11 +220,11 @@ const ContactPage = () => {
 
         <div className="container mx-auto relative z-10"> {/* z-10 ensures content is above shapes */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
-            Letâ€™s Build Something Together
+            Let’s Build Something Together
           </h1>
           <p className="mt-6 text-lg max-w-3xl mx-auto font-poppins">
             Have a project in mind or just want to learn more about how we work?
-            Weâ€™d love to hear from you.
+            We’d love to hear from you.
           </p>
         </div>
       </section>

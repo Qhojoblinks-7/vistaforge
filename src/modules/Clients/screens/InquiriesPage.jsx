@@ -7,7 +7,10 @@ import { fetchInquiries, updateInquiryStatus, convertToClient, convertToProject,
 
 const InquiriesPage = () => {
   const dispatch = useDispatch();
-  const { inquiries, loading, selectedInquiry, newInquiryCount } = useSelector(state => state.inquiries);
+  // analytics.newInquiries is the real key; the slice's initialState never had
+  // a top-level newInquiryCount, so the badge and pill always read zero.
+  const { inquiries, loading, selectedInquiry } = useSelector(state => state.inquiries);
+  const newInquiryCount = useSelector(state => state.inquiries?.analytics?.newInquiries || 0);
 
   const [filter, setFilter] = useState('all'); // 'all', 'NEW', 'CONTACTED', 'WON', 'LOST', 'ON_HOLD'
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -99,8 +102,8 @@ const InquiriesPage = () => {
       </Helmet>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Sticky Header */}
-        <div className="sticky top-0 z-40 bg-white shadow-lg border-b border-gray-200 mb-6">
+        {/* Sticky Header - offset by the shell topbar height (h-16) */}
+        <div className="sticky top-16 z-20 bg-white shadow-lg border-b border-gray-200 mb-6">
           <div className="bg-gradient-to-br from-[#0015AA]/5 via-[#003366]/5 to-[#0015AA]/10 rounded-2xl p-6 shadow-lg border border-[#0015AA]/10">
             <div className="flex items-center justify-between">
               <div>

@@ -12,11 +12,11 @@ const FAQ_DATA = [
     questions: [
       {
         question: 'What makes VistaForge different from other design agencies?',
-        answer: 'VistaForge combines deep understanding of the African market with global design standards. We\'re not just designers â€” we\'re strategic partners invested in your business success, offering end-to-end brand solutions from strategy to implementation. Our team has helped 12+ African startups raise over $4.2M in funding.',
+        answer: 'VistaForge combines deep understanding of the African market with global design standards. We\'re not just designers — we\'re strategic partners invested in your business success, offering end-to-end brand solutions from strategy to implementation. Our team has helped 12+ African startups raise over $4.2M in funding.',
       },
       {
         question: 'Do you work with startups and small businesses?',
-        answer: 'Absolutely! We specialize in working with startups and small businesses in Ghana and across Africa. Our flexible packages and payment terms are designed to support growing businesses with limited budgets. Our Startup Launch Pack (â‚µ8,500 / $550) includes everything a pre-seed founder needs.',
+        answer: 'Absolutely! We specialize in working with startups and small businesses in Ghana and across Africa. Our flexible packages and payment terms are designed to support growing businesses with limited budgets. Our Startup Launch Pack (₵8,500 / $550) includes everything a pre-seed founder needs.',
       },
       {
         question: 'Where are you located? Do you work remotely?',
@@ -33,19 +33,19 @@ const FAQ_DATA = [
     questions: [
       {
         question: 'How much does professional logo design cost in Ghana?',
-        answer: 'Professional logo design in Ghana costs between â‚µ600 to â‚µ2,000 ($40â€“$130) depending on complexity and deliverables. Our packages include multiple concepts, unlimited revisions within scope, and all file formats needed for print and digital use (AI, EPS, SVG, PNG, JPG).',
+        answer: 'Professional logo design in Ghana costs between ₵600 to ₵2,000 ($40–$130) depending on complexity and deliverables. Our packages include multiple concepts, unlimited revisions within scope, and all file formats needed for print and digital use (AI, EPS, SVG, PNG, JPG).',
       },
       {
         question: 'How long does it take to complete a brand identity project?',
-        answer: 'A complete brand identity project typically takes 4â€“8 weeks. This includes brand strategy (2 weeks), design development (2â€“4 weeks), and final implementation (1â€“2 weeks). Rush orders are available for an additional fee. Our Rebrand & Scale package takes 8â€“10 weeks for more comprehensive work.',
+        answer: 'A complete brand identity project typically takes 4–8 weeks. This includes brand strategy (2 weeks), design development (2–4 weeks), and final implementation (1–2 weeks). Rush orders are available for an additional fee. Our Rebrand & Scale package takes 8–10 weeks for more comprehensive work.',
       },
       {
         question: 'What\'s included in a brand identity system?',
-        answer: 'Our brand identity systems include: logo variations (primary, secondary, icon), color palette with usage specs, typography system, iconography style, photography/illustration direction, brand guidelines document (15â€“30 pages), and templates for social media, presentations, email signatures, and stationery.',
+        answer: 'Our brand identity systems include: logo variations (primary, secondary, icon), color palette with usage specs, typography system, iconography style, photography/illustration direction, brand guidelines document (15–30 pages), and templates for social media, presentations, email signatures, and stationery.',
       },
       {
         question: 'Can you help with brand strategy before design?',
-        answer: 'Yes, and we strongly recommend it. Our Brand Strategy Workshop (â‚µ2,000â€“â‚µ5,000) includes market research, competitor analysis, audience personas, positioning statement, messaging framework, and brand architecture. Strategy-first approach prevents expensive rework later.',
+        answer: 'Yes, and we strongly recommend it. Our Brand Strategy Workshop (₵2,000–₵5,000) includes market research, competitor analysis, audience personas, positioning statement, messaging framework, and brand architecture. Strategy-first approach prevents expensive rework later.',
       },
     ],
   },
@@ -54,7 +54,7 @@ const FAQ_DATA = [
     questions: [
       {
         question: 'How much does a website cost in Ghana?',
-        answer: 'Website design and development in Ghana ranges from â‚µ1,200 for a 4-page business site to â‚µ4,500+ for multi-page corporate or e-commerce websites ($80â€“$290+). All our websites are responsive, CMS-enabled (WordPress/Webflow), include basic SEO setup, analytics, and 30 days of support.',
+        answer: 'Website design and development in Ghana ranges from ₵1,200 for a 4-page business site to ₵4,500+ for multi-page corporate or e-commerce websites ($80–$290+). All our websites are responsive, CMS-enabled (WordPress/Webflow), include basic SEO setup, analytics, and 30 days of support.',
       },
       {
         question: 'Do you use WordPress, Webflow, or custom code?',
@@ -66,7 +66,7 @@ const FAQ_DATA = [
       },
       {
         question: 'Do you provide hosting and maintenance?',
-        answer: 'We set up hosting on reliable platforms (Vercel, Netlify, AWS, or local Ghanaian hosts) and provide 30 days of post-launch support. Ongoing maintenance packages start at â‚µ500/month and include security updates, backups, content updates, and performance monitoring.',
+        answer: 'We set up hosting on reliable platforms (Vercel, Netlify, AWS, or local Ghanaian hosts) and provide 30 days of post-launch support. Ongoing maintenance packages start at ₵500/month and include security updates, backups, content updates, and performance monitoring.',
       },
     ],
   },
@@ -75,11 +75,11 @@ const FAQ_DATA = [
     questions: [
       {
         question: 'What\'s your process for designing a mobile app or SaaS product?',
-        answer: 'Our Digital Product Design package (â‚µ12,000 / $770, 6â€“8 weeks) follows a 6-week process: Discovery & compliance audit â†’ User research & journey mapping â†’ Information architecture & flow design â†’ Wireframes & low-fi prototyping â†’ High-fidelity UI & design system â†’ Prototype, usability testing & developer handoff. Includes accessibility audit (WCAG 2.1 AA).',
+        answer: 'Our Digital Product Design package (₵12,000 / $770, 6–8 weeks) follows a 6-week process: Discovery & compliance audit → User research & journey mapping → Information architecture & flow design → Wireframes & low-fi prototyping → High-fidelity UI & design system → Prototype, usability testing & developer handoff. Includes accessibility audit (WCAG 2.1 AA).',
       },
       {
         question: 'Do you do user research and usability testing?',
-        answer: 'Yes, it\'s built into our process. We conduct 8â€“12 user interviews, contextual inquiry, and run 2 rounds of usability testing (5 users each) with think-aloud protocol. We measure task completion rate, error rate, and SUS score. This is non-negotiable for FinTech and HealthTech products.',
+        answer: 'Yes, it\'s built into our process. We conduct 8–12 user interviews, contextual inquiry, and run 2 rounds of usability testing (5 users each) with think-aloud protocol. We measure task completion rate, error rate, and SUS score. This is non-negotiable for FinTech and HealthTech products.',
       },
       {
         question: 'What design tools do you use?',
@@ -96,15 +96,15 @@ const FAQ_DATA = [
     questions: [
       {
         question: 'What payment methods do you accept?',
-        answer: 'We accept bank transfer (Ghana, Nigeria, Kenya, South Africa), mobile money (MTN MoMo, AirtelTigo Cash, M-Pesa), card payments via Flutterwave/Paystack, and international wire transfer (USD/EUR). 50% deposit to start, 50% on delivery. Monthly installments available for projects over â‚µ10,000.',
+        answer: 'We accept bank transfer (Ghana, Nigeria, Kenya, South Africa), mobile money (MTN MoMo, AirtelTigo Cash, M-Pesa), card payments via Flutterwave/Paystack, and international wire transfer (USD/EUR). 50% deposit to start, 50% on delivery. Monthly installments available for projects over ₵10,000.',
       },
       {
         question: 'Are there any hidden fees?',
-        answer: 'No. Our packaged offers include everything listed â€” no surprise add-ons. Additional costs only apply if you request scope changes outside the agreed deliverables, and we\'ll always quote those separately before proceeding. Print production, stock photography, and third-party licenses are separate.',
+        answer: 'No. Our packaged offers include everything listed — no surprise add-ons. Additional costs only apply if you request scope changes outside the agreed deliverables, and we\'ll always quote those separately before proceeding. Print production, stock photography, and third-party licenses are separate.',
       },
       {
         question: 'Do you offer discounts for non-profits or early-stage startups?',
-        answer: 'We offer a 15% discount for registered non-profits and social enterprises. For pre-revenue startups, we can structure payment plans over 3â€“6 months. We also reserve 2 pro-bono slots per year for high-impact social ventures â€” apply via our contact form.',
+        answer: 'We offer a 15% discount for registered non-profits and social enterprises. For pre-revenue startups, we can structure payment plans over 3–6 months. We also reserve 2 pro-bono slots per year for high-impact social ventures — apply via our contact form.',
       },
       {
         question: 'What currencies do you quote in?',
@@ -117,7 +117,7 @@ const FAQ_DATA = [
     questions: [
       {
         question: 'What\'s your revision policy?',
-        answer: 'Our packages include 2â€“3 rounds of structured revisions per deliverable (depending on package). We use Figma comments for clear, actionable feedback. Additional revision rounds are â‚µ500â€“â‚µ1,500 each. We\'ve found 2â€“3 rounds is sufficient when strategy is aligned upfront.',
+        answer: 'Our packages include 2–3 rounds of structured revisions per deliverable (depending on package). We use Figma comments for clear, actionable feedback. Additional revision rounds are ₵500–₵1,500 each. We\'ve found 2–3 rounds is sufficient when strategy is aligned upfront.',
       },
       {
         question: 'How do you handle project communication?',

@@ -30,6 +30,9 @@ dist-ssr
 .env.*
 !.env.example
 !*.env.example
+# Holds the dev-mode GraphQL target only (no secrets), and is meant to be
+# shared so every developer gets the same local setup.
+!.env.development
 *.pem
 *.key
 *.p12

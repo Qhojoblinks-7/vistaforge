@@ -220,18 +220,8 @@ const ProjectManagementPage = () => {
     inv.status === 'SENT' && new Date(inv.dueDate) < new Date()
   ).length || 0;
 
-  // Handle logout
-  const handleLogout = async () => {
-    try {
-      await apiService.logout();
-      localStorage.removeItem('adminToken');
-      navigate('/');
-    } catch (error) {
-      console.error('Logout failed:', error);
-      // Still navigate even if logout fails
-      navigate('/');
-    }
-  };
+  // Logout is handled centrally by the admin shell (sidebar footer and the
+  // topbar user menu) so there is a single place that clears the session.
 
   // Render projects list
   const renderProjectsList = () => {
@@ -345,36 +335,28 @@ const ProjectManagementPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center space-x-4">
-              <h1 className="text-2xl font-bold text-[#0015AA]">Project Manager</h1>
-              <ActiveTimerComponent />
-            </div>
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
-              <button
-                onClick={() => setShowClientModal(true)}
-                className="px-4 py-2 bg-[#0015AA] text-white rounded-lg hover:bg-[#003366] transition-colors flex items-center justify-center min-h-[44px]"
-              >
-                <BsPeople className="mr-2" />
-                Add Client
-              </button>
-              <button
-                onClick={handleCreateProject}
-                className="px-4 py-2 bg-[#FBB03B] text-[#0015AA] rounded-lg hover:bg-[#E0A030] transition-colors flex items-center justify-center font-semibold min-h-[44px]"
-              >
-                <BsPlus className="mr-2" />
-                New Project
-              </button>
-              <button
-                onClick={handleLogout}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors min-h-[44px]"
-              >
-                Logout
-              </button>
-            </div>
+      {/* Page actions. The page title and the logout control both live in the
+          admin shell now, so this bar only carries the create actions. */}
+      <header className="border-b border-gray-200 bg-white">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-4 sm:px-6 lg:px-8">
+          <div className="flex items-center space-x-4">
+            <ActiveTimerComponent />
+          </div>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setShowClientModal(true)}
+              className="flex min-h-[44px] items-center justify-center rounded-lg bg-[#0015AA] px-4 py-2 text-white transition-colors hover:bg-[#003366]"
+            >
+              <BsPeople className="mr-2" />
+              Add Client
+            </button>
+            <button
+              onClick={handleCreateProject}
+              className="flex min-h-[44px] items-center justify-center rounded-lg bg-[#FBB03B] px-4 py-2 font-semibold text-[#0015AA] transition-colors hover:bg-[#E0A030]"
+            >
+              <BsPlus className="mr-2" />
+              New Project
+            </button>
           </div>
         </div>
       </header>
