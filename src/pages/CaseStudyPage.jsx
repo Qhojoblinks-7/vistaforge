@@ -24,7 +24,7 @@ const CaseStudyPage = () => {
     ...currentProject,
     tools: currentProject.designTools || [],
     isDesignProject: currentProject.isDesignProject || (currentProject.designTools && currentProject.designTools.length > 0),
-    link: `/projects/${currentProject.slug}`,
+    link: `/portfolio/${currentProject.slug}`,
   } : null;
 
   const structuredData = project ? {

@@ -70,11 +70,12 @@ const OptimizedImage = ({
   eager = false,
   onLoad,
   onError,
-  // Accepted for backward compatibility. Variant widths are now derived from
-  // the source image at build time instead of being requested per call site.
-  widths: _legacyWidths,
   ...props
 }) => {
+  // Call sites may still pass a `widths` array from the old API. Variant
+  // widths are derived from the source image at build time, so the prop is
+  // dropped here rather than reaching the DOM as an unknown attribute.
+  delete props.widths;
   const [failed, setFailed] = useState(false);
 
   // Derive the variant group from the original file name, e.g. "hero2".

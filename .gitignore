@@ -53,3 +53,6 @@ __pycache__/
 .pytest_cache/
 .coverage
 htmlcov/
+
+# Generated responsive image variants (rebuilt by `npm run images`)
+src/assets/generated/

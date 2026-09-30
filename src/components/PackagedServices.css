@@ -1,0 +1,68 @@
+/* Carousel sizing for PackagedServices.
+   Cards are wide enough that price rows and feature lists stay on one line.
+   The card gap is 24px, set by the `gap-6` utility on the track in the JSX. */
+
+.pkg-carousel {
+  /* Align the first card with the page gutter instead of hugging the
+     viewport edge, and scroll-snap to the same offset. */
+  padding-inline: max(1rem, calc((100vw - 1800px) / 2));
+  scroll-padding-inline-start: max(1rem, calc((100vw - 1800px) / 2));
+  -webkit-overflow-scrolling: touch;
+  /* Horizontal scrollbar hidden; movement is via wheel, touch, arrow keys,
+     or the dot indicators. */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.pkg-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .pkg-carousel {
+    padding-inline: max(1.5rem, calc((100vw - 1800px) / 2));
+    scroll-padding-inline-start: max(1.5rem, calc((100vw - 1800px) / 2));
+  }
+}
+
+@media (min-width: 1024px) {
+  .pkg-carousel {
+    padding-inline: max(2rem, calc((100vw - 1800px) / 2));
+    scroll-padding-inline-start: max(2rem, calc((100vw - 1800px) / 2));
+  }
+}
+
+.pkg-carousel-card {
+  /* Wide enough that price rows and feature lines stay unwrapped, but still
+     leaves the next card peeking in so the carousel reads as scrollable. */
+  flex: 0 0 auto;
+  width: min(86vw, 29rem);
+}
+
+@media (min-width: 768px) {
+  .pkg-carousel-card {
+    width: min(78vw, 31rem);
+  }
+}
+
+@media (min-width: 1280px) {
+  .pkg-carousel-card {
+    width: 32rem;
+  }
+}
+
+/* Keyboard focus on the track should be visible. */
+.pkg-carousel:focus-visible {
+  outline: 3px solid #0015aa;
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+/* Details marker hidden for the "not included" disclosure. */
+.pkg-carousel-card details summary::-webkit-details-marker {
+  display: none;
+}
+
+.pkg-carousel-card details summary {
+  list-style: none;
+}

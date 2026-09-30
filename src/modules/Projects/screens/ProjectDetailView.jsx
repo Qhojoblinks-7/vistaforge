@@ -60,7 +60,7 @@ const ProjectDetailView = ({ projectId, onBack }) => {
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Error loading project</h1>
           <p className="text-gray-600 mb-4">{error}</p>
           <button
-            onClick={() => navigate('/projects')}
+            onClick={() => navigate('/dashboard')}
             className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
           >
             Back to Projects
@@ -76,7 +76,7 @@ const ProjectDetailView = ({ projectId, onBack }) => {
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Project Not Found</h1>
           <button
-            onClick={() => navigate('/projects')}
+            onClick={() => navigate('/dashboard')}
             className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
           >
             Back to Projects
@@ -113,7 +113,7 @@ const ProjectDetailView = ({ projectId, onBack }) => {
     if (onBack) {
       onBack();
     } else {
-      navigate('/projects');
+      navigate('/dashboard');
     }
   };
 
@@ -141,7 +141,7 @@ const ProjectDetailView = ({ projectId, onBack }) => {
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
                 <button
-                  onClick={() => onBack ? onBack() : navigate('/projects')}
+                  onClick={() => onBack ? onBack() : navigate('/dashboard')}
                   className="p-2 hover:bg-gray-100 rounded-lg"
                 >
                   <ArrowLeft className="w-5 h-5" />

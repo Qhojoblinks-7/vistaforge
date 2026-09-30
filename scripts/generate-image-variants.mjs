@@ -87,7 +87,10 @@ async function main() {
   const entries = await readdir(SRC_DIR);
   const images = entries
     .filter((f) => RASTER.has(path.extname(f).toLowerCase()))
-    .filter((f) => !f.startsWith('generated-'));
+    .filter((f) => !f.startsWith('generated-'))
+    // Spaces become %20 in built asset URLs; skip rather than emit confusing
+    // names. Rename the source file if the image is actually needed.
+    .filter((f) => !/\s/.test(f));
 
   if (images.length === 0) {
     console.log('No raster images to process.');

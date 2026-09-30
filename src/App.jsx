@@ -43,7 +43,7 @@ const queryClient = new QueryClient();
 // A simple wrapper to protect routes
 const ProtectedRoute = ({ children }) => {
   const { token } = useAuth();
-  return token ? children : <Navigate to="/login" />;
+  return token ? children : <Navigate to="/admin/login" replace />;
 };
 
 function App() {

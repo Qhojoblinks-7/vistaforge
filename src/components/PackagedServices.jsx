@@ -1,6 +1,16 @@
-import React from 'react';
-import { BsRocket, BsGraphUpArrow, BsLaptop, BsCheckCircle, BsXCircle, BsLightning, BsShield, BsPeople } from 'react-icons/bs';
-import { useSpring, animated } from 'react-spring';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  BsRocket,
+  BsGraphUpArrow,
+  BsLaptop,
+  BsCheckCircle,
+  BsXCircle,
+  BsLightning,
+  BsShield,
+  BsPeople,
+} from 'react-icons/bs';
+import { useSpring, animated as Animated } from 'react-spring';
+import './PackagedServices.css';
 
 const PACKAGES = [
   {
@@ -105,35 +115,126 @@ const PACKAGES = [
 const PackagedServices = () => {
   const containerSpring = useSpring({
     from: { opacity: 0, transform: 'translateY(30px)' },
-    to: { opacity: 1, transform: 'translateY(0)' },
+    to: { opacity: 1, transform: 'translateY(0px)' },
     config: { tension: 120, friction: 14 },
   });
 
-  const cardSpring = (index) => useSpring({
-    from: { opacity: 0, transform: 'translateY(40px)' },
-    to: { opacity: 1, transform: 'translateY(0)' },
-    delay: 200 + index * 150,
-    config: { tension: 120, friction: 14 },
-  });
+  const trackRef = useRef(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  // Track scroll position so the dot indicator follows the visible card.
+  const syncActiveIndex = useCallback(() => {
+    const el = trackRef.current;
+    if (!el) return;
+
+    const cardWidth = el.firstElementChild?.offsetWidth || 0;
+    if (cardWidth === 0) return;
+
+    const gap = 24;
+    const index = Math.round(el.scrollLeft / (cardWidth + gap));
+    setActiveIndex(Math.min(Math.max(index, 0), PACKAGES.length - 1));
+  }, []);
+
+  // Vertical wheel/trackpad swipes scroll the carousel horizontally, but only
+  // while there is room to move. At either end the page keeps scrolling so the
+  // user is never trapped.
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return undefined;
+
+    const onWheel = (event) => {
+      const deltaY = event.deltaY;
+      const deltaX = event.deltaX;
+      // Already-horizontal intent (trackpad swipe or shift+wheel): let the
+      // browser handle it natively.
+      if (Math.abs(deltaX) > Math.abs(deltaY)) return;
+
+      const maxScroll = el.scrollWidth - el.clientWidth;
+      const atStart = el.scrollLeft <= 0;
+      const atEnd = el.scrollLeft >= maxScroll - 1;
+
+      // Allow page scrolling when the gesture points past the available range.
+      if ((deltaY < 0 && atStart) || (deltaY > 0 && atEnd)) return;
+
+      event.preventDefault();
+      el.scrollLeft += deltaY;
+    };
+
+    el.addEventListener('wheel', onWheel, { passive: false });
+    return () => el.removeEventListener('wheel', onWheel);
+  }, []);
+
+  // Left/Right arrow keys move the carousel when it has focus.
+  const onKeyDown = (event) => {
+    if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      handleNext();
+    } else if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      handlePrev();
+    }
+  };
+
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return undefined;
+
+    syncActiveIndex();
+    el.addEventListener('scroll', syncActiveIndex, { passive: true });
+    window.addEventListener('resize', syncActiveIndex);
+    return () => {
+      el.removeEventListener('scroll', syncActiveIndex);
+      window.removeEventListener('resize', syncActiveIndex);
+    };
+  }, [syncActiveIndex]);
+
+  const scrollToCard = (index) => {
+    const el = trackRef.current;
+    if (!el) return;
+
+    const card = el.children[index];
+    if (!card) return;
+
+    el.scrollTo({
+      left: card.offsetLeft - el.offsetLeft,
+      behavior: 'smooth',
+    });
+  };
+
+  const handlePrev = () => {
+    const el = trackRef.current;
+    if (!el) return;
+    const card = el.firstElementChild;
+    if (!card) return;
+    el.scrollBy({ left: -(card.offsetWidth + 24), behavior: 'smooth' });
+  };
+
+  const handleNext = () => {
+    const el = trackRef.current;
+    if (!el) return;
+    const card = el.firstElementChild;
+    if (!card) return;
+    el.scrollBy({ left: card.offsetWidth + 24, behavior: 'smooth' });
+  };
 
   const renderCheck = (included) => (
     <span className="flex items-center text-gray-700 text-sm">
       <BsCheckCircle className="w-5 h-5 text-green-500 mr-2 flex-shrink-0" />
-      {included}
+      <span>{included}</span>
     </span>
   );
 
   const renderCross = (excluded) => (
     <span className="flex items-center text-gray-400 text-sm line-through">
       <BsXCircle className="w-5 h-5 text-red-400 mr-2 flex-shrink-0" />
-      {excluded}
+      <span>{excluded}</span>
     </span>
   );
 
   return (
-    <animated.section style={containerSpring} className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
-      <div className="container mx-auto">
-        <div className="text-center mb-16">
+    <Animated.section style={containerSpring} className="py-20 bg-white">
+      <div className="mx-auto w-full max-w-[1800px] px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
           <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider">Packaged Offers</p>
           <h2 className="text-4xl sm:text-5xl font-bold text-[#0015AA] mt-2">
             Clear Scope. Fixed Price. No Surprises.
@@ -142,86 +243,132 @@ const PackagedServices = () => {
             Choose the package that matches your stage. Each includes everything you need — no hidden fees, no scope creep.
           </p>
         </div>
+      </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {PACKAGES.map((pkg, index) => (
-            <animated.div key={pkg.id} style={cardSpring(index)} className={`relative ${pkg.bgColor} rounded-2xl p-8 ${pkg.borderColor} border-2 shadow-xl hover:shadow-2xl transition-all duration-300 flex flex-col`}>
-              {pkg.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className={`inline-block ${pkg.color} text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg`}>
-                    Most Popular
-                  </span>
-                </div>
-              )}
-
-              <div className="text-center mb-6">
-                <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4 ${pkg.bgColor} ${pkg.borderColor} border`}>
-                  <pkg.icon size={32} className={`text-[${pkg.color}]`} />
-                </div>
-                <h3 className="text-2xl font-bold text-[#0015AA]">{pkg.name}</h3>
-                <p className="mt-2 text-gray-600 text-sm">{pkg.tagline}</p>
-              </div>
-
-              <div className="mb-6 p-4 bg-white/50 rounded-xl border border-gray-100">
-                <div className="grid grid-cols-3 gap-4 text-center mb-4">
-                  <div>
-                    <p className="text-3xl font-bold text-[#0015AA]">{pkg.price.ghs}</p>
-                    <p className="text-xs text-gray-500">GHS</p>
-                  </div>
-                  <div className="border-l border-gray-200">
-                    <p className="text-3xl font-bold text-[#0015AA]">{pkg.price.usd}</p>
-                    <p className="text-xs text-gray-500">USD</p>
-                  </div>
-                  <div>
-                    <p className="text-3xl font-bold text-[#0015AA]">{pkg.price.eur}</p>
-                    <p className="text-xs text-gray-500">EUR</p>
-                  </div>
-                </div>
-                <div className="flex items-center justify-center gap-6 text-sm text-gray-600">
-                  <span className="flex items-center gap-1">
-                    <BsLightning className="w-4 h-4" /> {pkg.timeline}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <BsPeople className="w-4 h-4" /> {pkg.idealFor}
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex-1 mb-6">
-                <h4 className="font-semibold text-[#0015AA] mb-3 flex items-center gap-2">
-                  <BsCheckCircle className="w-5 h-5 text-green-500" /> What's Included
-                </h4>
-                <ul className="space-y-2 max-h-64 overflow-y-auto pr-2">
-                  {pkg.includes.map((item, i) => (
-                    <li key={i} className="animate-slide-in">{renderCheck(item)}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <details className="mb-6 group">
-                <summary className="flex items-center justify-between text-sm text-gray-500 cursor-pointer font-medium">
-                  <span>What's not included</span>
-                  <BsLightning className="w-4 h-4 transition-transform group-open:rotate-180" />
-                </summary>
-                <ul className="mt-3 space-y-1 pl-2 border-l border-gray-200">
-                  {pkg.notIncludes.map((item, i) => (
-                    <li key={i} className="animate-fade-in">{renderCross(item)}</li>
-                  ))}
-                </ul>
-              </details>
-
-              <button
-                className={`w-full py-4 rounded-xl font-bold text-lg transition-all duration-200 ${pkg.popular
-                  ? `bg-[${pkg.color}] text-white hover:opacity-90 shadow-lg shadow-[${pkg.color}]/30`
-                  : `bg-white text-[${pkg.color}] ${pkg.borderColor} border-2 hover:bg-[${pkg.color}]/5`}`}
-              >
-                {pkg.cta}
-              </button>
-            </animated.div>
+      {/* Carousel position indicator. Movement is handled by dragging,
+          trackpad/wheel, touch swipe, the scrollbar, and arrow keys. */}
+      <div className="mx-auto w-full max-w-[1800px] px-4 sm:px-6 lg:px-8 flex items-center justify-center mb-6">
+        <div className="flex items-center gap-2" role="tablist" aria-label="Package navigation">
+          {PACKAGES.map((pkg, i) => (
+            <button
+              key={pkg.id}
+              type="button"
+              role="tab"
+              aria-selected={activeIndex === i}
+              aria-label={`Show ${pkg.name}`}
+              onClick={() => scrollToCard(i)}
+              className={`h-2 rounded-full transition-all duration-300 ${
+                activeIndex === i ? 'w-6 bg-[#0015AA]' : 'w-2 bg-gray-300 hover:bg-gray-400'
+              }`}
+            />
           ))}
         </div>
+      </div>
 
-        <div className="mt-16 text-center">
+      {/* Full-bleed track: cards are wide enough that feature lists and price
+          rows stay on one line. Scroll-snap gives carousel behaviour without
+          hiding content from keyboard or trackpad users. */}
+      <div
+        ref={trackRef}
+        className="pkg-carousel flex gap-6 overflow-x-auto scroll-smooth pt-6 pb-6"
+        style={{ scrollSnapType: 'x mandatory' }}
+        onKeyDown={onKeyDown}
+        tabIndex={0}
+        role="region"
+        aria-label="Package offers carousel. Use left and right arrow keys to browse."
+      >
+        {PACKAGES.map((pkg) => (
+          <div
+            key={pkg.id}
+            id={pkg.id}
+            className={`pkg-carousel-card relative ${pkg.bgColor} rounded-2xl p-7 ${pkg.borderColor} border-2 shadow-xl flex flex-col scroll-mt-20`}
+            style={{ scrollSnapAlign: 'start' }}
+          >
+            {pkg.popular && (
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+                <span
+                  className="inline-block text-white text-sm font-bold px-5 py-2 rounded-full shadow-lg"
+                  style={{ backgroundColor: pkg.color }}
+                >
+                  Most Popular
+                </span>
+              </div>
+            )}
+
+            <div className="text-center mb-6">
+              <div
+                className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4 ${pkg.bgColor} ${pkg.borderColor} border`}
+              >
+                <pkg.icon size={32} style={{ color: pkg.color }} />
+              </div>
+              <h3 className="text-2xl font-bold text-[#0015AA] whitespace-nowrap">{pkg.name}</h3>
+              <p className="mt-2 text-gray-600 text-sm whitespace-nowrap">{pkg.tagline}</p>
+            </div>
+
+            <div className="mb-6 p-5 bg-white/50 rounded-xl border border-gray-100">
+              <div className="grid grid-cols-3 gap-3 text-center mb-4">
+                <div>
+                  <p className="text-3xl font-bold text-[#0015AA] whitespace-nowrap">{pkg.price.ghs}</p>
+                  <p className="text-xs text-gray-500">GHS</p>
+                </div>
+                <div className="border-l border-gray-200">
+                  <p className="text-3xl font-bold text-[#0015AA] whitespace-nowrap">{pkg.price.usd}</p>
+                  <p className="text-xs text-gray-500">USD</p>
+                </div>
+                <div>
+                  <p className="text-3xl font-bold text-[#0015AA] whitespace-nowrap">{pkg.price.eur}</p>
+                  <p className="text-xs text-gray-500">EUR</p>
+                </div>
+              </div>
+              <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-gray-600">
+                <span className="flex items-center gap-1 whitespace-nowrap">
+                  <BsLightning className="w-4 h-4 flex-shrink-0" /> {pkg.timeline}
+                </span>
+                <span className="flex items-center gap-1 whitespace-nowrap">
+                  <BsPeople className="w-4 h-4 flex-shrink-0" /> {pkg.idealFor}
+                </span>
+              </div>
+            </div>
+
+            <div className="flex-1 mb-6">
+              <h4 className="font-semibold text-[#0015AA] mb-3 flex items-center gap-2">
+                <BsCheckCircle className="w-5 h-5 text-green-500" /> What&apos;s Included
+              </h4>
+              <ul className="space-y-2">
+                {pkg.includes.map((item, i) => (
+                  <li key={i}>{renderCheck(item)}</li>
+                ))}
+              </ul>
+            </div>
+
+            <details className="mb-6 group">
+              <summary className="flex items-center justify-between text-sm text-gray-500 cursor-pointer font-medium">
+                <span>What&apos;s not included</span>
+                <BsLightning className="w-4 h-4 transition-transform group-open:rotate-180" />
+              </summary>
+              <ul className="mt-3 space-y-1 pl-2 border-l border-gray-200">
+                {pkg.notIncludes.map((item, i) => (
+                  <li key={i}>{renderCross(item)}</li>
+                ))}
+              </ul>
+            </details>
+
+            <button
+              className="w-full py-4 rounded-xl font-bold text-lg transition-all duration-200 whitespace-nowrap"
+              style={
+                pkg.popular
+                  ? { backgroundColor: pkg.color, color: '#fff' }
+                  : { backgroundColor: '#fff', color: pkg.color, borderColor: pkg.color, borderWidth: 2 }
+              }
+            >
+              {pkg.cta}
+            </button>
+          </div>
+        ))}
+      </div>
+
+      <div className="mx-auto w-full max-w-[1800px] px-4 sm:px-6 lg:px-8">
+        <div className="mt-10 text-center">
           <p className="text-gray-600 mb-4">Need something custom? We also offer à la carte services.</p>
           <a
             href="/contact"
@@ -231,27 +378,7 @@ const PackagedServices = () => {
           </a>
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes slide-in {
-          from { opacity: 0; transform: translateX(-10px); }
-          to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes fade-in {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        .animate-slide-in {
-          animation: slide-in 0.3s ease-out forwards;
-        }
-        .animate-fade-in {
-          animation: fade-in 0.2s ease-out forwards;
-        }
-        details summary::-webkit-details-marker {
-          display: none;
-        }
-      `}</style>
-    </animated.section>
+    </Animated.section>
   );
 };
 

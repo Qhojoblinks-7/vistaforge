@@ -439,11 +439,13 @@ const ServicesPage = () => {
               </p>
               <div className="bg-gray-100 p-6 rounded-lg mt-6 shadow-sm hover:shadow-lg transition-shadow duration-300 transform hover:scale-105 transition-transform duration-300">
                 <h4 className="text-xl font-bold text-[#0015AA] flex items-center">
-                  <BsCashStack className="mr-2 text-[#FBB03B]" /> Pricing: <span className="ml-2">₵2,000 – ₵5,000</span>
+                  <BsCashStack className="mr-2 text-[#FBB03B]" /> Pricing: 
+                  <span className="ml-2">₵2,000 – ₵5,000</span>
+                  <span className="ml-4 text-gray-500 text-lg">(~$130 – $325 / €120 – €300)</span>
                 </h4>
                 <p className="text-sm mt-2 text-gray-600">
-                  <span className="font-semibold">₵2,000:</span> For foundational strategy (e.g., startups needing only messaging and values).<br />
-                  <span className="font-semibold">₵5,000:</span> For full brand strategy documents, audience personas, and launch consulting.
+                  <span className="font-semibold">₵2,000 (~$130):</span> For foundational strategy (e.g., startups needing only messaging and values).<br />
+                  <span className="font-semibold">₵5,000 (~$325):</span> For full brand strategy documents, audience personas, and launch consulting.
                 </p>
               </div>
             </div>
@@ -478,11 +480,13 @@ const ServicesPage = () => {
               </p>
               <div className="bg-white ml-6 p-6 rounded-lg mt-6 shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:scale-105 transition-transform duration-300">
                 <h4 className="text-xl font-bold text-[#0015AA] flex items-center">
-                  <BsCashStack className="mr-2 text-[#FBB03B]" /> Pricing: <span className="ml-2">₵600 – ₵2,000</span>
+                  <BsCashStack className="mr-2 text-[#FBB03B]" /> Pricing: 
+                  <span className="ml-2">₵600 – ₵2,000</span>
+                  <span className="ml-4 text-gray-500 text-lg">(~$40 – $130 / €35 – €120)</span>
                 </h4>
                 <p className="text-sm mt-2 text-gray-600">
-                  <span className="font-semibold">₵600:</span> Simple logo + color/font suggestions.<br />
-                  <span className="font-semibold">₵2,000:</span> Full identity kit with logo variations, guidelines, and mockups.
+                  <span className="font-semibold">₵600 (~$40):</span> Simple logo + color/font suggestions.<br />
+                  <span className="font-semibold">₵2,000 (~$130):</span> Full identity kit with logo variations, guidelines, and mockups.
                 </p>
               </div>
             </div>
@@ -490,7 +494,7 @@ const ServicesPage = () => {
         </animated.div>
 
         {/* Service 3: Website Design & Development */}
-        <animated.div style={serviceSpring}>
+        <animated.div id="web-development" style={serviceSpring} className="scroll-mt-20">
           <div className="container mx-auto flex flex-col lg:flex-row items-center gap-12 py-16">
             <div className="w-full lg:w-1/2">
               <div className="relative w-full h-80 rounded-xl overflow-hidden shadow-xl transform hover:scale-105 transition-transform duration-300">
@@ -517,11 +521,13 @@ const ServicesPage = () => {
               </p>
               <div className="ml-6 bg-gray-100 p-6 rounded-lg mt-6 shadow-sm hover:shadow-lg transition-shadow duration-300 transform hover:scale-105 transition-transform duration-300">
                 <h4 className="text-xl font-bold text-[#0015AA] flex items-center">
-                  <BsCashStack className="mr-2 text-[#FBB03B]" /> Pricing: <span className="ml-2">₵1,200 – ₵4,500+</span>
+                  <BsCashStack className="mr-2 text-[#FBB03B]" /> Pricing: 
+                  <span className="ml-2">₵1,200 – ₵4,500+</span>
+                  <span className="ml-4 text-gray-500 text-lg">(~$80 – $290+ / €70 – €270+)</span>
                 </h4>
                 <p className="text-sm mt-2 text-gray-600">
-                  <span className="font-semibold">₵1,200–₵2,800:</span> 4-page business site, perfect for startups.<br />
-                  <span className="font-semibold">₵3,500 – ₵4,500+:</span> Multi-page corporate or e-commerce websites.
+                  <span className="font-semibold">₵1,200–₵2,800 (~$80–$180):</span> 4-page business site, perfect for startups.<br />
+                  <span className="font-semibold">₵3,500 – ₵4,500+ (~$225–$290+):</span> Multi-page corporate or e-commerce websites.
                 </p>
               </div>
             </div>
@@ -530,7 +536,7 @@ const ServicesPage = () => {
 
         {/* Service 4: UI/UX Design for Apps & Digital Products */}
         {/* Service 4: UI/UX Design for Apps & Digital Products */}
-        <animated.div style={serviceSpring}>
+        <animated.div id="digital-product" style={serviceSpring} className="scroll-mt-20">
           <div className="w-full flex flex-col lg:flex-row-reverse items-center gap-12 py-16 bg-gray-50 rounded-lg">
             <div className="w-full lg:w-1/2">
               <div className="relative w-full h-80 rounded-xl overflow-hidden shadow-xl transform hover:scale-105 transition-transform duration-300">
@@ -557,11 +563,13 @@ const ServicesPage = () => {
               </p>
               <div className="ml-6 bg-white p-6 rounded-lg mt-6 shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:scale-105 transition-transform duration-300">
                 <h4 className="text-xl font-bold text-[#0015AA] flex items-center">
-                  <BsCashStack className="mr-2 text-[#FBB03B]" /> Pricing: <span className="ml-2">₵1,200 – ₵4,500</span>
+                  <BsCashStack className="mr-2 text-[#FBB03B]" /> Pricing: 
+                  <span className="ml-2">₵1,200 – ₵4,500</span>
+                  <span className="ml-4 text-gray-500 text-lg">(~$80 – $290 / €70 – €270)</span>
                 </h4>
                 <p className="text-sm mt-2 text-gray-600">
-                  <span className="font-semibold">₵1,200:</span> Short prototypes or 3–5 screen designs.<br />
-                  <span className="font-semibold">₵4,500:</span> Full UI kit for a mid-sized web or mobile app.
+                  <span className="font-semibold">₵1,200 (~$80):</span> Short prototypes or 3–5 screen designs.<br />
+                  <span className="font-semibold">₵4,500 (~$290):</span> Full UI kit for a mid-sized web or mobile app.
                 </p>
               </div>
             </div>
@@ -596,11 +604,13 @@ const ServicesPage = () => {
               </p>
               <div className="ml-6 bg-gray-100 p-6 rounded-lg mt-6 shadow-sm hover:shadow-lg transition-shadow duration-300 transform hover:scale-105 transition-transform duration-300">
                 <h4 className="text-xl font-bold text-[#0015AA] flex items-center">
-                  <BsCashStack className="mr-2 text-[#FBB03B]" /> Pricing: <span className="ml-2">₵600 – ₵2,000 per campaign</span>
+                  <BsCashStack className="mr-2 text-[#FBB03B]" /> Pricing: 
+                  <span className="ml-2">₵600 – ₵2,000 per campaign</span>
+                  <span className="ml-4 text-gray-500 text-lg">(~$40 – $130 / €35 – €120)</span>
                 </h4>
                 <p className="text-sm mt-2 text-gray-600">
-                  <span className="font-semibold">₵600:</span> Basic social media kit (profile, 5–10 posts).<br />
-                  <span className="font-semibold">₵2,000:</span> Full campaign package with strategy, graphics, and ad templates.
+                  <span className="font-semibold">₵600 (~$40):</span> Basic social media kit (profile, 5–10 posts).<br />
+                  <span className="font-semibold">₵2,000 (~$130):</span> Full campaign package with strategy, graphics, and ad templates.
                 </p>
               </div>
             </div>

@@ -92,7 +92,7 @@ const DesignProjectCard = ({ project, isActive, onClick }) => {
 
                     {isActive && (
                         <Link
-                            to={`/projects/${project.slug}`}
+                            to={`/portfolio/${project.slug}`}
                             className="flex items-center font-bold py-2 px-4 bg-[#FBB03B] text-[#0015AA] rounded-lg hover:bg-[#E0A030] transition-colors"
                         >
                             Full Project

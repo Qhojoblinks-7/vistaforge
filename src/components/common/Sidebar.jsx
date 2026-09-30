@@ -63,7 +63,7 @@ const Sidebar = ({ isOpen, onToggle }) => {
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    navigate('/admin/login');
   };
 
   const isActive = (path) => {

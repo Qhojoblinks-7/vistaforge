@@ -9,7 +9,7 @@ export const TESTIMONIALS = [
     rating: 5,
     text: 'VistaForge didn\'t just design our brand — they helped us articulate our value proposition to investors. Our Series A deck, built on their brand framework, closed a $1.2M round in 6 weeks. The team understands what African fintechs need to look "investable" to global VCs.',
     projectType: 'Brand Strategy + Pitch Deck + Website',
-    projectUrl: '/case-studies/payflow',
+    projectUrl: '/portfolio/finserve-digital',
     date: '2024-03-15',
     featured: true,
     metrics: {
@@ -27,7 +27,7 @@ export const TESTIMONIALS = [
     rating: 5,
     text: 'We came in with just an MVP and a messy logo. VistaForge ran a strategy workshop that completely changed how we position ourselves to farmers and agribusinesses. Our new identity increased demo-to-trial conversion by 34%. They\'re not designers — they\'re growth partners.',
     projectType: 'Brand Identity + Website + App UI',
-    projectUrl: '/case-studies/agriconnect',
+    projectUrl: '/portfolio/agritech-platform',
     date: '2024-02-28',
     featured: true,
     metrics: {
@@ -45,7 +45,7 @@ export const TESTIMONIALS = [
     rating: 5,
     text: 'Healthcare branding is different — trust is everything. VistaForge understood the regulatory landscape and patient psychology. Our new patient portal UX reduced support tickets by 60% and increased appointment booking completion to 94%. Worth every cedi.',
     projectType: 'UI/UX Design + Brand Refresh + Portal Design',
-    projectUrl: '/case-studies/medlink',
+    projectUrl: '/portfolio/finserve-digital',
     date: '2024-01-20',
     featured: true,
     metrics: {
@@ -63,7 +63,7 @@ export const TESTIMONIALS = [
     rating: 5,
     text: 'The team delivered our complete brand system — strategy, logo, guidelines, website, and investor deck — in 6 weeks flat. We used the deck to close our pre-seed round. Their "Startup Launch Pack" is exactly what early-stage founders need: done-for-you, no decision fatigue.',
     projectType: 'Startup Launch Pack (All-in)',
-    projectUrl: '/case-studies/edusmart',
+    projectUrl: '/portfolio/techstart-rebrand',
     date: '2024-03-10',
     featured: false,
     metrics: {
@@ -81,7 +81,7 @@ export const TESTIMONIALS = [
     rating: 4,
     text: 'Great work on our rebrand and e-commerce site. The only reason for 4 stars is the timeline slipped by 1 week due to our delayed feedback. But the quality of the design system they handed off to our dev team was exceptional — pixel-perfect, documented, and accessible.',
     projectType: 'Rebrand & Scale + E-commerce Website',
-    projectUrl: '/case-studies/shoplocal',
+    projectUrl: '/portfolio/techstart-rebrand',
     date: '2023-11-05',
     featured: false,
     metrics: {
@@ -99,7 +99,7 @@ export const TESTIMONIALS = [
     rating: 5,
     text: 'We hired VistaForge for our SaaS product UI/UX. They conducted actual user research with our customers — not just assumptions. The resulting design system cut our frontend dev time by 40%. They also trained our team on Figma handoff. True partners.',
     projectType: 'Digital Product Design (SaaS)',
-    projectUrl: '/case-studies/logichain',
+    projectUrl: '/portfolio/finserve-digital',
     date: '2024-02-14',
     featured: false,
     metrics: {

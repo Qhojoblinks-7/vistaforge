@@ -135,6 +135,57 @@ const PortfolioPage = () => {
             ]
           })}
         </script>
+
+        {/* Portfolio ItemList with CreativeWork/Project schema */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            "name": "VistaForge Portfolio Projects",
+            "description": "Collection of brand design, web development, and UI/UX projects by VistaForge creative agency",
+            "numberOfItems": sourceProjects.length,
+            "itemListElement": sourceProjects.map((project, index) => ({
+              "@type": "ListItem",
+              "position": index + 1,
+              "item": {
+                "@type": ["CreativeWork", "Project"],
+                "@id": "https://vistaforge.com/case-studies/" + project.slug,
+                "name": project.name || project.title,
+                "description": project.intro,
+                "image": project.heroImage || project.logo,
+                "url": "https://vistaforge.com/case-studies/" + project.slug,
+                "author": {
+                  "@type": "Organization",
+                  "name": "VistaForge",
+                  "url": "https://vistaforge.com"
+                },
+                "publisher": {
+                  "@type": "Organization",
+                  "name": "VistaForge",
+                  "url": "https://vistaforge.com"
+                },
+                "datePublished": project.createdAt,
+                "dateModified": project.updatedAt || project.createdAt,
+                "about": [
+                  {
+                    "@type": "Thing",
+                    "name": project.industry || "Brand Design"
+                  },
+                  {
+                    "@type": "Thing",
+                    "name": project.clientType || "Business"
+                  }
+                ],
+                "keywords": project.designTools?.join(", ") || "brand design, case study",
+                "genre": "Case Study",
+                "isPartOf": {
+                  "@type": "CreativeWork",
+                  "name": "VistaForge Portfolio"
+                }
+              }
+            }))
+          })}
+        </script>
       </Helmet>
 
             <IntroSection />

@@ -9,13 +9,20 @@ export default defineConfig({
     react(),
     sitemapPlugin({
       hostname: 'https://vistaforge.com',
-      routes: [
-        '/',
+      // NOTE: the option is `dynamicRoutes`, not `routes`. Passing `routes`
+      // here was silently ignored and the sitemap only ever contained "/".
+      dynamicRoutes: [
+        // '/' is already emitted by the plugin; listing it here duplicates it
         '/about',
         '/services',
         '/portfolio',
+        '/blog',
+        '/faq',
         '/contact',
-        '/admin/login',
+        // Public case studies, kept in sync with src/data/sampleCaseStudies.js
+        '/portfolio/techstart-rebrand',
+        '/portfolio/agritech-platform',
+        '/portfolio/finserve-digital',
       ],
       exclude: ['/admin', '/dashboard', '/projects', '/timelogs', '/clients', '/invoices', '/analytics', '/settings', '/inquiries'],
       changefreq: 'weekly',

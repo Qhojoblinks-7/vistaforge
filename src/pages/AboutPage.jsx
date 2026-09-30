@@ -293,7 +293,7 @@ const AboutUsPage = () => {
         </section>
 
         {/* 5. Team Section (Full) */}
-        <section className="bg-gray-100 py-20 px-4 sm:px-6 lg:px-8">
+        <section id="team" className="bg-gray-100 py-20 px-4 sm:px-6 lg:px-8 scroll-mt-20">
           <div className="container mx-auto text-center">
             <h2 className="text-4xl font-bold font-montserrat text-[#0015AA]">Meet the Minds Behind VistaForge</h2>
             <p className="mt-4 text-lg text-gray-700 max-w-2xl mx-auto">

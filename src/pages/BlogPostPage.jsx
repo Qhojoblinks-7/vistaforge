@@ -94,7 +94,10 @@ const BlogPostPage = ({ match }) => {
 
             {/* Category & Meta */}
             <div className="flex flex-wrap items-center gap-4 mb-6">
-              <Link to={`/blog?category=${post.category}`} className="bg-[#0015AA]/10 text-[#0015AA] text-sm font-bold px-3 py-1 rounded-full hover:bg-[#0015AA]/20 transition-colors">
+              <Link
+                to={`/blog?category=${encodeURIComponent(post.category)}`}
+                className="bg-[#0015AA]/10 text-[#0015AA] text-sm font-bold px-3 py-1 rounded-full hover:bg-[#0015AA]/20 transition-colors"
+              >
                 {post.category}
               </Link>
               {post.tags.map((tag, i) => (

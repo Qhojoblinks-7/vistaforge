@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useSpring, animated } from 'react-spring';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { BsArrowRight, BsCalendar3, BsChatLeftText, BsTag, BsChevronDown } from 'react-icons/bs';
 import { BLOG_POSTS, BLOG_CATEGORIES, getFeaturedPosts } from '../data/blogPosts';
 import Footer from '../components/Footer';
@@ -9,8 +9,18 @@ import SEO from '../components/SEO';
 import OptimizedImage from '../components/OptimizedImage';
 
 const BlogPage = () => {
-  const [activeCategory, setActiveCategory] = useState('All');
+  // Supports /blog?category=Brand Strategy, linked from each post.
+  const [searchParams] = useSearchParams();
+  const categoryParam = searchParams.get('category');
+  const initialCategory = BLOG_CATEGORIES.includes(categoryParam) ? categoryParam : 'All';
+
+  const [activeCategory, setActiveCategory] = useState(initialCategory);
   const [posts, setPosts] = useState(BLOG_POSTS);
+
+  // Keep in sync when the query param changes (e.g. browser back/forward).
+  useEffect(() => {
+    setActiveCategory(initialCategory);
+  }, [initialCategory]);
 
   const containerSpring = useSpring({
     from: { opacity: 0, transform: 'translateY(30px)' },

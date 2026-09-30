@@ -13,7 +13,10 @@
     "type-check": "tsc --noEmit",
     "test": "echo \"No tests specified\" && exit 0",
     "prebuild": "echo 'Skipping lint for production build'",
-    "postbuild": "echo 'Build completed successfully'"
+    "postbuild": "echo 'Build completed successfully'",
+    "lighthouse": "lhci autorun",
+    "lighthouse:collect": "lhci collect",
+    "lighthouse:assert": "lhci assert"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
