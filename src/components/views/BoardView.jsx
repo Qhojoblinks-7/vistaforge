@@ -2,7 +2,7 @@ import React from 'react';
 import { FaPlus, FaGripVertical } from 'react-icons/fa';
 import ProjectCard from '../ProjectCard';
 
-const BoardView = ({ projects, tasks, milestones, onProjectSelect, loading, error }) => {
+const BoardView = ({ projects, tasks, milestones, onProjectSelect, loading }) => {
   // Define project phases
   const phases = [
     { id: 'lead', name: 'Lead', color: 'bg-gray-50 border-gray-200' },

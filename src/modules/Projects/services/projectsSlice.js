@@ -7,7 +7,7 @@ import { fetchInvoices } from '../../../store/slices/invoicesSlice';
 import { fetchInquiries } from '../../../store/slices/inquiriesSlice';
 
 // Backend-integrated actions that leverage automatic model relationships
-export const createProjectWithRelationships = (projectData) => async (dispatch, getState) => {
+export const createProjectWithRelationships = (projectData) => async (dispatch) => {
   try {
     // Create project - backend will automatically handle client relationships
     const result = await dispatch(createProject(projectData)).unwrap();
@@ -27,7 +27,7 @@ export const createProjectWithRelationships = (projectData) => async (dispatch, 
   }
 };
 
-export const updateProjectWithRelationships = (projectId, updateData) => async (dispatch, getState) => {
+export const updateProjectWithRelationships = (projectId, updateData) => async (dispatch) => {
   try {
     // Update project - backend handles all relationship updates
     const result = await dispatch(updateProject({ id: projectId, data: updateData })).unwrap();
@@ -47,7 +47,7 @@ export const updateProjectWithRelationships = (projectId, updateData) => async (
   }
 };
 
-export const completeProjectWithRelationships = (projectId) => async (dispatch, getState) => {
+export const completeProjectWithRelationships = (projectId) => async (dispatch) => {
   try {
     // Mark project as completed - backend handles revenue updates
     const result = await dispatch(updateProject({
@@ -71,7 +71,7 @@ export const completeProjectWithRelationships = (projectId) => async (dispatch, 
 };
 
 // Cross-slice action creators for interconnected data flow
-export const syncProjectCreation = (project) => async (dispatch, getState) => {
+export const syncProjectCreation = () => async (dispatch) => {
   // When a project is created, refresh related data across all modules
   try {
     await Promise.all([
@@ -85,7 +85,7 @@ export const syncProjectCreation = (project) => async (dispatch, getState) => {
   }
 };
 
-export const syncProjectUpdate = (project) => async (dispatch, getState) => {
+export const syncProjectUpdate = () => async (dispatch) => {
   // When a project is updated, refresh related data across all modules
   try {
     await Promise.all([
@@ -99,7 +99,7 @@ export const syncProjectUpdate = (project) => async (dispatch, getState) => {
   }
 };
 
-export const syncProjectDeletion = (projectId) => async (dispatch, getState) => {
+export const syncProjectDeletion = () => async (dispatch) => {
   // When a project is deleted, refresh all related data across all modules
   try {
     await Promise.all([
@@ -145,7 +145,7 @@ export const calculateUnifiedAnalytics = () => async (dispatch, getState) => {
 // Async thunks for project operations
 export const fetchProjects = createAsyncThunk(
   'projects/fetchProjects',
-  async (params = {}) => {
+  async () => {
     const query = `
       query GetProjects {
         allProjects {

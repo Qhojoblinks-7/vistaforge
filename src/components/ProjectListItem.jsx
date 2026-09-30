@@ -3,19 +3,6 @@ import { FaEdit, FaTrash, FaEye } from 'react-icons/fa';
 import { BsCheckCircle, BsXCircle } from 'react-icons/bs';
 
 const ProjectListItem = ({ project, onEditClick, onDeleteClick }) => {
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'complete':
-        return 'bg-green-100 text-green-800';
-      case 'in_progress':
-        return 'bg-blue-100 text-blue-800';
-      case 'blocked':
-        return 'bg-red-100 text-red-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
-  };
-
   const getProgressColor = (progress) => {
     if (progress >= 80) return 'bg-green-500';
     if (progress >= 50) return 'bg-blue-500';

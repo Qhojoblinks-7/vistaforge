@@ -2,7 +2,7 @@ import React from 'react';
 import { FaEye, FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
 import ProjectListItem from '../ProjectListItem';
 
-const ListView = ({ projects, tasks, milestones, onProjectSelect, loading, error }) => {
+const ListView = ({ projects, tasks, milestones, onProjectSelect, loading }) => {
   // Calculate progress for each project
   const getProjectProgress = (projectId) => {
     const projectTasks = tasks.filter(task => task.project === projectId);
@@ -111,11 +111,6 @@ const ListView = ({ projects, tasks, milestones, onProjectSelect, loading, error
           {projects.map((project) => {
             const progress = getProjectProgress(project.id);
             const phaseInfo = getProjectPhase(project);
-            const enhancedProject = {
-              ...project,
-              progress,
-              design_tools: project.design_tools || ['Figma', 'Adobe XD']
-            };
 
             return (
               <div key={project.id} className="border-b border-gray-200 p-4 last:border-b-0">

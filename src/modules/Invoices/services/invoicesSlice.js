@@ -165,7 +165,7 @@ export const deleteInvoice = createAsyncThunk(
     `;
 
     const apiService = (await import('../../../services/api')).default;
-    const result = await apiService.request(mutation, { id: invoiceId });
+    await apiService.request(mutation, { id: invoiceId });
     return invoiceId;
   }
 );

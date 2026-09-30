@@ -4,12 +4,6 @@ import { BsCashStack, BsGraphUp, BsExclamationTriangle } from 'react-icons/bs';
 import { fetchInvoices, fetchTimeLogs, selectUnbilledAmount, selectTotalRevenue, selectOverdueInvoices } from '../store/slices/financialMetricsSlice';
 
 const MetricCard = ({ title, value, color, cta }) => {
-  const colorClasses = {
-    primary: 'bg-[#0015AA]',
-    secondary: 'bg-[#FBB03B]',
-    danger: 'bg-red-500'
-  };
-
   const bgGradients = {
     primary: 'bg-gradient-to-br from-[#0015AA] to-[#003366]',
     secondary: 'bg-gradient-to-br from-[#FBB03B] to-[#E0A030]',

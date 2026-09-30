@@ -1,12 +1,27 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useSpring, animated } from 'react-spring';
+import { useSpring, animated } from '@react-spring/web';
 import { Link } from 'react-router-dom';
 import { BsArrowLeft, BsCalendar3, BsChatLeftText, BsTag, BsShare, BsTwitter, BsLinkedin } from 'react-icons/bs';
 import { BLOG_POSTS, getBlogPost } from '../data/blogPosts';
 import Footer from '../components/Footer';
 import SEO from '../components/SEO';
 import OptimizedImage from '../components/OptimizedImage';
+
+const RelatedPostCard = ({ index, className = '', children }) => {
+  const relatedSpring = useSpring({
+    from: { opacity: 0, transform: 'translateY(30px)' },
+    to: { opacity: 1, transform: 'translateY(0)' },
+    delay: index * 100,
+    config: { tension: 120, friction: 14 },
+  });
+
+  return (
+    <animated.article style={relatedSpring} className={className}>
+      {children}
+    </animated.article>
+  );
+};
 
 const BlogPostPage = ({ match }) => {
   const { slug } = match.params;
@@ -209,7 +224,7 @@ const BlogPostPage = ({ match }) => {
                   {post.author.name} leads {post.author.role.toLowerCase()} at VistaForge, helping African startups build brands that convert.
                 </p>
                 <Link to="/about#team" className="inline-block mt-3 text-sm font-bold text-[#0015AA] hover:underline">
-                  View Profile →
+                  View Profile â†’
                 </Link>
               </div>
             </div>
@@ -225,12 +240,7 @@ const BlogPostPage = ({ match }) => {
                 .filter(p => p.slug !== post.slug)
                 .slice(0, 3)
                 .map((relatedPost, index) => (
-                  <animated.article key={relatedPost.slug} style={useSpring({
-                    from: { opacity: 0, transform: 'translateY(30px)' },
-                    to: { opacity: 1, transform: 'translateY(0)' },
-                    delay: index * 100,
-                    config: { tension: 120, friction: 14 },
-                  })} className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
+                  <RelatedPostCard key={relatedPost.slug} index={index} className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
                     <Link to={`/blog/${relatedPost.slug}`} className="block">
                       <div className="relative aspect-video overflow-hidden">
                         <OptimizedImage
@@ -272,7 +282,7 @@ const BlogPostPage = ({ match }) => {
                         </div>
                       </div>
                     </Link>
-                  </animated.article>
+                  </RelatedPostCard>
                 ))}
             </div>
           </div>

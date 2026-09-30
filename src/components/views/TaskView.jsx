@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FaPlus, FaChevronDown, FaChevronRight, FaCalendarAlt, FaUser, FaFlag } from 'react-icons/fa';
 
-const TaskView = ({ projects, tasks, milestones, onProjectSelect, loading, error }) => {
+const TaskView = ({ projects, tasks, milestones, onProjectSelect, loading }) => {
   const [expandedProjects, setExpandedProjects] = useState(new Set());
 
   const toggleProjectExpansion = (projectId) => {

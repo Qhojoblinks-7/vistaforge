@@ -5,7 +5,7 @@ import { fetchClients } from '../../modules/Clients/services/clientsSlice';
 import { fetchProjects } from '../../modules/Projects/services/projectsSlice';
 
 // Backend-integrated inquiry conversion actions
-export const convertInquiryToClient = (inquiryId) => async (dispatch, getState) => {
+export const convertInquiryToClient = (inquiryId) => async (dispatch) => {
   try {
     // Convert inquiry to client - backend handles all relationships
     const result = await dispatch(convertToClient(inquiryId)).unwrap();
@@ -26,7 +26,7 @@ export const convertInquiryToClient = (inquiryId) => async (dispatch, getState) 
   }
 };
 
-export const convertInquiryToProject = (inquiryId, clientId = null) => async (dispatch, getState) => {
+export const convertInquiryToProject = (inquiryId, clientId = null) => async (dispatch) => {
   try {
     // Convert inquiry to project - backend handles all relationships
     const result = await dispatch(convertToProject({ inquiryId, clientId })).unwrap();
@@ -51,7 +51,7 @@ export const convertInquiryToProject = (inquiryId, clientId = null) => async (di
   }
 };
 
-export const convertInquiryToClientAndProject = (inquiryId) => async (dispatch, getState) => {
+export const convertInquiryToClientAndProject = (inquiryId) => async (dispatch) => {
   try {
     // Convert inquiry to both client and project in one action
     const result = await dispatch(convertToClientAndProject(inquiryId)).unwrap();
@@ -369,7 +369,7 @@ export const deleteInquiry = createAsyncThunk(
       }
     `;
 
-    const result = await apiService.request(mutation, { id: inquiryId });
+    await apiService.request(mutation, { id: inquiryId });
     return inquiryId;
   }
 );
@@ -584,7 +584,7 @@ const inquiriesSlice = createSlice({
         state.saving = true;
         state.error = null;
       })
-      .addCase(submitPublicInquiry.fulfilled, (state, action) => {
+      .addCase(submitPublicInquiry.fulfilled, (state) => {
         state.saving = false;
         // Public inquiries don't get added to the admin's inquiry list
         // They are stored in the database but only visible to the admin user

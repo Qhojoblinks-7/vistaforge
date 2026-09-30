@@ -1,29 +1,14 @@
 import React from 'react';
-import { FaEdit, FaTrash } from 'react-icons/fa';
-import { BsCircle, BsClock, BsCheckCircleFill, BsLock } from 'react-icons/bs';
+import { FaTrash } from 'react-icons/fa';
 import apiService from '../services/api';
 
 const TaskListItem = ({
   task,
-  onEditClick,
   onDeleteClick,
   onStatusChange,
   showProjectName = false,
   compact = false
 }) => {
-  const getStatusIcon = (status) => {
-    switch (status) {
-      case 'complete':
-        return <BsCheckCircleFill className="w-3 h-3" />;
-      case 'in_progress':
-        return <BsClock className="w-3 h-3" />;
-      case 'blocked':
-        return <BsLock className="w-3 h-3" />;
-      default:
-        return <BsCircle className="w-3 h-3" />;
-    }
-  };
-
   const getStatusColor = (status) => {
     switch (status) {
       case 'complete':

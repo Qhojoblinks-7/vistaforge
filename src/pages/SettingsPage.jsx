@@ -58,7 +58,7 @@ const SettingsPage = () => {
 
   const handleSave = async () => {
     try {
-      const result = await dispatch(saveSettings(settings)).unwrap();
+      await dispatch(saveSettings(settings)).unwrap();
       toast.success('Settings saved successfully!', {
         icon: <BsCheckCircle className="text-green-500" />,
         duration: 3000,

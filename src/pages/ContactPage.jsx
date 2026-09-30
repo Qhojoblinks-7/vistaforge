@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useSpring, animated } from 'react-spring';
+import { useSpring, animated } from '@react-spring/web';
 import { BsArrowRight, BsEnvelope, BsPhone, BsPinMap, BsCheckCircle, BsXCircle } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { submitPublicInquiry } from '../store/slices/inquiriesSlice';
@@ -109,17 +109,6 @@ const ContactPage = () => {
       setTimeout(() => setSuccess(false), 5000);
     } catch (error) {
       console.error('Submission failed:', error);
-      let errorMessage = 'An error occurred while submitting your inquiry.';
-      if (error.message && error.message.includes('GraphQL')) {
-        try {
-          const parsedError = JSON.parse(error.message.split(' - ')[1]);
-          if (parsedError.errors && parsedError.errors[0]) {
-            errorMessage = parsedError.errors[0].message;
-          }
-        } catch (e) {
-          // Keep default error message if parsing fails
-        }
-      }
     }
   };
 
@@ -231,11 +220,11 @@ const ContactPage = () => {
 
         <div className="container mx-auto relative z-10"> {/* z-10 ensures content is above shapes */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
-            Let’s Build Something Together
+            Letâ€™s Build Something Together
           </h1>
           <p className="mt-6 text-lg max-w-3xl mx-auto font-poppins">
             Have a project in mind or just want to learn more about how we work?
-            We’d love to hear from you.
+            Weâ€™d love to hear from you.
           </p>
         </div>
       </section>

@@ -4,8 +4,6 @@ import { BsFilter, BsX } from 'react-icons/bs';
 const FilterPanel = ({
   isOpen,
   onToggle,
-  filters,
-  onFiltersChange,
   onClearFilters,
   children,
   title = "Filters",

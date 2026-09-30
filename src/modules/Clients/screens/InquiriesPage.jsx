@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
 import { BsEnvelope, BsClock, BsCheckCircle, BsArchive, BsArrowRight, BsPersonPlus, BsFolderPlus, BsFilter } from 'react-icons/bs';
 import { MoreVertical } from 'lucide-react';
-import { fetchInquiries, updateInquiryStatus, convertToClient, convertToProject, setSelectedInquiry, clearSelectedInquiry } from '../../../store/slices/inquiriesSlice';
+import { fetchInquiries, updateInquiryStatus, convertToClient, convertToProject, setSelectedInquiry } from '../../../store/slices/inquiriesSlice';
 
 const InquiriesPage = () => {
   const dispatch = useDispatch();
-  const { inquiries, loading, error, selectedInquiry, newInquiryCount } = useSelector(state => state.inquiries);
+  const { inquiries, loading, selectedInquiry, newInquiryCount } = useSelector(state => state.inquiries);
 
   const [filter, setFilter] = useState('all'); // 'all', 'NEW', 'CONTACTED', 'WON', 'LOST', 'ON_HOLD'
   const [dropdownOpen, setDropdownOpen] = useState(false);

@@ -5,7 +5,7 @@ import { fetchClients } from '../../modules/Clients/services/clientsSlice';
 import { fetchProjects } from '../../modules/Projects/services/projectsSlice';
 
 // Backend-integrated invoice actions
-export const createInvoiceWithRelationships = (invoiceData) => async (dispatc) => {
+export const createInvoiceWithRelationships = (invoiceData) => async (dispatch) => {
   try {
     // Create invoice - backend automatically updates client balance
     const result = await dispatch(createInvoice(invoiceData)).unwrap();

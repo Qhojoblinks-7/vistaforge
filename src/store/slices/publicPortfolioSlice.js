@@ -5,7 +5,7 @@ import { sampleCaseStudies, getCaseStudyBySlug } from '../../data/sampleCaseStud
 // Async thunks for public GraphQL calls
 export const fetchPublicProjects = createAsyncThunk(
   'publicPortfolio/fetchProjects',
-  async (params = {}, { rejectWithValue }) => {
+  async (params = {}) => {
     console.log('Public GraphQL call: Fetching projects with params:', params);
     try {
       // Use apiService.getPublicProjects for public access
@@ -23,7 +23,7 @@ export const fetchPublicProjects = createAsyncThunk(
 
 export const fetchPublicProjectBySlug = createAsyncThunk(
   'publicPortfolio/fetchProjectBySlug',
-  async (slug, { rejectWithValue }) => {
+  async (slug) => {
     try {
       const response = await apiService.getProject(slug);
       return response;
@@ -39,7 +39,7 @@ export const fetchPublicProjectBySlug = createAsyncThunk(
 
 export const fetchFeaturedProjects = createAsyncThunk(
   'publicPortfolio/fetchFeaturedProjects',
-  async (_, { rejectWithValue }) => {
+  async () => {
     try {
       const response = await apiService.getFeaturedProjects();
       return response;
@@ -52,7 +52,7 @@ export const fetchFeaturedProjects = createAsyncThunk(
 
 export const fetchDesignProjects = createAsyncThunk(
   'publicPortfolio/fetchDesignProjects',
-  async (_, { rejectWithValue }) => {
+  async () => {
     try {
       const response = await apiService.getDesignProjects();
       return response;

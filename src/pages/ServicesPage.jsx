@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSpring, animated } from 'react-spring';
+import { useSpring, animated } from '@react-spring/web';
 import { BsPen, BsStack, BsLaptop, BsBarChart, BsPhone, BsTools, BsCashStack,BsBriefcase,BsRocket } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import aboutImage from '../assets/hero3.jpeg';
@@ -175,7 +175,7 @@ const ServicesPage = () => {
         },
         "offers": {
           "@type": "Offer",
-          "priceRange": "₵600 - ₵2000",
+          "priceRange": "â‚µ600 - â‚µ2000",
           "availability": "https://schema.org/InStock",
           "priceValidUntil": "2025-12-31"
         },
@@ -204,7 +204,7 @@ const ServicesPage = () => {
         },
         "offers": {
           "@type": "Offer",
-          "priceRange": "₵1200 - ₵4500+",
+          "priceRange": "â‚µ1200 - â‚µ4500+",
           "availability": "https://schema.org/InStock",
           "priceValidUntil": "2025-12-31"
         },
@@ -233,7 +233,7 @@ const ServicesPage = () => {
         },
         "offers": {
           "@type": "Offer",
-          "priceRange": "₵1200 - ₵4500",
+          "priceRange": "â‚µ1200 - â‚µ4500",
           "availability": "https://schema.org/InStock",
           "priceValidUntil": "2025-12-31"
         }
@@ -255,7 +255,7 @@ const ServicesPage = () => {
         },
         "offers": {
           "@type": "Offer",
-          "priceRange": "₵600 - ₵2000",
+          "priceRange": "â‚µ600 - â‚µ2000",
           "availability": "https://schema.org/InStock",
           "priceValidUntil": "2025-12-31"
         }
@@ -271,7 +271,7 @@ const ServicesPage = () => {
             "name": "How much does professional logo design cost in Ghana?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Professional logo design in Ghana costs between ₵600 to ₵2,000 depending on complexity and deliverables. Our packages include multiple concepts, unlimited revisions, and all file formats needed for print and digital use."
+              "text": "Professional logo design in Ghana costs between â‚µ600 to â‚µ2,000 depending on complexity and deliverables. Our packages include multiple concepts, unlimited revisions, and all file formats needed for print and digital use."
             }
           },
           {
@@ -295,7 +295,7 @@ const ServicesPage = () => {
             "name": "What makes VistaForge different from other design agencies?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "VistaForge combines deep understanding of the African market with global design standards. We're not just designers – we're strategic partners invested in your business success, offering end-to-end brand solutions."
+              "text": "VistaForge combines deep understanding of the African market with global design standards. We're not just designers â€“ we're strategic partners invested in your business success, offering end-to-end brand solutions."
             }
           },
           {
@@ -435,17 +435,17 @@ const ServicesPage = () => {
             <div className="md:w-1/2">
               <h3 className="text-3xl mr-1.5 font-bold text-[#0015AA]">Brand Strategy & Positioning</h3>
               <p className="mt-4 text-lg text-gray-700">
-                Before any design begins, we dive deep into your business—market research, competitor analysis, and crafting your brand story, mission, and values. This becomes your strategic blueprint, ensuring your brand isn’t just visually appealing but also cohesive and resonant with your audience.
+                Before any design begins, we dive deep into your businessâ€”market research, competitor analysis, and crafting your brand story, mission, and values. This becomes your strategic blueprint, ensuring your brand isnâ€™t just visually appealing but also cohesive and resonant with your audience.
               </p>
               <div className="bg-gray-100 p-6 rounded-lg mt-6 shadow-sm hover:shadow-lg transition-shadow duration-300 transform hover:scale-105 transition-transform duration-300">
                 <h4 className="text-xl font-bold text-[#0015AA] flex items-center">
                   <BsCashStack className="mr-2 text-[#FBB03B]" /> Pricing: 
-                  <span className="ml-2">₵2,000 – ₵5,000</span>
-                  <span className="ml-4 text-gray-500 text-lg">(~$130 – $325 / €120 – €300)</span>
+                  <span className="ml-2">â‚µ2,000 â€“ â‚µ5,000</span>
+                  <span className="ml-4 text-gray-500 text-lg">(~$130 â€“ $325 / â‚¬120 â€“ â‚¬300)</span>
                 </h4>
                 <p className="text-sm mt-2 text-gray-600">
-                  <span className="font-semibold">₵2,000 (~$130):</span> For foundational strategy (e.g., startups needing only messaging and values).<br />
-                  <span className="font-semibold">₵5,000 (~$325):</span> For full brand strategy documents, audience personas, and launch consulting.
+                  <span className="font-semibold">â‚µ2,000 (~$130):</span> For foundational strategy (e.g., startups needing only messaging and values).<br />
+                  <span className="font-semibold">â‚µ5,000 (~$325):</span> For full brand strategy documents, audience personas, and launch consulting.
                 </p>
               </div>
             </div>
@@ -481,12 +481,12 @@ const ServicesPage = () => {
               <div className="bg-white ml-6 p-6 rounded-lg mt-6 shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:scale-105 transition-transform duration-300">
                 <h4 className="text-xl font-bold text-[#0015AA] flex items-center">
                   <BsCashStack className="mr-2 text-[#FBB03B]" /> Pricing: 
-                  <span className="ml-2">₵600 – ₵2,000</span>
-                  <span className="ml-4 text-gray-500 text-lg">(~$40 – $130 / €35 – €120)</span>
+                  <span className="ml-2">â‚µ600 â€“ â‚µ2,000</span>
+                  <span className="ml-4 text-gray-500 text-lg">(~$40 â€“ $130 / â‚¬35 â€“ â‚¬120)</span>
                 </h4>
                 <p className="text-sm mt-2 text-gray-600">
-                  <span className="font-semibold">₵600 (~$40):</span> Simple logo + color/font suggestions.<br />
-                  <span className="font-semibold">₵2,000 (~$130):</span> Full identity kit with logo variations, guidelines, and mockups.
+                  <span className="font-semibold">â‚µ600 (~$40):</span> Simple logo + color/font suggestions.<br />
+                  <span className="font-semibold">â‚µ2,000 (~$130):</span> Full identity kit with logo variations, guidelines, and mockups.
                 </p>
               </div>
             </div>
@@ -522,12 +522,12 @@ const ServicesPage = () => {
               <div className="ml-6 bg-gray-100 p-6 rounded-lg mt-6 shadow-sm hover:shadow-lg transition-shadow duration-300 transform hover:scale-105 transition-transform duration-300">
                 <h4 className="text-xl font-bold text-[#0015AA] flex items-center">
                   <BsCashStack className="mr-2 text-[#FBB03B]" /> Pricing: 
-                  <span className="ml-2">₵1,200 – ₵4,500+</span>
-                  <span className="ml-4 text-gray-500 text-lg">(~$80 – $290+ / €70 – €270+)</span>
+                  <span className="ml-2">â‚µ1,200 â€“ â‚µ4,500+</span>
+                  <span className="ml-4 text-gray-500 text-lg">(~$80 â€“ $290+ / â‚¬70 â€“ â‚¬270+)</span>
                 </h4>
                 <p className="text-sm mt-2 text-gray-600">
-                  <span className="font-semibold">₵1,200–₵2,800 (~$80–$180):</span> 4-page business site, perfect for startups.<br />
-                  <span className="font-semibold">₵3,500 – ₵4,500+ (~$225–$290+):</span> Multi-page corporate or e-commerce websites.
+                  <span className="font-semibold">â‚µ1,200â€“â‚µ2,800 (~$80â€“$180):</span> 4-page business site, perfect for startups.<br />
+                  <span className="font-semibold">â‚µ3,500 â€“ â‚µ4,500+ (~$225â€“$290+):</span> Multi-page corporate or e-commerce websites.
                 </p>
               </div>
             </div>
@@ -564,12 +564,12 @@ const ServicesPage = () => {
               <div className="ml-6 bg-white p-6 rounded-lg mt-6 shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:scale-105 transition-transform duration-300">
                 <h4 className="text-xl font-bold text-[#0015AA] flex items-center">
                   <BsCashStack className="mr-2 text-[#FBB03B]" /> Pricing: 
-                  <span className="ml-2">₵1,200 – ₵4,500</span>
-                  <span className="ml-4 text-gray-500 text-lg">(~$80 – $290 / €70 – €270)</span>
+                  <span className="ml-2">â‚µ1,200 â€“ â‚µ4,500</span>
+                  <span className="ml-4 text-gray-500 text-lg">(~$80 â€“ $290 / â‚¬70 â€“ â‚¬270)</span>
                 </h4>
                 <p className="text-sm mt-2 text-gray-600">
-                  <span className="font-semibold">₵1,200 (~$80):</span> Short prototypes or 3–5 screen designs.<br />
-                  <span className="font-semibold">₵4,500 (~$290):</span> Full UI kit for a mid-sized web or mobile app.
+                  <span className="font-semibold">â‚µ1,200 (~$80):</span> Short prototypes or 3â€“5 screen designs.<br />
+                  <span className="font-semibold">â‚µ4,500 (~$290):</span> Full UI kit for a mid-sized web or mobile app.
                 </p>
               </div>
             </div>
@@ -605,12 +605,12 @@ const ServicesPage = () => {
               <div className="ml-6 bg-gray-100 p-6 rounded-lg mt-6 shadow-sm hover:shadow-lg transition-shadow duration-300 transform hover:scale-105 transition-transform duration-300">
                 <h4 className="text-xl font-bold text-[#0015AA] flex items-center">
                   <BsCashStack className="mr-2 text-[#FBB03B]" /> Pricing: 
-                  <span className="ml-2">₵600 – ₵2,000 per campaign</span>
-                  <span className="ml-4 text-gray-500 text-lg">(~$40 – $130 / €35 – €120)</span>
+                  <span className="ml-2">â‚µ600 â€“ â‚µ2,000 per campaign</span>
+                  <span className="ml-4 text-gray-500 text-lg">(~$40 â€“ $130 / â‚¬35 â€“ â‚¬120)</span>
                 </h4>
                 <p className="text-sm mt-2 text-gray-600">
-                  <span className="font-semibold">₵600 (~$40):</span> Basic social media kit (profile, 5–10 posts).<br />
-                  <span className="font-semibold">₵2,000 (~$130):</span> Full campaign package with strategy, graphics, and ad templates.
+                  <span className="font-semibold">â‚µ600 (~$40):</span> Basic social media kit (profile, 5â€“10 posts).<br />
+                  <span className="font-semibold">â‚µ2,000 (~$130):</span> Full campaign package with strategy, graphics, and ad templates.
                 </p>
               </div>
             </div>

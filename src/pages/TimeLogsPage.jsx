@@ -10,7 +10,6 @@ import {
   resumeTimer,
   resetTimer,
   createTimeLog,
-  updateTimeLog,
   deleteTimeLog,
   setFilters,
   setSorting,
@@ -104,7 +103,7 @@ const TimeLogsPage = () => {
     // For demo, use first available client
     // In real app, show client/task selection modal
     try {
-      const result = await dispatch(startTimer({
+      await dispatch(startTimer({
         taskName: 'Timer session',
         clientId: projectOptions[0]?.id, // Use first project as demo
         description: 'Timer session'

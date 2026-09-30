@@ -96,7 +96,7 @@ export default defineConfig({
           vendor: ['react', 'react-dom'],
           router: ['react-router-dom'],
           ui: ['lucide-react', 'react-icons'],
-          animations: ['react-spring', 'react-awesome-reveal'],
+          animations: ['@react-spring/web', 'react-awesome-reveal'],
           dnd: ['@dnd-kit/core', '@dnd-kit/sortable', '@dnd-kit/utilities'],
           redux: ['@reduxjs/toolkit', 'react-redux'],
           utils: ['html2canvas', 'jspdf', 'react-helmet-async']
@@ -112,6 +112,6 @@ export default defineConfig({
     historyApiFallback: true
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom', 'react-spring']
+    include: ['react', 'react-dom', 'react-router-dom', '@react-spring/web']
   }
 })

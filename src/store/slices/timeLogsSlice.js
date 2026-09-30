@@ -6,7 +6,7 @@ import { fetchProjects } from '../../modules/Projects/services/projectsSlice';
 import { fetchInvoices } from './invoicesSlice';
 
 // Backend-integrated time logging actions
-export const createTimeLogWithRelationships = (timeLogData) => async (dispatch, getState) => {
+export const createTimeLogWithRelationships = (timeLogData) => async (dispatch) => {
   try {
     // Create time log - backend automatically updates client balance
     const result = await dispatch(createTimeLog(timeLogData)).unwrap();
@@ -29,7 +29,7 @@ export const createTimeLogWithRelationships = (timeLogData) => async (dispatch, 
   }
 };
 
-export const updateTimeLogWithRelationships = (timeLogId, updateData) => async (dispatch, getState) => {
+export const updateTimeLogWithRelationships = (timeLogId, updateData) => async (dispatch) => {
   try {
     // Update time log - backend handles balance adjustments
     const result = await dispatch(updateTimeLog({ id: timeLogId, data: updateData })).unwrap();
@@ -52,7 +52,7 @@ export const updateTimeLogWithRelationships = (timeLogId, updateData) => async (
 // Async thunks for time logs operations
 export const fetchTimeLogs = createAsyncThunk(
   'timeLogs/fetchTimeLogs',
-  async (params = {}) => {
+  async () => {
     const query = `
       query GetTimeLogs {
         allTimeLogs {
@@ -448,7 +448,7 @@ const timeLogsSlice = createSlice({
       .addCase(startTimer.fulfilled, (state, action) => {
         state.currentTimer = action.payload;
       })
-      .addCase(stopTimer.fulfilled, (state, action) => {
+      .addCase(stopTimer.fulfilled, (state) => {
         state.currentTimer = null;
         // The time log will be added via createTimeLog
       });

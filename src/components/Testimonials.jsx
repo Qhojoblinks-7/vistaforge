@@ -1,11 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import { useSpring, animated } from 'react-spring';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useSpring, animated } from '@react-spring/web';
 import { BsStarFill, BsQuote, BsArrowLeft, BsArrowRight, BsCheckCircle } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import { TESTIMONIALS, AGGREGATE_RATING, getFeaturedTestimonials, getAllTestimonials } from '../data/testimonials';
 import OptimizedImage from './OptimizedImage';
 
-const Testimonials = ({ 
+const useCardSpring = (index) => useSpring({
+  from: { opacity: 0, transform: 'translateY(20px)' },
+  to: { opacity: 1, transform: 'translateY(0)' },
+  delay: index * 100,
+  config: { tension: 120, friction: 14 },
+});
+
+const AnimatedTestimonialCard = ({ index, className = '', children }) => {
+  const cardSpring = useCardSpring(index);
+
+  return (
+    <animated.article style={cardSpring} className={className}>
+      {children}
+    </animated.article>
+  );
+};
+
+const AnimatedTestimonialSlide = ({ index, className = '', children }) => {
+  const cardSpring = useCardSpring(index);
+
+  return (
+    <animated.div style={cardSpring} className={className}>
+      {children}
+    </animated.div>
+  );
+};
+
+const Testimonials = ({
   variant = 'carousel', // 'carousel' | 'grid' | 'featured'
   maxItems = 3,
   className = '',
@@ -21,22 +48,15 @@ const Testimonials = ({
     config: { tension: 120, friction: 14 },
   });
 
-  const cardSpring = (index) => useSpring({
-    from: { opacity: 0, transform: 'translateY(20px)' },
-    to: { opacity: 1, transform: 'translateY(0)' },
-    delay: index * 100,
-    config: { tension: 120, friction: 14 },
-  });
-
-  const next = () => setCurrentIndex((prev) => (prev + 1) % displayTestimonials.length);
-  const prev = () => setCurrentIndex((prev) => (prev - 1 + displayTestimonials.length) % displayTestimonials.length);
+  const next = useCallback(() => setCurrentIndex((prev) => (prev + 1) % displayTestimonials.length), [displayTestimonials.length]);
+  const prev = useCallback(() => setCurrentIndex((prev) => (prev - 1 + displayTestimonials.length) % displayTestimonials.length), [displayTestimonials.length]);
 
   useEffect(() => {
     if (variant === 'carousel') {
       const interval = setInterval(next, 6000);
       return () => clearInterval(interval);
     }
-  }, [variant]);
+  }, [variant, next]);
 
   const renderStars = (rating) => (
     <div className="flex items-center gap-1" aria-label={`${rating} out of 5 stars`}>
@@ -88,7 +108,7 @@ const Testimonials = ({
         )}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {displayTestimonials.map((testimonial, index) => (
-            <animated.article key={testimonial.id} style={cardSpring(index)} className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col h-full">
+            <AnimatedTestimonialCard key={testimonial.id} index={index} className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col h-full">
               <div className="flex items-center gap-3 mb-4">
                 <OptimizedImage
                   src={testimonial.companyLogo}
@@ -136,7 +156,7 @@ const Testimonials = ({
                   <BsArrowRight className="w-4 h-4" />
                 </Link>
               )}
-            </animated.article>
+            </AnimatedTestimonialCard>
           ))}
         </div>
       </animated.section>
@@ -269,7 +289,7 @@ const Testimonials = ({
             style={{ transform: `translateX(-${currentIndex * 100}%)` }}
           >
             {displayTestimonials.map((testimonial, index) => (
-              <animated.div key={testimonial.id} style={cardSpring(index)} className="w-full flex-shrink-0 px-4">
+              <AnimatedTestimonialSlide key={testimonial.id} index={index} className="w-full flex-shrink-0 px-4">
                 <article className="bg-white rounded-2xl p-8 md:p-12 shadow-xl border border-gray-100 h-full max-w-4xl mx-auto">
                   <div className="flex items-center gap-3 mb-6">
                     <OptimizedImage
@@ -321,7 +341,7 @@ const Testimonials = ({
                     </Link>
                   )}
                 </article>
-              </animated.div>
+              </AnimatedTestimonialSlide>
             ))}
           </div>
         </div>

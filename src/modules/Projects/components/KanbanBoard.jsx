@@ -10,7 +10,6 @@ import {
   useSensors,
 } from '@dnd-kit/core';
 import {
-  arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
@@ -29,7 +28,7 @@ const COLUMN_CONFIG = {
   0: { title: 'Blocked', color: 'bg-red-100 border-red-200' }
 };
 
-function SortableTaskCard({ task, projectId, onStartTimer, onEditTask, onComplete, onViewTask }) {
+function SortableTaskCard({ task, onStartTimer, onEditTask, onComplete, onViewTask }) {
   const {
     attributes,
     listeners,

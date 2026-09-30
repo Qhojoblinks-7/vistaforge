@@ -16,7 +16,6 @@ import {
   syncProjectUpdate,
   syncProjectDeletion,
   createProjectWithRelationships,
-  updateProjectWithRelationships,
   completeProjectWithRelationships
 } from '../modules/Projects/services/projectsSlice';
 import { fetchClients } from '../modules/Clients/services/clientsSlice';
@@ -64,7 +63,6 @@ const ProjectManagementPage = () => {
   const filters = projectsState.filters || {};
   const sortBy = projectsState.sortBy || 'createdAt';
   const sortOrder = projectsState.sortOrder || 'desc';
-  const currentProject = projectsState.currentProject || null;
 
   const { clients } = useSelector((state) => state.clients);
 
@@ -188,15 +186,6 @@ const ProjectManagementPage = () => {
     dispatch(setSorting({ sortBy, sortOrder }));
   };
 
-  const handleProjectUpdate = async (projectId, projectData) => {
-    try {
-      await dispatch(updateProjectWithRelationships({ id: projectId, data: projectData })).unwrap();
-      dispatch(syncProjectUpdate(projectData));
-    } catch (error) {
-      console.error('Failed to update project:', error);
-    }
-  };
-
   const handleProjectComplete = async (projectId) => {
     try {
       await dispatch(completeProjectWithRelationships(projectId)).unwrap();
@@ -230,10 +219,6 @@ const ProjectManagementPage = () => {
   const overdueInvoices = invoices?.filter(inv =>
     inv.status === 'SENT' && new Date(inv.dueDate) < new Date()
   ).length || 0;
-
-  const upcomingDeadlines = projectsArray?.filter(p => p.endDate)
-    .sort((a, b) => new Date(a.endDate) - new Date(b.endDate))
-    .slice(0, 5) || [];
 
   // Handle logout
   const handleLogout = async () => {

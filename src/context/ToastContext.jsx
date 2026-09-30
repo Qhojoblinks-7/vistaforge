@@ -6,6 +6,10 @@ const ToastContext = createContext(null);
 export const ToastProvider = ({ children }) => {
   const [toasts, setToasts] = useState([]);
 
+  const removeToast = useCallback((id) => {
+    setToasts(prevToasts => prevToasts.filter(toast => toast.id !== id));
+  }, []);
+
   const addToast = useCallback((message, type = 'error', duration = 5000) => {
     const id = Date.now() + Math.random();
     const toast = { id, message, type, duration };
@@ -18,11 +22,7 @@ export const ToastProvider = ({ children }) => {
     }, duration + 300); // Add 300ms for animation
 
     return id;
-  }, []);
-
-  const removeToast = useCallback((id) => {
-    setToasts(prevToasts => prevToasts.filter(toast => toast.id !== id));
-  }, []);
+  }, [removeToast]);
 
   // Convenience methods for different toast types
   const showSuccess = useCallback((message, duration) => addToast(message, 'success', duration), [addToast]);

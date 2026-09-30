@@ -6,13 +6,11 @@ import html2canvas from 'html2canvas';
 import {
   fetchInvoices,
   createInvoice,
-  updateInvoice,
   deleteInvoice,
   sendInvoice,
   markInvoicePaid,
   setFilters,
   clearFilters,
-  setSorting,
   setCurrentInvoice
 } from '../store/slices/invoicesSlice';
 
@@ -42,9 +40,6 @@ const InvoicesPage = () => {
     loading,
     error,
     filters,
-    sortBy,
-    sortOrder,
-    pagination,
     analytics
   } = useSelector((state) => state.invoices);
 
@@ -83,12 +78,6 @@ const InvoicesPage = () => {
   const handleViewInvoice = (invoice) => {
     dispatch(setCurrentInvoice(invoice));
     setShowViewer(true);
-  };
-
-  // Handle invoice editing
-  const handleEditInvoice = (invoice) => {
-    // For now, just view - editing would need additional modal
-    handleViewInvoice(invoice);
   };
 
   // Handle invoice deletion

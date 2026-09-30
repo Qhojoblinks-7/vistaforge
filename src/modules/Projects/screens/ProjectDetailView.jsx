@@ -118,8 +118,7 @@ const ProjectDetailView = ({ projectId, onBack }) => {
   };
 
   const totalLoggedHours = timeLogs?.reduce((sum, log) => sum + parseFloat(log.durationMinutes || 0) / 60, 0) || 0;
-  const unbilledHours = timeLogs?.filter(log => !log.isBillable).reduce((sum, log) => sum + parseFloat(log.durationMinutes || 0) / 60, 0) || 0;
-  const projectValue = totalLoggedHours * parseFloat(project?.hourly_rate || 0);
+  void totalLoggedHours;
 
   return (
     <div className="min-h-screen bg-background flex">
@@ -307,7 +306,7 @@ const FullKanbanBoard = ({ project, tasks, onStartTimer, onEditTask }) => {
 };
 
 // Task Card Component
-const TaskCard = ({ task, projectId, onStartTimer, onEditTask, onDragStart, onDelete }) => {
+const TaskCard = ({ task, onStartTimer, onEditTask, onDragStart, onDelete }) => {
   return (
     <div
       className="p-3 bg-gray-50 rounded-lg border cursor-move hover:shadow-sm transition-shadow"
@@ -351,7 +350,7 @@ const TaskCard = ({ task, projectId, onStartTimer, onEditTask, onDragStart, onDe
 };
 
 // Task Modal Component
-const TaskModal = ({ projectId, task, onClose, onCreate, onUpdate }) => {
+const TaskModal = ({ task, onClose, onCreate, onUpdate }) => {
   const [formData, setFormData] = useState({
     name: task?.name || '',
     description: task?.description || '',

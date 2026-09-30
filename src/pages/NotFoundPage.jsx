@@ -1,6 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useSpring, animated } from 'react-spring';
+import { useSpring, animated } from '@react-spring/web';
 import { Link } from 'react-router-dom';
 import { BsHouse, BsSearch, BsArrowLeft, BsGlobe } from 'react-icons/bs';
 import Footer from '../components/Footer';

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useSpring, animated } from 'react-spring';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useSpring, animated } from '@react-spring/web';
 import { FaTimes, FaInfo, FaTasks, FaFlag, FaPlus, FaTrash, FaCheck } from 'react-icons/fa';
 import { BsPlus } from 'react-icons/bs';
 import TaskListItem from './TaskListItem';
@@ -20,21 +20,7 @@ const ProjectDetailDrawer = ({
   const [milestones, setMilestones] = useState(initialMilestones);
   const [loading, setLoading] = useState(false);
 
-  // Load tasks and milestones when project changes
-  useEffect(() => {
-    if (project?.id && isOpen) {
-      loadProjectData();
-    }
-  }, [project?.id, isOpen]);
-
-  // Refresh tasks when activeTab changes to tasks
-  useEffect(() => {
-    if (activeTab === 'tasks' && project?.id && isOpen) {
-      loadProjectData();
-    }
-  }, [activeTab]);
-
-  const loadProjectData = async () => {
+  const loadProjectData = useCallback(async () => {
     if (!project?.id) return;
 
     setLoading(true);
@@ -50,7 +36,14 @@ const ProjectDetailDrawer = ({
     } finally {
       setLoading(false);
     }
-  };
+  }, [project?.id]);
+
+  // Load tasks and milestones when the drawer opens, the project changes, or the tab changes
+  useEffect(() => {
+    if (project?.id && isOpen) {
+      loadProjectData();
+    }
+  }, [project?.id, isOpen, activeTab, loadProjectData]);
 
   const handleAddTask = async () => {
     if (!newTask.name.trim() || !project?.id) return;

@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import {
   BsHouse,
   BsBriefcase,
@@ -23,7 +22,6 @@ const Sidebar = ({ isOpen, onToggle }) => {
   const { token, user } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const { logout } = useAuth();
   const { newInquiryCount } = useSelector(state => state.inquiries);
 

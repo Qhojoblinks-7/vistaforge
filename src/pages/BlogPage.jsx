@@ -1,12 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useSpring, animated } from 'react-spring';
+import { useSpring, animated } from '@react-spring/web';
 import { Link, useSearchParams } from 'react-router-dom';
 import { BsArrowRight, BsCalendar3, BsChatLeftText, BsTag, BsChevronDown } from 'react-icons/bs';
 import { BLOG_POSTS, BLOG_CATEGORIES, getFeaturedPosts } from '../data/blogPosts';
 import Footer from '../components/Footer';
 import SEO from '../components/SEO';
 import OptimizedImage from '../components/OptimizedImage';
+
+const AnimatedPostCard = ({ index, className = '', children }) => {
+  const cardSpring = useSpring({
+    from: { opacity: 0, transform: 'translateY(40px)' },
+    to: { opacity: 1, transform: 'translateY(0)' },
+    delay: 200 + index * 100,
+    config: { tension: 120, friction: 14 },
+  });
+
+  return (
+    <animated.article style={cardSpring} className={className}>
+      {children}
+    </animated.article>
+  );
+};
 
 const BlogPage = () => {
   // Supports /blog?category=Brand Strategy, linked from each post.
@@ -21,19 +36,6 @@ const BlogPage = () => {
   useEffect(() => {
     setActiveCategory(initialCategory);
   }, [initialCategory]);
-
-  const containerSpring = useSpring({
-    from: { opacity: 0, transform: 'translateY(30px)' },
-    to: { opacity: 1, transform: 'translateY(0)' },
-    config: { tension: 120, friction: 14 },
-  });
-
-  const cardSpring = (index) => useSpring({
-    from: { opacity: 0, transform: 'translateY(40px)' },
-    to: { opacity: 1, transform: 'translateY(0)' },
-    delay: 200 + index * 100,
-    config: { tension: 120, friction: 14 },
-  });
 
   useEffect(() => {
     const filtered = activeCategory === 'All' 
@@ -95,7 +97,7 @@ const BlogPage = () => {
               Insights That Drive Growth.
             </h1>
             <p className="mt-6 text-lg max-w-3xl mx-auto text-gray-200">
-              Strategy, design, and digital expertise for founders building brands that last. No fluff — just actionable insights from our work with African startups.
+              Strategy, design, and digital expertise for founders building brands that last. No fluff â€” just actionable insights from our work with African startups.
             </p>
           </div>
         </section>
@@ -127,7 +129,7 @@ const BlogPage = () => {
             <div className="container mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {getFeaturedPosts().slice(0, 3).map((post, index) => (
-                  <animated.article key={post.slug} style={cardSpring(index)} className={`relative group ${index === 0 ? 'lg:col-span-2' : ''}`}>
+                  <AnimatedPostCard key={post.slug} index={index} className={`relative group ${index === 0 ? 'lg:col-span-2' : ''}`}>
                     <Link to={`/blog/${post.slug}`} className="block">
                       <div className="relative aspect-video overflow-hidden rounded-2xl shadow-xl">
                         <OptimizedImage
@@ -168,7 +170,7 @@ const BlogPage = () => {
                         {post.readTime}
                       </span>
                     </div>
-                  </animated.article>
+                  </AnimatedPostCard>
                 ))}
               </div>
             </div>
@@ -197,7 +199,7 @@ const BlogPage = () => {
                 )}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {posts.filter(post => activeCategory !== 'All' || !post.featured).map((post, index) => (
-                    <animated.article key={post.slug} style={cardSpring(index)} className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
+                    <AnimatedPostCard key={post.slug} index={index} className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
                       <Link to={`/blog/${post.slug}`} className="block">
                         <div className="relative aspect-video overflow-hidden">
                           <OptimizedImage
@@ -239,7 +241,7 @@ const BlogPage = () => {
                           </div>
                         </div>
                       </Link>
-                    </animated.article>
+                    </AnimatedPostCard>
                   ))}
                 </div>
               </>
@@ -250,7 +252,7 @@ const BlogPage = () => {
               <div className="bg-[#0015AA] text-white rounded-2xl p-8 md:p-12">
                 <h3 className="text-3xl font-bold mb-4">Get Insights Delivered Weekly</h3>
                 <p className="text-gray-200 mb-6 max-w-md mx-auto">
-                  No spam. Just one actionable article on brand, design, or growth — every Tuesday.
+                  No spam. Just one actionable article on brand, design, or growth â€” every Tuesday.
                 </p>
                 <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto" onSubmit={(e) => e.preventDefault()}>
                   <input

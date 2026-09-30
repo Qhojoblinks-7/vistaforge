@@ -70,7 +70,7 @@ export const deleteMilestone = createAsyncThunk(
 // Admin-only project async thunks
 export const fetchAdminProjects = createAsyncThunk(
   'adminPortfolio/fetchProjects',
-  async (params = {}) => {
+  async () => {
     const token = localStorage.getItem('adminToken');
 
     if (!token) {

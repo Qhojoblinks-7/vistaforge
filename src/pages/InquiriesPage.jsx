@@ -4,11 +4,9 @@ import { BsPlus, BsEye, BsFilter, BsTrash, BsPencil, BsTag, BsCalendar, BsCheckC
 import {
   fetchInquiries,
   createInquiry,
-  bulkUpdateInquiries,
   deleteInquiry,
   setFilters,
   clearFilters,
-  setSorting,
 } from '../store/slices/inquiriesSlice';
 
 // Import shared components
@@ -76,35 +74,6 @@ const InquiriesPage = () => {
       } catch (error) {
         console.error('Failed to delete inquiry:', error);
       }
-    }
-  };
-
-  // Handle bulk operations
-  const handleBulkUpdate = async (updates) => {
-    if (selectedInquiries.length === 0) return;
-
-    try {
-      await dispatch(bulkUpdateInquiries({
-        inquiryIds: selectedInquiries,
-        updates
-      })).unwrap();
-      setSelectedInquiries([]);
-    } catch (error) {
-      console.error('Failed to bulk update inquiries:', error);
-    }
-  };
-
-  // Bulk delete selected inquiries
-  const handleBulkDeleteSelected = async () => {
-    if (selectedInquiries.length === 0) return;
-    if (!window.confirm(`Delete ${selectedInquiries.length} selected inquiries? This cannot be undone.`)) return;
-
-    try {
-      // Dispatch delete for each selected inquiry
-      await Promise.all(selectedInquiries.map(id => dispatch(deleteInquiry(id)).unwrap()));
-      setSelectedInquiries([]);
-    } catch (error) {
-      console.error('Failed to delete selected inquiries:', error);
     }
   };
 

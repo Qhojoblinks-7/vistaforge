@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPublicProjects } from '../store/slices/publicPortfolioSlice';
 import { fetchAnalytics, selectAnalyticsData, selectAnalyticsLoading, selectAnalyticsError } from '../store/slices/analyticsSlice';
@@ -48,10 +48,10 @@ const AnalyticsPage = () => {
     billableRate: '0%'
   };
 
-  const goals = analyticsData?.goals || {
+  const goals = useMemo(() => analyticsData?.goals || {
     monthlyRevenueGoal: { current: 0, target: null },
     clientSatisfaction: null
-  };
+  }, [analyticsData]);
 
   // State for editing goals
   const [editingGoals, setEditingGoals] = useState(false);

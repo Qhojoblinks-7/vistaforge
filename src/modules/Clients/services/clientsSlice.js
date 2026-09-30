@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 // Async thunks for client operations
 export const fetchClients = createAsyncThunk(
   'clients/fetchClients',
-  async (params = {}) => {
+  async () => {
     const query = `
       query GetClients {
         allClients {
@@ -105,7 +105,7 @@ export const deleteClient = createAsyncThunk(
     `;
 
     const apiService = (await import('../../../services/api')).default;
-    const result = await apiService.request(mutation, { id: clientId });
+    await apiService.request(mutation, { id: clientId });
     return clientId;
   }
 );
@@ -199,7 +199,7 @@ export const deleteClientContact = createAsyncThunk(
     `;
 
     const apiService = (await import('../../../services/api')).default;
-    const result = await apiService.request(mutation, { id: contactId });
+    await apiService.request(mutation, { id: contactId });
     return contactId;
   }
 );
@@ -296,7 +296,7 @@ export const deleteClientNote = createAsyncThunk(
     `;
 
     const apiService = (await import('../../../services/api')).default;
-    const result = await apiService.request(mutation, { id: noteId });
+    await apiService.request(mutation, { id: noteId });
     return noteId;
   }
 );

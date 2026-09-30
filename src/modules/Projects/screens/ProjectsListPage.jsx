@@ -16,16 +16,7 @@ import QuickClientProjectEntry from '../../../components/QuickClientProjectEntry
 
 const ProjectsListPage = () => {
   const { startTimer } = useTimer();
-  const [editingTask, setEditingTask] = useState(null);
-
-  const fetchProjects = useCallback(async () => {
-    try {
-      return await apiService.getProjects();
-    } catch (error) {
-      console.error('Error fetching projects:', error);
-      return [];
-    }
-  }, []);
+  const [, setEditingTask] = useState(null);
 
   const fetchTasksData = useCallback(async () => {
     return await apiService.getTasks();
@@ -48,14 +39,7 @@ const ProjectsListPage = () => {
     error: reduxError
   } = useSelector((state) => state.adminPortfolio);
 
-  // Use React Query for additional data
-  // const { data: projectsQuery, isLoading: projectsLoading, error: projectsError } = useQuery({
-  //   queryKey: ['adminProjects'],
-  //   queryFn: fetchProjects,
-  //   retry: false
-  // });
-
-  const { data: tasksQuery, isLoading: tasksLoading } = useQuery({
+  const { data: tasksQuery } = useQuery({
     queryKey: ['tasks'],
     queryFn: fetchTasksData
   });
@@ -75,7 +59,10 @@ const ProjectsListPage = () => {
   const displayTasks = (tasks?.length > 0) ? tasks : (tasksQuery || []);
 
   // Initialize Redux data on component mount - only once
+  const hasInitialized = React.useRef(false);
   React.useEffect(() => {
+    if (hasInitialized.current) return;
+    hasInitialized.current = true;
     if (!reduxLoading && !reduxError) {
       if (projects?.length === 0 || projects === null) {
         dispatch(fetchAdminProjects());
@@ -84,7 +71,7 @@ const ProjectsListPage = () => {
         dispatch(fetchTasks());
       }
     }
-  }, []); // Empty dependency array to run only once on mount
+  }, [dispatch, projects, tasks, reduxError, reduxLoading]);
 
   if (reduxLoading) {
     return (
@@ -105,10 +92,6 @@ const ProjectsListPage = () => {
       </div>
     );
   }
-
-  const upcomingDeadlines = projects?.filter(p => p.endDate)
-    .sort((a, b) => new Date(a.endDate) - new Date(b.endDate))
-    .slice(0, 5) || [];
 
   const handleStartTimer = (taskId) => {
     // Find the task to get project id

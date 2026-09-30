@@ -16,13 +16,11 @@ import InvoiceStatusBadge from '../components/InvoiceStatusBadge';
 import {
   fetchInvoices,
   createInvoice,
-  updateInvoice,
   deleteInvoice,
   sendInvoice,
   markInvoicePaid,
   setFilters,
   clearFilters,
-  setSorting,
   setCurrentInvoice
 } from '../services/invoicesSlice';
 
@@ -37,9 +35,6 @@ const InvoicesPage = () => {
     loading,
     error,
     filters,
-    sortBy,
-    sortOrder,
-    pagination,
     analytics
   } = useSelector((state) => state.invoices);
 
@@ -641,13 +636,6 @@ const InvoicesPage = () => {
       // Clean up temporary element
       document.body.removeChild(tempDiv);
     }
-  };
-
-  // Handle sorting
-  const handleSort = (column) => {
-    const newOrder = sortBy === column && sortOrder === 'asc' ? 'desc' : 'asc';
-    dispatch(setSorting({ sortBy: column, sortOrder: newOrder }));
-    dispatch(fetchInvoices());
   };
 
   // Handle filters

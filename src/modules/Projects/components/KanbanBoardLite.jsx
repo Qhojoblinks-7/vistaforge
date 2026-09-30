@@ -11,7 +11,6 @@ import {
   useSensors,
 } from '@dnd-kit/core';
 import {
-  arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
@@ -30,7 +29,7 @@ const COLUMN_CONFIG = {
   0: { title: 'Blocked', color: 'bg-red-100 border-red-200' }
 };
 
-function SortableTaskCard({ task, projectId, onStartTimer, onEditTask, onComplete, onViewTask, showProject = false }) {
+function SortableTaskCard({ task, onStartTimer, onEditTask, onComplete, onViewTask, showProject = false }) {
   const {
     attributes,
     listeners,
@@ -122,7 +121,6 @@ function KanbanColumn({ id, title, tasks, projectId, onStartTimer, onEditTask, o
     const bgColor = isTodo ? 'bg-gray-50' : 'bg-blue-50';
     const borderColor = isTodo ? 'border-gray-300' : 'border-blue-300';
     const dotColor = isTodo ? 'bg-orange-400' : 'bg-blue-500';
-    const borderLeftColor = isTodo ? 'border-orange-400' : 'border-blue-500';
 
     return (
       <div
@@ -201,7 +199,7 @@ const KanbanBoardLite = ({ projects, onStartTimer, onEditTask = () => {}, onView
   const todaysTasks = useSelector(selectTodaysTasks);
   const currentWorkTasks = useSelector(selectCurrentWorkTasks);
   const [activeId, setActiveId] = useState(null);
-  const [selectedProject, setSelectedProject] = useState(null);
+  const [selectedProject] = useState(null);
   const [showProjectModal, setShowProjectModal] = useState(false);
 
   useEffect(() => {
